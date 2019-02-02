@@ -164,7 +164,6 @@ for r in range(row):
                      text="{}".format(bd_array[r][c]))
         btn2.pack(expand=True, fill=BOTH)
 
-
 last_ch = Label(root, bg='#fff', bd=0)
 last_ch.place(x=0, y=win_h_now-200, relwidth=1.0, relheight=0.4)
 
@@ -175,7 +174,6 @@ btn_last_ch.pack(side=BOTTOM, fill=X)
 label_last_ch = Label(last_ch, justify=LEFT, text="тут последние изменения",
                       bg="blue", fg="white")
 label_last_ch.place(x=0, y=0, relwidth=1.0, relheight=1.0)
-
 
 main_menu = Menu()
 
@@ -206,7 +204,6 @@ otchet_menu.add_command(label="Гистограмма")
 otchet_menu.add_command(label="Диаграмма Босо-Вискеря")
 otchet_menu.add_command(label="Диаграмма рассеивания")
 
-
 right_menu = Label(root, bg='#fff', bd=1, width="3")
 right_menu.pack(side=RIGHT, fill=Y)
 
@@ -229,11 +226,9 @@ table_btn.create_text((20, 55), angle="-90", anchor="ne", text="таблицы",
                       font=font, fill="SystemButtonText")
 table_btn.place(x=0, y=54)
 
-
 main_menu.add_cascade(label="Меню", menu=menu_menu)
 main_menu.add_cascade(label="Изменение БД", menu=changeBD_menu)
 main_menu.add_cascade(label="Отчёты", menu=otchet_menu)
-
 
 root.config(menu=main_menu, bg="#000", bd=0)
 root.bind("<Configure>", resize)

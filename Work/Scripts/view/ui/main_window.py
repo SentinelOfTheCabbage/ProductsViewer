@@ -6,7 +6,12 @@ clicks_filtr = 0
 clicks_table = 0
 win_w_now = 650
 win_h_now = 450
-bd_array = [["Макс", "Озирный"], ["Макс", "Озирный"], ["autist", "47"], ["autist_2", "47_2"]]
+bd_array = [
+    ["Макс", "Озирный"],
+    ["Виталий", "Перятин"],
+    ["Андрей", "Федоров"],
+    ["Наиль", "Сулейманов"]
+    ]
 col = len(bd_array[0])
 row = len(bd_array)
 
@@ -25,7 +30,7 @@ def resize(event):
         else:
             main_lab.place(width=win_w_now - 27)
         if clicks_last_ch == 1:
-            btn_last_ch.config(text="   Последние изменения ↓")
+            btn_last_ch.config(text="Последние изменения ↓")
             last_ch.place(y=win_h_now - win_h_now * 0.4-26)
             main_lab.place(height=0.6*win_h_now-28)
             if clicks_filtr == 1:
@@ -37,7 +42,7 @@ def resize(event):
             else:
                 table_lab.place(x=win_w_now)
         else:
-            btn_last_ch.config(text="   Последние изменения ↑")
+            btn_last_ch.config(text="Последние изменения ↑")
             last_ch.place(y=win_h_now)
             main_lab.place(height=win_h_now - 28)
             if clicks_filtr == 1:
@@ -107,7 +112,7 @@ def click_last_ch(event):
     global clicks_last_ch
     clicks_last_ch += 1
     if clicks_last_ch == 1:
-        btn_last_ch.config(text="   Последние изменения ↓")
+        btn_last_ch.config(text="Последние изменения ↓")
         last_ch.place(y=win_h_now-win_h_now*0.4-26)
         main_lab.place(height=0.6*win_h_now-28)
         if clicks_filtr == 1:
@@ -119,7 +124,7 @@ def click_last_ch(event):
         else:
             table_lab.place(x=win_w_now)
     else:
-        btn_last_ch.config(text="   Последние изменения ↑")
+        btn_last_ch.config(text="Последние изменения ↑")
         last_ch.place(y=win_h_now)
         main_lab.place(height=win_h_now-28)
         if clicks_filtr == 1:
@@ -146,9 +151,6 @@ root.geometry("{winw}x{winh}+{centerw}+{centerh}".format(
 root.resizable(True, True)
 root.minsize(win_w_start, win_h_start-20)
 
-
-
-
 main_lab = Label(root, bg="#fff", bd=3)
 main_lab.place(width=win_w_now-27, height=win_h_now-48)
 
@@ -158,18 +160,20 @@ for r in range(row):
     for c in range(col):
         btn = Label(main_lab2, bg="#000")
         btn.grid(row=r, column=c, ipadx=10, ipady=6, padx=10, pady=10)
-        btn2 = Label(btn, width=10, bg="#fff", bd=2, fg="#000", text="{}".format(bd_array[r][c]))
+        btn2 = Label(btn, width=10, bg="#fff", bd=2, fg="#000",
+                     text="{}".format(bd_array[r][c]))
         btn2.pack(expand=True, fill=BOTH)
 
 
 last_ch = Label(root, bg='#fff', bd=0)
 last_ch.place(x=0, y=win_h_now-200, relwidth=1.0, relheight=0.4)
 
-btn_last_ch = Button(root, text="   Последние изменения ↑", bg="red", anchor="w")
+btn_last_ch = Button(root, text="Последние изменения ↑", bg="red", anchor="w")
 btn_last_ch.bind("<Button-1>", click_last_ch)
 btn_last_ch.pack(side=BOTTOM, fill=X)
 
-label_last_ch = Label(last_ch, justify=LEFT, text="тут последние изменения", bg="blue", fg="white")
+label_last_ch = Label(last_ch, justify=LEFT, text="тут последние изменения",
+                      bg="blue", fg="white")
 label_last_ch.place(x=0, y=0, relwidth=1.0, relheight=1.0)
 
 
@@ -221,7 +225,8 @@ table_lab.place(x=win_w_now, y=0, width=100, height=win_h_now-27)
 
 table_btn = Canvas(right_menu, height=55, width=20, bd=1, bg="blue")
 table_btn.bind("<Button-1>", click_table)
-table_btn.create_text((20, 55), angle="-90", anchor="ne", text="таблицы", font=font, fill="SystemButtonText")
+table_btn.create_text((20, 55), angle="-90", anchor="ne", text="таблицы",
+                      font=font, fill="SystemButtonText")
 table_btn.place(x=0, y=54)
 
 

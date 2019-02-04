@@ -2,14 +2,13 @@
 Модуль предоставляет возможность для работы с диаграммой типа
 "Категоризированная гистограмма".
 """
-
-import matplotlib.pyplot as plt
 import random
+import matplotlib.pyplot as plt
 
-from Work.Scripts.view.reports.chart_interfaces import IChart
+import chart_interfaces
 
 
-class Histogram(IChart):
+class Histogram(chart_interfaces.IChart):
     """Предоставляет удобный интерфейс для создания окна и диаграммы
     типа "Категоризированная гистограмма" внутри него.
 
@@ -25,9 +24,6 @@ class Histogram(IChart):
     _prices = []
     _color = (random.random(), random.random(), random.random())
     _exception_text = "Lengths of price's list and label's list are different"
-
-    def __init__(self, title=""):
-        super().__init__(title)
 
     def set_color(self, color):
         """ Устанавливает цвет столбцов. Цвет по умолчанию: случайный.

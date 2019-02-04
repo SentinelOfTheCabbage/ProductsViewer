@@ -12,7 +12,7 @@ class IChart(ABC):
     _x_title = ""
     _y_title = ""
 
-    def __init__(self, title):
+    def __init__(self, title=""):
         self._title = title
 
     def set_title(self, title):

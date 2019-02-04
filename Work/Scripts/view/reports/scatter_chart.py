@@ -4,10 +4,10 @@
 """
 
 import matplotlib.pyplot as plt
-from Work.Scripts.view.reports.chart_interfaces import IChart
+import chart_interfaces
 
 
-class ScatterChart(IChart):
+class ScatterChart(chart_interfaces.IChart):
     """Предоставляет удобный интерфейс для создания окна и диаграммы
         типа "Категоризированная диаграмма рассеивания" внутри него.
 
@@ -24,9 +24,6 @@ class ScatterChart(IChart):
     _marker = "o"
     _exception_text = "Amount of x-coordinates and " \
                       "y-coordinates should be equals"
-
-    def __init__(self, title=""):
-        super().__init__(title)
 
     def set_coord(self, x_coord: list, y_coord: list):
         """ Устанавливает координаты точек. Сначала задаётся
@@ -52,9 +49,9 @@ class ScatterChart(IChart):
         self._x_coord.clear()
         self._y_coord.clear()
         try:
-            for (x, y) in points:
-                self._x_coord.append(x)
-                self._y_coord.append(y)
+            for (x_coord, y_coord) in points:
+                self._x_coord.append(x_coord)
+                self._y_coord.append(y_coord)
         except ValueError:
             raise Exception(self._exception_text)
         return self

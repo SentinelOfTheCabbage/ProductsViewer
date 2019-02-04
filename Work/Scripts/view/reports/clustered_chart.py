@@ -5,10 +5,10 @@
 
 import random
 import matplotlib.pyplot as plt
-from Work.Scripts.view.reports.chart_interfaces import IChart
+import chart_interfaces
 
 
-class ClusteredChart(IChart):
+class ClusteredChart(chart_interfaces.IChart):
     """Предоставляет удобный интерфейс для создания окна и диаграммы
     типа "Кластеризованная столбчатая диаграмма" внутри него.
 
@@ -35,9 +35,6 @@ class ClusteredChart(IChart):
                                      "colors list are different "
     _except_diff_legend_and_vals = "Amount of quality labels and " \
                                    "quality values is different"
-
-    def __init__(self, title=""):
-        super().__init__(title)
 
     @staticmethod
     def random_color():
@@ -104,8 +101,8 @@ class ClusteredChart(IChart):
             self._colors = [self.random_color()
                             for _ in range(len(self._quality_labels))]
         self.set_title(self._title)
-        ax = plt.gca()
-        ax.yaxis.grid(True, zorder=1)
+        axis = plt.gca()
+        axis.yaxis.grid(True, zorder=1)
 
         plt.xticks(range(len(self._groups)), self._groups)
         fig.autofmt_xdate(rotation=-90)

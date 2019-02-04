@@ -4,10 +4,10 @@
 """
 import matplotlib.pyplot as plt
 
-from Work.Scripts.view.reports.chart_interfaces import IChart
+import chart_interfaces
 
 
-class Diagram(IChart):
+class Diagram(chart_interfaces.IChart):
     """Предоставляет удобный интерфейс для создания окна и диаграммы
     типа "Box and Whiskers" внутри него.
 
@@ -27,9 +27,6 @@ class Diagram(IChart):
     _box_labels = []
     _except_x_axis_and_vals = "Lengths of X-axis labels and " \
                               "values list are different"
-
-    def __init__(self, title=""):
-        super().__init__(title)
 
     def set_prices(self, prices: list):
         """Устанавливает список цен для диаграммы.
@@ -82,7 +79,6 @@ class Diagram(IChart):
         dpi = 80
         fig = plt.figure(dpi=dpi, figsize=(512 / dpi, 384 / dpi))
 
-
         plt.boxplot(self._prices,
                     patch_artist=True,
                     medianprops={'color': self._median_color},
@@ -92,16 +88,16 @@ class Diagram(IChart):
                     capprops={'color': self._whisker_color})
 
         fig.autofmt_xdate(rotation=-90)
-        xs = [x + 1 for x in range(len(self._box_labels))]
-        plt.xticks(xs, self._box_labels)
+        axis_nums = [x + 1 for x in range(len(self._box_labels))]
+        plt.xticks(axis_nums, self._box_labels)
         plt.ylabel(self._y_title)
         plt.xlabel(self._x_title)
         plt.show()
 
 
-Diagram().set_prices([[10, 20, 30, 40, 50], [1, 45, 23, 12, 34]])\
-    .set_box_labels(["Ящик 1", "Ящик 2"])\
-    .set_title("Заголовок")\
-    .set_x_title("Название оси X")\
-    .set_y_title("Название оси Y")\
+Diagram().set_prices([[10, 20, 30, 40, 50], [1, 45, 23, 12, 34]]) \
+    .set_box_labels(["Ящик 1", "Ящик 2"]) \
+    .set_title("Заголовок") \
+    .set_x_title("Название оси X") \
+    .set_y_title("Название оси Y") \
     .show()

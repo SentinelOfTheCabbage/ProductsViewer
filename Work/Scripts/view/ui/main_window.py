@@ -31,13 +31,19 @@ class App:
         footbar = MainMenu(master)
         footbar.build_menu("#000", 0)
         main_frame = Frame(master, bg='red')
-        table_frame = Frame(master, bg='green')
-        filtr_frame = Frame(master, bg='yellow', bd=0, width=0)
+        self.filtr_frame = FiltrFrame(master, bg='yellow')
+        self.filtr_frame.content()
+        self.table_frame = TableFrame(master, bg='green')
+        self.table_frame.content()
         self.last_ch_frame = InfoFrame(master, bg='blue')
-        self.last_ch_frame.append_str("#000", "New string")
+        #self.last_ch_frame.append_str("#000", "New string")
 
         bottom_btn = Button(master, text="text")
         bottom_btn.bind("<Button-1>", self.click_extend_menu)
+
+        bottom_btn2 = Button(self.last_ch_frame, text="text")
+        bottom_btn2.bind("<Button-1>", self.click_extend_menu)
+        bottom_btn2.pack(side="bottom")
 
         right_menu = Frame(master)
 
@@ -54,8 +60,8 @@ class App:
         table_btn.place(x=0, y=54)
 
         main_frame.grid(row=0, column=0, sticky="nwes")
-        filtr_frame.grid(row=0, column=1, sticky="nwes")
-        table_frame.grid(row=0, column=2, sticky="nwes")
+        self.filtr_frame.grid(row=0, column=1, sticky="nwes")
+        self.table_frame.grid(row=0, column=2, sticky="nwes")
         self.last_ch_frame.grid(row=1, column=0, columnspan=4, sticky="nwes")
         right_menu.grid(row=0, column=3, sticky="nwes")
         bottom_btn.grid(row=2, column=0, columnspan=4, sticky="nwes")
@@ -92,23 +98,59 @@ class App:
             self.master.grid_columnconfigure(2, minsize=170)
         self.table_bool = not self.table_bool
 
+
+class FiltrFrame(Frame):
+    _list_filtr = ["Данон", "Coca-Cola", "Черниголовка", "Останкино"]
+
+    def __init__(self, master, **kw):
+        super().__init__(master, {}, **kw)
+
+    def click_check(self, *args):
+        print("click_check")
+
+    def content(self):
+        for i in range(len(self._list_filtr)):
+            check = Checkbutton(self, bg="#f0f0f0", bd=0,
+                                  text="{}".format(self._list_filtr[i]))
+            check.bind("<Button-1>", self.click_check)
+            check.grid(row=i + 1, column=0, sticky=W)
+
+
+class TableFrame(Frame):
+    _list_table = ["продукты", "чеки", "группы", "Таблица_4", "Таблица_5",
+                   "Таблица_6", "Таблица_7", "Таблица_8"]
+
+    def __init__(self, master, **kw):
+        super().__init__(master, {}, **kw)
+
+    def click(self, *args):
+        print("click_table")
+
+    def content(self):
+        for j in range(len(self._list_table)):
+            tables_name = Button(self, bg="#f0f0f0", bd=0,
+                                   text="{}".format(self._list_table[j]))
+            tables_name.bind("<Button-1>", self.click)
+            tables_name.grid(row=j, column=0, sticky=W, padx=7, pady=3)
+
+
 class InfoFrame(Frame):
-    _list_str = [("#f00", "Программа запущена")]
+    _list_last_ch = [("#f00", "Программа запущена")]
 
     def __init__(self, master, **kw):
         super().__init__(master, {}, **kw)
 
     def append_str(self, color="#000", text="Default text"):
-        self._list_str.append((color, text))
+        self._list_last_ch.append((color, text))
         self.update()
 
     def update(self):
-        for r in range(len(self._list_str)):
+        for r in range(len(self._list_last_ch)):
             btnn = Frame(self, bg="#fff", bd=1)
             btnn.pack(side="top", expand=True, fill=X)
             btnn2 = Label(btnn, anchor='w', bg="#fff", padx=10, bd=2,
-                          fg="{}".format(self._list_str[r][0]),
-                          text="{}".format(self._list_str[r][1]))
+                          fg="{}".format(self._list_last_ch[r][0]),
+                          text="{}".format(self._list_last_ch[r][1]))
             btnn2.pack(side="top", expand=True, fill=X)
 
 
@@ -120,22 +162,21 @@ class MainMenu(Menu):
         main_menu = Menu()
 
         file = Menu(tearoff=0, bg="#fff")
-        file.add_command(label="Найти")
-        file.add_command(label="Выбрать")
-        file.add_command(label="Выбрать всё")
-        file.add_command(label="Назад")
-        file.add_command(label="Вперёд")
-        file.add_command(label="Помощь")
-        file.add_command(label="Об авторах")
+        file.add_command(label="Открыть")
+        file.add_command(label="Создать копию")
+        file.add_command(label="Переименовать")
+        file.add_command(label="Сохранить")
+        file.add_command(label="Сохранить как...")
         file.add_separator()
-        file.add_command(label="Выход")
+        file.add_command(label="Выйти")
 
         change = Menu(tearoff=0, bg="#fff")
-        change.add_command(label="Новая БД")
-        change.add_command(label="Редактировать БД")
-        change.add_command(label="Открыть БД")
-        change.add_command(label="Сохранить")
-        change.add_command(label="Сохранить как...")
+        change.add_command(label="Назад")
+        change.add_command(label="Вперёд")
+        change.add_command(label="Вырезать")
+        change.add_command(label="Копировать")
+        change.add_command(label="Вставить")
+        change.add_command(label="Найти и заменить")
 
         otchet_menu = Menu(tearoff=0, bg="#fff")
         otchet_menu.add_command(label="Простой отчёт")
@@ -143,15 +184,15 @@ class MainMenu(Menu):
         otchet_menu.add_command(label="Сводная таблица")
         otchet_menu.add_command(label="Столбчатая диаграмма")
         otchet_menu.add_command(label="Гистограмма")
-        otchet_menu.add_command(label="Диаграмма Босо-Вискеря")
+        otchet_menu.add_command(label="Диаграмма 'Ящика с усами'")
         otchet_menu.add_command(label="Диаграмма рассеивания")
 
-        main_menu.add_cascade(label="Меню", menu=file)
-        main_menu.add_cascade(label="Изменение БД", menu=change)
+        main_menu.add_cascade(label="Файл", menu=file)
+        main_menu.add_cascade(label="Изменить", menu=change)
         main_menu.add_cascade(label="Отчёты", menu=otchet_menu)
 
-        self.master.config(menu=main_menu, bg="{}".format(color), bd="{}".format(bd))
-
+        self.master.config(menu=main_menu, bg="{}".format(color),
+                           bd="{}".format(bd))
 
 
 a = App(Tk(), "База данных продуктов")

@@ -93,7 +93,7 @@ class DataBase:
     def get_prices_by_group(self, product_group: str, products: list):
         Result={}*0
         for i in range(len(DB.index)):
-            if (DB.iloc[i]['group_name'] in product_group) and (DB.iloc[i]['name'] in products):
+            if (DB.iloc[i]['group_name'] == product_group) and (DB.iloc[i]['name'] in products):
                 Result.update({DB.iloc[i]['name']:int(DB.iloc[i]['price'])})
         return Result
 

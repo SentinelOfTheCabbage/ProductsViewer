@@ -130,10 +130,14 @@ class ClusteredChart(chart_interfaces.IChart):
 
 
 ClusteredChart()\
-    .set_groups(["Groups 1", "Groups 2", "Groups 3", "Groups 4"]) \
+    .set_groups(["Groups 1", "Groups 2", "Groups 3", "Groups 4",
+                 "Groups 1", "Groups 2", "Groups 3", "Groups 4",
+                 "Groups 1", "Groups 2", "Groups 3", "Groups 4"]) \
     .set_quality_labels(["ГОСТ", "СТО", "ТУ"]) \
     .set_colors(["red", "blue", "green"]) \
-    .set_prices([[12, 34, 45], [34, 12, 43], [34, 12, 43], [34, 12, 43]])\
+    .set_prices([[12, 34, 45], [34, 12, 43], [34, 12, 43], [34, 12, 43],
+                 [12, 34, 45], [34, 12, 43], [34, 12, 43], [34, 12, 43],
+                 [12, 34, 45], [34, 12, 43], [34, 12, 43], [34, 12, 43]])\
     .set_x_title("Название оси X")\
     .set_y_title("Название оси Y")\
     .show()

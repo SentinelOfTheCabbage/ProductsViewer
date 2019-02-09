@@ -66,9 +66,9 @@ class DataBase:
             return Table
 
         Table = arithmetic_mean_series(groups, quality)  # Получение DataFrame
-        R = dict.fromkeys(groups)  # Создание будущего dict of list
+        Result = dict.fromkeys(groups)  # Создание будущего dict of list
         for i in range(len(groups)):
-            R[groups[i]] = [0] * len(quality)
+            Result[groups[i]] = [0] * len(quality)
 
         # Вспомогательная функция для быстрого определения позиций в листах
         def table_pos(groups, needle):
@@ -86,6 +86,6 @@ class DataBase:
                           1][Table.index.codes[1][i]])
 
             #  записать в нужную ячейку инфомрацию
-            R[groups[G]][Q] = Table[i]
+            Result[groups[G]][Q] = Table[i]
 
-        return R, quality
+        return Result, quality

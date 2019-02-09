@@ -6,7 +6,6 @@
 #   [[группа1-качество1, группа1-качество2], [группа2-качество1, группа2-качество2]]
 import pandas
 
-
 import os
 os.chdir('C:/Users/ирбисик/Documents/PYTHON/ProductsViewer/Work/Scripts/model/interactor/')
 
@@ -16,10 +15,8 @@ class DataBase:
 
     def connect(self):
         file_name = 'database.txt'
-
         with open(file_name) as file:
             DB_List = [row.strip() for row in file]
-
         self.DB_Products = pandas.read_csv(DB_List[0], sep=';')
         self.DB_Producer = pandas.read_csv(DB_List[2], sep=';')
         self.DB_Vouchers = pandas.read_csv(DB_List[5], sep=';')
@@ -27,27 +24,27 @@ class DataBase:
         self.DB_Groups = pandas.read_csv(DB_List[3], sep=';')
         self.DB_Discount = pandas.read_csv(DB_List[4], sep=';')
 
-    def close():
-        '''
-        close()
-        Try to close document
-        '''
-        pass
+    def AMD(self, groups: list, quality: list):
 
-    def arithmetic_mean_list(self, groups: list, quality: list):
-        '''
-        output (groups:list,quality: list)
+        def arithmetic_mean_series(self, groups: list, quality: list):
+        """Author: Suleymanov Nail' BIV181
+
+        input (groups:list,quality: list)
         return arithmetic mean list
+
         list={
-            {   group1_quality1,
-                group1_quality2
-            },
-            {   group2_quality1,
-                qroup2_quality2
+            {   groups[0]_quality[0]_value,
+                groups[0]_quality[1]_value,
+                ...
             },
             ...
+            {   groups[n-1]_quality[0]_value,
+                groups[n-1]_quality[1]_value
+                ...
+            },
         }
-        '''
+
+        """
 
         Prod_List = self.DB_Products
         Table = Prod_List.groupby(['group_name', 'quality'])['price'].mean()
@@ -75,31 +72,30 @@ class DataBase:
                     L.remove(L[i])
                     changes = True
                     break
-            # необходимо удалить лишние параметры качества!
         return Table
 
-        '''
-        __dict = dict.fromkeys(groups)
-        __arithm_mean = dict.fromkeys(groups)
-
+        Table = self.arithmetic_mean_series(
+            groups, quality)  # Получение DataFrame
+        R = dict.fromkeys(groups)  # Создание будущего dict of list
         for i in range(len(groups)):
-            __dict[groups[i]] = dict.fromkeys(quality, [])
-            __arithm_mean[groups[i]] = dict.fromkeys(quality, 0)
+            R[groups[i]] = [0] * len(quality)
 
-            for j in range(len(quality)):
-                result = []
-                summ = 0
-                div = 0
-                for k in range(len(Prod_List)):
+        # Вспомогательная функция для быстрого определения позиций в листах
+        def table_pos(groups, needle):
+            for i in range(len(groups)):
+                if groups[i] == needle:
+                    return i
 
-                    if (Prod_List.iloc[k].group_name == groups[i]) and (Prod_List.iloc[k].quality == quality[j]):
-                        summ += Prod_List.iloc[k].price
-                        div += 1
-                if div != 0:
-                    __arithm_mean[groups[i]][quality[j]]=summ / div
-                else:
-                    __arithm_mean[groups[i]][quality[j]]=0
+        for i in range(len(Table.index.codes[0])):
+            #  взять key продукта и соотнести с позицией в groups
+            G = table_pos(groups, Table.index.levels[
+                          0][Table.index.codes[0][i]])
 
-        return __arithm_mean
-        '''
-# B.groupby('group_name').describe()
+            #  взять key качества и соотнести с позицией в quality
+            Q = table_pos(quality, Table.index.levels[
+                          1][Table.index.codes[1][i]])
+
+            #  записать в нужную ячейку инфомрацию
+            R[groups[G]][Q] = Table[i]
+
+        return R, quality

@@ -24,7 +24,7 @@ class DataBase:
         self.DB_Groups = pandas.read_csv(DB_List[3], sep=';')
         self.DB_Discount = pandas.read_csv(DB_List[4], sep=';')
 
-    def AMD(self, groups: list, quality: list):
+    def get_prices_by_group_and_quality(self, groups: list, quality: list):
         """Author: Suleymanov Nail
         output: Result,qualities
         Result={
@@ -89,3 +89,11 @@ class DataBase:
             Result[groups[G]][Q] = Table[i]
 
         return Result, quality
+
+    def get_prices_by_group(self, product_group: str, products: list):
+        Result={}*0
+        for i in range(len(DB.index)):
+            if (DB.iloc[i]['group_name'] in product_group) and (DB.iloc[i]['name'] in products):
+                Result.update({DB.iloc[i]['name']:int(DB.iloc[i]['price'])})
+        return Result
+

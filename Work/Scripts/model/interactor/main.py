@@ -25,57 +25,47 @@ class DataBase:
         self.DB_Discount = pandas.read_csv(DB_List[4], sep=';')
 
     def AMD(self, groups: list, quality: list):
-
-        def arithmetic_mean_series(self, groups: list, quality: list):
-        """Author: Suleymanov Nail' BIV181
-
-        input (groups:list,quality: list)
-        return arithmetic mean list
-
-        list={
-            {   groups[0]_quality[0]_value,
-                groups[0]_quality[1]_value,
-                ...
-            },
+        """Author: Suleymanov Nail
+        output: Result,qualities
+        Result={
+            'group1': [q1_value,q2_value,q3_value...],
             ...
-            {   groups[n-1]_quality[0]_value,
-                groups[n-1]_quality[1]_value
-                ...
-            },
         }
+        qualities=['q1','q2',...]
 
         """
 
-        Prod_List = self.DB_Products
-        Table = Prod_List.groupby(['group_name', 'quality'])['price'].mean()
-        Group_List = self.DB_Groups
-        changes = True
-        L = list(Table.index.levels[0])
-        while changes == True:
-            changes = False
+        def arithmetic_mean_series(groups: list, quality: list):
+            Prod_List = self.DB_Products
+            Table = Prod_List.groupby(['group_name', 'quality'])[
+                'price'].mean()
+            Group_List = self.DB_Groups
+            changes = True
+            L = list(Table.index.levels[0])
+            while changes == True:
+                changes = False
 
-            for i in range(len(L)):
-                if L[i] not in groups:
-                    Table = Table.drop(labels=L[i], level=0)
-                    L.remove(L[i])
-                    changes = True
-                    break
+                for i in range(len(L)):
+                    if L[i] not in groups:
+                        Table = Table.drop(labels=L[i], level=0)
+                        L.remove(L[i])
+                        changes = True
+                        break
 
-        L = list(Table.index.levels[1])
-        changes = True
-        while changes == True:
-            changes = False
+            L = list(Table.index.levels[1])
+            changes = True
+            while changes == True:
+                changes = False
 
-            for i in range(len(L)):
-                if L[i] not in quality:
-                    Table = Table.drop(labels=L[i], level=1)
-                    L.remove(L[i])
-                    changes = True
-                    break
-        return Table
+                for i in range(len(L)):
+                    if L[i] not in quality:
+                        Table = Table.drop(labels=L[i], level=1)
+                        L.remove(L[i])
+                        changes = True
+                        break
+            return Table
 
-        Table = self.arithmetic_mean_series(
-            groups, quality)  # Получение DataFrame
+        Table = arithmetic_mean_series(groups, quality)  # Получение DataFrame
         R = dict.fromkeys(groups)  # Создание будущего dict of list
         for i in range(len(groups)):
             R[groups[i]] = [0] * len(quality)

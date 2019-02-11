@@ -99,4 +99,4 @@ class RightFrame(VerticalScrolledFrame):
             var.set(False)
 
 
-SettingsHistogram(Tk())
+# SettingsHistogram(Tk())

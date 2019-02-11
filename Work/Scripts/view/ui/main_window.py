@@ -7,6 +7,15 @@ from config import WIN_W_START, WIN_H_START, COLOR_BG_TITLE_TABLE, \
     COLOR_FG_FRAME_TABLE, COLOR_FG_FRAME_FILTR, COLOR_BG_MENU, COLOR_FG_MENU, \
     HEIGHT_INFO_FRAME, WIDTH_FILR_FRAME
 
+from Work.Scripts.view.ui.reports_settings.settings_bar_chart import \
+    SettingsBarChart
+from Work.Scripts.view.ui.reports_settings.settings_box_and_whisker import \
+    SettingsBoxAndWhisker
+from Work.Scripts.view.ui.reports_settings.settings_histogram import \
+    SettingsHistogram
+from Work.Scripts.view.ui.reports_settings.settings_scatter_chart import \
+    SettingsScatterChart
+
 
 class App:
     """asd """
@@ -562,22 +571,18 @@ class MainMenu(Menu):
 
     @staticmethod
     def create_scatter_chart():
-        # SettingsScatterChart(Tk())
-        pass
+        SettingsScatterChart(Tk())
 
     @staticmethod
     def create_bar_chart():
-        # SettingsBarChart(Tk())
-        pass
+        SettingsBarChart(Tk())
 
     @staticmethod
     def create_box_and_whisker():
-        # SettingsBoxAndWhisker(Tk())
-        pass
+        SettingsBoxAndWhisker(Tk())
 
     @staticmethod
     def create_histogram():
-        # SettingsHistogram(Tk())
-        pass
+        SettingsHistogram(Tk())
 
 App(Tk(), "База данных продуктов")

@@ -124,9 +124,9 @@ class SettingsWindow(ISettingsWindowListener, ABC):
 class ILeftFrame(Frame, ABC):
     chosen_group_dict = {}
 
-    def __init__(self, items: list, choice_type: ChoiceType = None, **kw):
+    def __init__(self, master, items: list, choice_type: ChoiceType = None, **kw):
         items = list(set(items))
-        super().__init__(**kw)
+        super().__init__(master, **kw)
         for i in range(len(items)):
 
             item_factory = ChoiceItemFactory(self) \
@@ -156,9 +156,9 @@ class ILeftFrame(Frame, ABC):
 class IRightFrame(Frame, ABC):
     chosen_group_dict = {}
 
-    def __init__(self, items: list, **kw):
+    def __init__(self, master, items: list, **kw):
         items = list(set(items))
-        super().__init__(**kw)
+        super().__init__(master, **kw)
         buttons = []
         for i in range(len(items)):
             item_factory = ChoiceItemFactory(self) \

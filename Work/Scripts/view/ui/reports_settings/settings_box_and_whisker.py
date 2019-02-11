@@ -101,4 +101,4 @@ class RightFrame(VerticalScrolledFrame):
             var.set(False)
 
 
-SettingsBoxAndWhisker(Tk())
+# SettingsBoxAndWhisker(Tk())

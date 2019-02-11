@@ -101,4 +101,4 @@ class RightFrame(VerticalScrolledFrame):
             var.set(False)
 
 
-SettingsScatterChart(Tk())
+# SettingsScatterChart(Tk())

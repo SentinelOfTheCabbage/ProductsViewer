@@ -24,8 +24,8 @@ class SettingsBarChart(SettingsWindow):
         pass
 
     def __init__(self, main):
-        self.frame_1 = LeftFrame(["Ягоды", "Картошка", "Зёрна"])
-        self.frame_2 = RightFrame(["ГОСТ", "СТО", "ТУ"])
+        self.frame_1 = LeftFrame(main, ["Ягоды", "Картошка", "Зёрна"])
+        self.frame_2 = RightFrame(main, ["ГОСТ", "СТО", "ТУ"])
         super().__init__(main, self.frame_1, self.frame_2)
 
         self.title_left_label['text'] = "1"
@@ -62,9 +62,9 @@ class SettingsBarChart(SettingsWindow):
 class LeftFrame(ILeftFrame):
     chosen_group_dict = {}
 
-    def __init__(self, prod_groups: list, **kw):
+    def __init__(self, master, prod_groups: list, **kw):
         prod_groups = list(set(prod_groups))
-        super().__init__(prod_groups, ChoiceType.CHECK_BOX, **kw)
+        super().__init__(master, prod_groups, ChoiceType.CHECK_BOX, **kw)
 
     def get_chosen_groups(self):
         return self.chosen_group_dict
@@ -81,8 +81,8 @@ class LeftFrame(ILeftFrame):
 
 class RightFrame(IRightFrame):
 
-    def __init__(self, quality_subgroups: list, **kw):
-        super().__init__(quality_subgroups, **kw)
+    def __init__(self, master, quality_subgroups: list, **kw):
+        super().__init__(master, quality_subgroups, **kw)
         # self.grid_columnconfigure(0, weight=1)
         # for i in range(len(quality_subgroups)):
         #     self.grid_rowconfigure(i, weight=1)
@@ -104,4 +104,4 @@ class RightFrame(IRightFrame):
             var.set(False)
 
 
-SettingsBarChart(Tk())
+# SettingsBarChart(Tk())

@@ -1,4 +1,4 @@
-from tkinter import Frame, Tk, Label, Checkbutton, IntVar, BooleanVar, \
+from tkinter import Frame, Tk, Checkbutton, BooleanVar, \
     Radiobutton, StringVar
 
 from Work.Scripts.view.ui.custom_widgets import VerticalScrolledFrame
@@ -6,7 +6,7 @@ from Work.Scripts.view.ui.reports_settings.report_settings_window import \
     SettingsWindow
 
 
-class SettingsBar(SettingsWindow):
+class SettingsScatterChart(SettingsWindow):
 
     def __init__(self, main):
         self.frame_1 = LeftFrame(["Ягоды", "Картошка", "Зёрна",
@@ -16,8 +16,7 @@ class SettingsBar(SettingsWindow):
         self.frame_2 = RightFrame(["Молоко", "Курица", "Индейка", "Сосиски",
                                    "Петрушка",
                                    "Мука", "Макороны", "Хлеб"])
-        super().__init__(main, self.frame_1, self.frame_2,
-                         title_main="Заголовок")
+        super().__init__(main, self.frame_1, self.frame_2)
 
         self.set_left_title("Категория продуктов")
         self.set_right_title("День отчёта")
@@ -102,4 +101,4 @@ class RightFrame(VerticalScrolledFrame):
             var.set(False)
 
 
-SettingsBar(Tk())
+SettingsScatterChart(Tk())

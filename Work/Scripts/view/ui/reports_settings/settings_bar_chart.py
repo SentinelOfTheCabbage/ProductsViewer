@@ -1,19 +1,35 @@
-from tkinter import Frame, Tk, Label, Checkbutton, IntVar, BooleanVar
+from tkinter import Tk
 
+from Work.Scripts.view.ui.reports_settings.item_factory import ChoiceType
 from Work.Scripts.view.ui.reports_settings.report_settings_window import \
-    SettingsWindow
+    SettingsWindow, ILeftFrame, IRightFrame
 
 
-class SettingsBar(SettingsWindow):
+#
+# ["Ягоды", "Картошка", "Зёрна",
+#                                   "Мясо", "Для беременных", "Деликатесы",
+#                                   "Птица", "Рыба", "Хлеб",
+#                                   "Молочное", "Овощи", "Фрукты и ягоды",
+#                                   "Бакалея", "Сладости"]
+
+class SettingsBarChart(SettingsWindow):
+
+    def get_chosen_groups(self):
+        pass
+
+    def default(self):
+        pass
+
+    def clear(self):
+        pass
 
     def __init__(self, main):
-        self.frame_1 = LeftFrame(["Ягоды", "Картошка", "Зёрна",
-                                  "Мясо", "Для беременных", "Деликатесы",
-                                  "Птица", "Рыба", "Хлеб",
-                                  "Молочное", "Овощи", "Фрукты и ягоды"])
+        self.frame_1 = LeftFrame(["Ягоды", "Картошка", "Зёрна"])
         self.frame_2 = RightFrame(["ГОСТ", "СТО", "ТУ"])
-        super().__init__(main, self.frame_1, self.frame_2,
-                         title_main="Заголовок")
+        super().__init__(main, self.frame_1, self.frame_2)
+
+        self.title_left_label['text'] = "1"
+        self.title_right_label['text'] = "2"
 
         # Запуск обработчика событий
         self.main.mainloop()
@@ -43,23 +59,12 @@ class SettingsBar(SettingsWindow):
         self.frame_2.default()
 
 
-class LeftFrame(Frame):
+class LeftFrame(ILeftFrame):
     chosen_group_dict = {}
 
     def __init__(self, prod_groups: list, **kw):
         prod_groups = list(set(prod_groups))
-        super().__init__(**kw)
-        for i in range(len(prod_groups)):
-            self.grid_rowconfigure(i // 2, weight=1)
-            self.grid_columnconfigure(i % 2, weight=1)
-            var = self.chosen_group_dict[prod_groups[i]] = BooleanVar()
-            if i % 2 == 0:
-                var.set(True)
-            check_btn = Checkbutton(self, text=prod_groups[i],
-                                    variable=var,
-                                    font=("Times New Roman", 14))
-
-            check_btn.grid(row=i // 2, column=i % 2, sticky="w")
+        super().__init__(prod_groups, ChoiceType.CHECK_BOX, **kw)
 
     def get_chosen_groups(self):
         return self.chosen_group_dict
@@ -74,19 +79,18 @@ class LeftFrame(Frame):
             var.set(False)
 
 
-class RightFrame(Frame):
-    chosen_quality_dict = {}
+class RightFrame(IRightFrame):
 
     def __init__(self, quality_subgroups: list, **kw):
-        super().__init__(**kw)
-        self.grid_columnconfigure(0, weight=1)
-        for i in range(len(quality_subgroups)):
-            self.grid_rowconfigure(i, weight=1)
-            var = self.chosen_quality_dict[quality_subgroups[i]] = BooleanVar()
-            check_btn = Checkbutton(self, text=quality_subgroups[i],
-                                    variable=var)
-            var.set(True)
-            check_btn.grid(row=i, column=0, sticky="w")
+        super().__init__(quality_subgroups, **kw)
+        # self.grid_columnconfigure(0, weight=1)
+        # for i in range(len(quality_subgroups)):
+        #     self.grid_rowconfigure(i, weight=1)
+        #     var = self.chosen_quality_dict[quality_subgroups[i]] = BooleanVar()
+        #     check_btn = Checkbutton(self, text=quality_subgroups[i],
+        #                             variable=var)
+        #     var.set(True)
+        #     check_btn.grid(row=i, column=0, sticky="w")
 
     def get_chosen_subgroups(self):
         return self.chosen_quality_dict
@@ -100,4 +104,4 @@ class RightFrame(Frame):
             var.set(False)
 
 
-SettingsBar(Tk())
+SettingsBarChart(Tk())

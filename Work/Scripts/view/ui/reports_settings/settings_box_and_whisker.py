@@ -6,7 +6,7 @@ from Work.Scripts.view.ui.reports_settings.report_settings_window import \
     SettingsWindow
 
 
-class SettingsBar(SettingsWindow):
+class SettingsBoxAndWhisker(SettingsWindow):
 
     def __init__(self, main):
         self.frame_1 = LeftFrame(["Ягоды", "Картошка", "Зёрна",
@@ -16,8 +16,7 @@ class SettingsBar(SettingsWindow):
         self.frame_2 = RightFrame(["Молоко", "Курица", "Индейка", "Сосиски",
                                    "Петрушка",
                                    "Мука", "Макороны", "Хлеб"])
-        super().__init__(main, self.frame_1, self.frame_2,
-                         title_main="Заголовок")
+        super().__init__(main, self.frame_1, self.frame_2)
 
         self.set_left_title("Категория продуктов")
         self.set_right_title("Продукты")
@@ -102,4 +101,4 @@ class RightFrame(VerticalScrolledFrame):
             var.set(False)
 
 
-SettingsBar(Tk())
+SettingsBoxAndWhisker(Tk())

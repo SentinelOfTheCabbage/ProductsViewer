@@ -2,10 +2,6 @@
 from abc import ABC, abstractmethod
 from tkinter import *
 
-from Work.Scripts.view.ui.listeners import ISettingsWindowListener
-from Work.Scripts.view.ui.reports_settings.item_factory import \
-    ChoiceItemFactory, ChoiceType
-
 TITLE_MAIN_TEXT = "Выберите параметры"
 
 BTN_REPORT_TEXT = "Отчёт"
@@ -21,7 +17,7 @@ TITLE_MAIN_KEY_PARAM = "title_main"
 BTN_CLICK_EVENT = "<ButtonRelease-1>"
 
 
-class SettingsWindow(ISettingsWindowListener, ABC):
+class SettingsWindow(ABC):
     """Главный класс для конфигурации UI.
 
     Соединяет во едино все фреймы интерфейса. Прописывает основные настройки
@@ -76,7 +72,7 @@ class SettingsWindow(ISettingsWindowListener, ABC):
 
         btn1 = Button(btn_frame, text=BTN_REPORT_TEXT,
                       font=(FONT_STYLE, FONT_SIZE_BTN))
-        btn1.bind(BTN_CLICK_EVENT, self.click_report)
+        btn1.bind(BTN_CLICK_EVENT, self.click_reports)
         btn1.pack(side=RIGHT, padx=10, pady=10)
 
         btn2 = Button(btn_frame, text=BTN_DEFAULT_TEXT,
@@ -109,71 +105,13 @@ class SettingsWindow(ISettingsWindowListener, ABC):
         self.title_right_label['text'] = title
 
     @abstractmethod
-    def get_chosen_groups(self):
+    def click_reports(self, event):
         pass
 
     @abstractmethod
-    def default(self):
+    def click_default(self, event):
         pass
 
     @abstractmethod
-    def clear(self):
+    def click_clear(self, event):
         pass
-
-
-class ILeftFrame(Frame, ABC):
-    chosen_group_dict = {}
-
-    def __init__(self, master, items: list, choice_type: ChoiceType = None, **kw):
-        items = list(set(items))
-        super().__init__(master, **kw)
-        for i in range(len(items)):
-
-            item_factory = ChoiceItemFactory(self) \
-                .of(choice_type) \
-                .get(items[i])
-
-            var = item_factory['var']
-            self.chosen_group_dict[items[i]] = var
-            if (i % 2 == 0) and (choice_type == ChoiceType.CHECK_BOX):
-                var.set(True)
-
-            if len(items) < 6:
-                row_pos = i
-                column_pos = 0
-            else:
-                row_pos = i // 2
-                column_pos = i % 2
-
-            self.grid_rowconfigure(row_pos, weight=1)
-            self.grid_columnconfigure(column_pos, weight=1)
-
-            item_factory['choice_btn'].grid(row=row_pos,
-                                            column=column_pos,
-                                            sticky="w")
-
-
-class IRightFrame(Frame, ABC):
-    chosen_group_dict = {}
-
-    def __init__(self, master, items: list, **kw):
-        items = list(set(items))
-        super().__init__(master, **kw)
-        buttons = []
-        for i in range(len(items)):
-            item_factory = ChoiceItemFactory(self) \
-                .of(ChoiceType.CHECK_BOX) \
-                .get(items[i])
-            buttons.append(item_factory['choice_btn'])
-            buttons[-1].pack()
-
-            var = item_factory['var']
-            self.chosen_group_dict[items[i]] = var
-            var.set(True)
-            #
-            # if len(items) < 6:
-            #     row_pos = i
-            #     column_pos = 0
-            # else:
-            #     row_pos = i // 2
-            #     column_pos = i % 2

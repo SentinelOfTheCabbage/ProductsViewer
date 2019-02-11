@@ -45,3 +45,4 @@ class VerticalScrolledFrame(Frame):
                 canvas.itemconfigure(interior_id, width=canvas.winfo_width())
 
         canvas.bind('<Configure>', _configure_canvas)
+

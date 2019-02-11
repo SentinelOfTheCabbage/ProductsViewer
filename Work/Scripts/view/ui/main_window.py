@@ -1,6 +1,7 @@
 """asd"""
-from tkinter import Frame, Canvas, Label, BOTH, Button, \
+from tkinter import Frame, Canvas, Label, Button, \
     Checkbutton, Tk, Scrollbar, Menu, Scale
+
 from config import WIN_W_START, WIN_H_START, COLOR_BG_TITLE_TABLE, \
     COLOR_BG_EVENT_ROW, COLOR_BG_ODD_ROW, COLOR_TEXT_TABLE, COLOR_BG_LAST_CH, \
     COLOR_BG_TITLE_LAST_CH, COLOR_BG_FRAME_TABLE, COLOR_BG_FRAME_FILTR, \

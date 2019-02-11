@@ -1,10 +1,11 @@
 """asd"""
 from tkinter import Frame, Canvas, Label, BOTH, Button, \
-    Checkbutton, Tk, Scrollbar, Menu
+    Checkbutton, Tk, Scrollbar, Menu, Scale
 from config import WIN_W_START, WIN_H_START, COLOR_BG_TITLE_TABLE, \
     COLOR_BG_EVENT_ROW, COLOR_BG_ODD_ROW, COLOR_TEXT_TABLE, COLOR_BG_LAST_CH, \
     COLOR_BG_TITLE_LAST_CH, COLOR_BG_FRAME_TABLE, COLOR_BG_FRAME_FILTR, \
-    COLOR_FG_FRAME_TABLE, COLOR_FG_FRAME_FILTR, COLOR_BG_MENU, COLOR_FG_MENU
+    COLOR_FG_FRAME_TABLE, COLOR_FG_FRAME_FILTR, COLOR_BG_MENU, COLOR_FG_MENU, \
+    HEIGHT_INFO_FRAME, WIDTH_FILR_FRAME
 
 
 class App:
@@ -17,13 +18,13 @@ class App:
         self.master = master
         master.title(title)
         master.iconbitmap('img.ico')
-        master.minsize(WIN_W_START, WIN_H_START - 20)
-        master.resizable(True, True)
         master.geometry("{winw}x{winh}+{centerw}+{centerh}".format(
             winw=WIN_W_START,
             winh=WIN_H_START,
             centerw=(master.winfo_screenwidth() - WIN_W_START) // 2,
             centerh=(master.winfo_screenheight() - WIN_H_START - 30) // 2))
+        master.minsize(WIN_W_START, WIN_H_START - 20)
+        master.resizable(True, True)
         master.grid_rowconfigure(0, weight=1, minsize=150)
         master.grid_rowconfigure(1, minsize=0)
         master.grid_rowconfigure(2, minsize=24)
@@ -73,7 +74,16 @@ class App:
         self.master.bind('<Right>', self.right_key)
         self.master.bind('<Up>', self.top_key)
         self.master.bind('<Down>', self.bottom_key)
+        self.master.bind("<Configure>", self.new_height)
         master.mainloop()
+
+    def new_height(self, event):
+        if self.last_ch_bool:
+            self.main_frame.cont.config(
+                height=self.master.winfo_height()-94-
+                self.last_ch_frame.canvas.winfo_height())
+        else:
+            self.main_frame.cont.config(height=self.master.winfo_height() - 70)
 
     def left_key(self, event):
         """ asd"""
@@ -102,6 +112,8 @@ class App:
     def on_mousewheel(self, event):
         """ asd"""
         widget = self.widget_pointer()
+        print(self)
+        print(widget)
         sgn = -1 * (event.delta // 120)
         if "bdframe" in widget and "canvas" in widget:
             self.main_frame.cont.yview_scroll(sgn, "units")
@@ -137,7 +149,7 @@ class App:
             self.filtr_btn.config(bg="#f0f0f0")
         else:
             self.filtr_btn.config(bg="#B2B2B2")
-            self.master.grid_columnconfigure(1, minsize=140)
+            self.master.grid_columnconfigure(1, minsize=WIDTH_FILR_FRAME)
         self.filtr_bool = not self.filtr_bool
 
     def click_table(self, event):
@@ -151,7 +163,7 @@ class App:
             self.table_btn.config(bg="#f0f0f0")
         else:
             self.table_btn.config(bg="#B2B2B2")
-            self.master.grid_columnconfigure(2, minsize=140)
+            self.master.grid_columnconfigure(2, minsize=WIDTH_FILR_FRAME)
         self.table_bool = not self.table_bool
 
 
@@ -169,12 +181,21 @@ class FiltrFrame(Frame):
 
     def content(self):
         """ asd"""
+        title_1 = Label(self, text="Производители:", bg=COLOR_BG_FRAME_FILTR,
+                        fg=COLOR_FG_FRAME_FILTR,)
+        title_1.place(x=20, y=14)
         for i in range(len(self._list_filtr)):
             check = Checkbutton(self, bg=COLOR_BG_FRAME_FILTR, bd=0,
                                 fg=COLOR_FG_FRAME_FILTR,
                                 text="{}".format(self._list_filtr[i]))
             check.bind("<Button-1>", self.click_check)
-            check.place(x=10, y=24*i)
+            check.place(x=10, y=40 + 24*i)
+        title_2 = Label(self, text="Цена:", bg=COLOR_BG_FRAME_FILTR,
+                        fg=COLOR_FG_FRAME_FILTR, )
+        title_2.place(x=20, y=40 + 24*(i+1))
+        scale = Scale(self, orient="horizontal", length=100, from_=0, to=228,
+                      bg=COLOR_BG_FRAME_FILTR)
+        scale.place(x=20, y=40 + 24*(i+2))
 
 
 class BDFrame(Canvas):
@@ -305,7 +326,7 @@ class BDFrame(Canvas):
         self.canvas.grid(row=0, column=0, sticky="nwes")
 
         self.titles = Canvas(self.frame, bg="orange")
-        self.cont = Canvas(self.frame, bg="yellow", height=350)
+        self.cont = Canvas(self.frame, bg="#f0f0f0", height=350)
         self.titles.grid(row=0, column=0, sticky="nwes")
         self.frame2 = Frame(self.cont, background="blue")
         self.cont.create_window((0, 0), window=self.frame2, anchor="nw")
@@ -325,6 +346,36 @@ class BDFrame(Canvas):
                          self.on_frame_configure(self.cont))
         self.content(self.titles, self.frame2)
 
+        self.menu = Menu(self.master, tearoff=0)
+        self.menu.add_command(label="Undo")
+        self.menu.add_command(label="Redo")
+
+        self.plus = Menu(self.master, tearoff=0)
+        self.plus.add_command(label="мб плюс что-то")
+        self.plus.add_command(label="или кого-то")
+
+
+    def context_menu(self, event):
+        self.menu.post(event.x_root, event.y_root)
+
+    def click_plus(self, event):
+        self.plus.post(event.x_root, event.y_root)
+
+    def widget_pointer(self):
+        """ asd"""
+        x, y = self.master.winfo_pointerxy()
+        widget = self.master.winfo_containing(x, y)
+        widget = "{}".format(widget)
+        return widget
+
+    def click_check(self, event):
+        for i in range(self.row):
+            if "checkbd{}".format(i) in "{}".format(self.widget_pointer()):
+                for r in range(self.row):
+                    for c in range(self.col + 1):
+                        if r == i:
+                            self.cell.config(bg="#000")
+
     def on_frame_configure(self, main_lab2):
         """Reset the scroll region to encompass the inner frame"""
         main_lab2.configure(scrollregion=main_lab2.bbox("all"))
@@ -332,22 +383,38 @@ class BDFrame(Canvas):
     def content(self, frame1, frame2):
         """ asd"""
         for r in range(self.row):
-            for c in range(self.col):
+            for c in range(self.col + 1):
                 if r == 0:
-                    btn = Frame(frame1, bg="#000", bd=0)
+                    if c == 0:
+                        self.cell = Label(frame1, width=3, text="+",
+                                          relief="flat")
+                        self.cell.bind("<Button-1>", self.click_plus)
+                    else:
+                        self.cell = Label(frame1, width=10, text="{}".format(
+                            self._bd_array[r][c-1]))
                 else:
-                    btn = Frame(frame2, bg="#000", bd=0)
-                btn.grid(row=r, column=c)
-                border = Frame(btn, height=2, bg="red")
-                border.pack(side="top", expand=True, fill="x")
-                btn2 = Label(btn, width=10, bd=2, fg=COLOR_TEXT_TABLE,
-                             bg=COLOR_BG_ODD_ROW,
-                             text="{}".format(self._bd_array[r][c]))
-                btn2.pack(expand=True, fill=BOTH)
+                    if c == 0:
+                        self.cell = CheckBD(frame2, r)
+                        self.cell.bind("<Button-1>", self.click_check)
+                    else:
+                        self.cell = Label(frame2, width=10, text="{}".format(
+                            self._bd_array[r][c-1]))
+                self.cell.bind("<Button-3>", self.context_menu)
+                self.cell.grid(row=r, column=c)
+                self.cell.config(bd=2, fg=COLOR_TEXT_TABLE,
+                                 bg=COLOR_BG_ODD_ROW,
+                                 )
+                self.cell.bind("<Button-3>", self.context_menu)
                 if r % 2 == 0:
-                    btn2.config(bg=COLOR_BG_EVENT_ROW)
+                    self.cell.config(bg=COLOR_BG_EVENT_ROW)
                 if r == 0:
-                    btn2.config(bg=COLOR_BG_TITLE_TABLE)
+                    self.cell.config(bg=COLOR_BG_TITLE_TABLE)
+
+
+class CheckBD(Checkbutton):
+    """"asd"""
+    def __init__(self, master, r, **kw):
+        super().__init__(master, {}, **kw)
 
 
 class InfoFrame(Canvas):
@@ -385,7 +452,7 @@ class InfoFrame(Canvas):
         top_lab = Label(self, text="Последние изменения", anchor="w",
                         bg=COLOR_BG_TITLE_LAST_CH)
 
-        self.canvas = Canvas(self, bg=COLOR_BG_LAST_CH, height=130)
+        self.canvas = Canvas(self, bg=COLOR_BG_LAST_CH, height=HEIGHT_INFO_FRAME)
         frame = Frame(self.canvas, bg=COLOR_BG_LAST_CH)
         scroll = Scrollbar(self, orient="vertical", command=self.canvas.yview)
         self.canvas.create_window((0, 0), window=frame, anchor="n")
@@ -482,10 +549,10 @@ class MainMenu(Menu):
         otchet_menu.add_command(label="Простой отчёт")
         otchet_menu.add_command(label="Статистика")
         otchet_menu.add_command(label="Сводная таблица")
-        otchet_menu.add_command(label="Столбчатая диаграмма")
-        otchet_menu.add_command(label="Гистограмма")
-        otchet_menu.add_command(label="Диаграмма 'Ящика с усами'")
-        otchet_menu.add_command(label="Диаграмма рассеивания")
+        otchet_menu.add_command(label="Столбчатая диаграмма", command=self.create_bar_chart)
+        otchet_menu.add_command(label="Гистограмма", command=self.create_histogram)
+        otchet_menu.add_command(label="Диаграмма 'Ящика с усами'", command=self.create_box_and_whisker)
+        otchet_menu.add_command(label="Диаграмма рассеивания", command=self.create_scatter_chart)
 
         main_menu.add_cascade(label="Файл", menu=file)
         main_menu.add_cascade(label="Изменить", menu=change)
@@ -493,5 +560,24 @@ class MainMenu(Menu):
 
         self.master.config(bg="red", menu=main_menu)
 
+    @staticmethod
+    def create_scatter_chart():
+        # SettingsScatterChart(Tk())
+        pass
+
+    @staticmethod
+    def create_bar_chart():
+        # SettingsBarChart(Tk())
+        pass
+
+    @staticmethod
+    def create_box_and_whisker():
+        # SettingsBoxAndWhisker(Tk())
+        pass
+
+    @staticmethod
+    def create_histogram():
+        # SettingsHistogram(Tk())
+        pass
 
 App(Tk(), "База данных продуктов")

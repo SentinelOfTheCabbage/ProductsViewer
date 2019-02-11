@@ -577,8 +577,6 @@ class MainMenu(Menu):
 
     @staticmethod
     def create_histogram():
-        # SettingsHistogram(Tk())
         pass
 
-#qwe123
 App(Tk(), "База данных продуктов")

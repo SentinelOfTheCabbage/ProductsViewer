@@ -580,4 +580,5 @@ class MainMenu(Menu):
         # SettingsHistogram(Tk())
         pass
 
+
 App(Tk(), "База данных продуктов")

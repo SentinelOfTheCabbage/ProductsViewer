@@ -7,13 +7,13 @@
 import pandas
 
 import os
-os.chdir('C:/Users/ирбисик/Documents/PYTHON/ProductsViewer/Work/Scripts/model/interactor/')
+os.chdir('C:/Users/ирбисик/Documents/PYTHON/ProductsViewer/Work/Data')
 
 
-class DataBase:
+class ReportsInteractor:
     file_name = 'database.txt'
 
-    def connect(self):
+    def __init__(self):
         file_name = 'database.txt'
         with open(file_name) as file:
             DB_List = [row.strip() for row in file]
@@ -36,36 +36,42 @@ class DataBase:
         """
 
         def arithmetic_mean_series(groups: list, quality: list):
-            Prod_List = self.DB_Products
-            Table = Prod_List.groupby(['group_name', 'quality'])[
+            products_list = self.DB_Products
+            sorted_series_table = products_list.groupby(['group_name', 'quality'])[
                 'price'].mean()
-            Group_List = self.DB_Groups
             changes = True
-            L = list(Table.index.levels[0])
+            print(sorted_series_table)
+            table_group_keys_list = list(sorted_series_table.index.levels[0])
             while changes == True:
                 changes = False
 
-                for i in range(len(L)):
-                    if L[i] not in groups:
-                        Table = Table.drop(labels=L[i], level=0)
-                        L.remove(L[i])
+                for i in range(len(table_group_keys_list)):
+                    if table_group_keys_list[i] not in groups:
+                        sorted_series_table = sorted_series_table.drop(
+                            labels=table_group_keys_list[i], level=0)
+                        table_group_keys_list.remove(table_group_keys_list[i])
                         changes = True
                         break
 
-            L = list(Table.index.levels[1])
+            del(table_group_keys_list)
+
+            table_quality_keys_list = list(sorted_series_table.index.levels[1])
             changes = True
             while changes == True:
                 changes = False
 
-                for i in range(len(L)):
-                    if L[i] not in quality:
-                        Table = Table.drop(labels=L[i], level=1)
-                        L.remove(L[i])
+                for i in range(len(table_quality_keys_list)):
+                    if table_quality_keys_list[i] not in quality:
+                        sorted_series_table = sorted_series_table.drop(
+                            labels=table_quality_keys_list[i], level=1)
+                        table_quality_keys_list.remove(
+                            table_quality_keys_list[i])
                         changes = True
                         break
-            return Table
+            return sorted_series_table
 
-        Table = arithmetic_mean_series(groups, quality)  # Получение DataFrame
+        sorted_series_table = arithmetic_mean_series(
+            groups, quality)  # Получение DataFrame
         Result = dict.fromkeys(groups)  # Создание будущего dict of list
         for i in range(len(groups)):
             Result[groups[i]] = [0] * len(quality)
@@ -76,24 +82,73 @@ class DataBase:
                 if groups[i] == needle:
                     return i
 
-        for i in range(len(Table.index.codes[0])):
+        for i in range(len(sorted_series_table.index.codes[0])):
             #  взять key продукта и соотнести с позицией в groups
-            G = table_pos(groups, Table.index.levels[
-                          0][Table.index.codes[0][i]])
+            groups_position = table_pos(groups, sorted_series_table.index.levels[
+                0][sorted_series_table.index.codes[0][i]])
 
             #  взять key качества и соотнести с позицией в quality
-            Q = table_pos(quality, Table.index.levels[
-                          1][Table.index.codes[1][i]])
+            quality_position = table_pos(quality, sorted_series_table.index.levels[
+                1][sorted_series_table.index.codes[1][i]])
 
             #  записать в нужную ячейку инфомрацию
-            Result[groups[G]][Q] = Table[i]
+            Result[groups[groups_position]][
+                quality_position] = sorted_series_table[i]
 
-        return Result, quality
-
-    def get_prices_by_group(self, product_group: str, products: list):
-        Result={}*0
-        for i in range(len(DB.index)):
-            if (DB.iloc[i]['group_name'] == product_group) and (DB.iloc[i]['name'] in products):
-                Result.update({DB.iloc[i]['name']:int(DB.iloc[i]['price'])})
         return Result
 
+    def get_prices_by_group(self, product_group: str, products: list):
+        Result = {} * 0
+        for i in range(len(DB.index)):
+            if (DB.iloc[i]['group_name'] == product_group) and (DB.iloc[i]['name'] in products):
+                Result.update({DB.iloc[i]['name']: int(DB.iloc[i]['price'])})
+        return Result
+
+    def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):
+        database = self.DB_Products
+        Result = {}
+        Result.fromkeys(qualities, [])
+        for i in range(len(database)):
+            if (database.iloc[i]['name'] in products) and (
+                    database.iloc[i]['quality'] in qualities) and (
+                    database.iloc[i]['group_name'] == product_group):
+                Result[database.iloc[i]['quality']].append(
+                    int(database.iloc[i]['price']))
+        return Result
+
+    def get_spreading(self, product_group: str, date: str):
+        vouchers = self.DB_Vouchers
+        sales = self.DB_Sales
+        products = self.DB_Products
+        first_sale = None
+        last_sale = None
+        Result = []
+        for i in vouchers.index:
+            if vouchers.iloc[i]['date'] == date:
+                if first_sale == None:
+                    first_sale = i
+                else:
+                    last_sale = i
+            elif last_sale != None:
+                break
+
+        def current_position(source: list, needle: str):
+            for i in len(source):
+                if source[i] == needle:
+                    return i
+
+        for i in sales.index:
+            saved_product_list = []
+            Result = []
+            if (first_sale <= int(sales.iloc[i]['check_id']) <= last_sale) and (
+                    products.iloc[sales.iloc[i]['products_id'] - 1]['group_name'] == product_group):
+                if products.iloc[sales.iloc[i]['products_id'] - 1]['name'] not in saved_product_list:
+                    saved_product_list.append(
+                        products.iloc[sales.iloc[i]['products_id'] - 1]['name'])
+                    Result.append({'price': products.iloc[sales.iloc[i][
+                                  'products_id'] - 1]['price'], 'amount': sales.iloc[i]['amount']})
+                else:
+                    pos = current_position(saved_product_list, products.iloc[
+                                           sales.iloc[i]['products_id'] - 1]['name'])
+                    Result[pos]['amount'] += sales.iloc[i]['amount']
+        return Result

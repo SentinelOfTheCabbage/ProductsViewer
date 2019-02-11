@@ -580,5 +580,5 @@ class MainMenu(Menu):
         # SettingsHistogram(Tk())
         pass
 
-
+#qwe123
 App(Tk(), "База данных продуктов")

@@ -2,20 +2,23 @@
 from tkinter import Frame, Canvas, Label, Button, \
     Checkbutton, Tk, Scrollbar, Menu, Scale
 
-from config import WIN_W_START, WIN_H_START, COLOR_BG_TITLE_TABLE, \
-    COLOR_BG_EVENT_ROW, COLOR_BG_ODD_ROW, COLOR_TEXT_TABLE, COLOR_BG_LAST_CH, \
-    COLOR_BG_TITLE_LAST_CH, COLOR_BG_FRAME_TABLE, COLOR_BG_FRAME_FILTR, \
-    COLOR_FG_FRAME_TABLE, COLOR_FG_FRAME_FILTR, COLOR_BG_MENU, COLOR_FG_MENU, \
-    HEIGHT_INFO_FRAME, WIDTH_FILR_FRAME
-
+from Work.Scripts.view.ui.config import WIN_W_START, WIN_H_START, \
+    WIDTH_FILR_FRAME, COLOR_BG_FRAME_FILTR, COLOR_FG_FRAME_FILTR, \
+    COLOR_TEXT_TABLE, COLOR_BG_ODD_ROW, COLOR_BG_EVENT_ROW, \
+    COLOR_BG_TITLE_TABLE, COLOR_BG_LAST_CH, HEIGHT_INFO_FRAME, \
+    COLOR_BG_TITLE_LAST_CH, COLOR_BG_FRAME_TABLE, COLOR_FG_FRAME_TABLE, \
+    COLOR_BG_MENU, COLOR_FG_MENU
 from Work.Scripts.view.ui.reports_settings.settings_bar_chart import \
     SettingsBarChart
 from Work.Scripts.view.ui.reports_settings.settings_box_and_whisker import \
     SettingsBoxAndWhisker
 from Work.Scripts.view.ui.reports_settings.settings_histogram import \
     SettingsHistogram
+
 from Work.Scripts.view.ui.reports_settings.settings_scatter_chart import \
     SettingsScatterChart
+
+import os
 
 
 class App:
@@ -27,7 +30,7 @@ class App:
     def __init__(self, master, title="Заголовок"):
         self.master = master
         master.title(title)
-        master.iconbitmap('img.ico')
+        master.iconbitmap(r'D:\PycharmProjects\ProductsViewer\Work\Scripts\view\ui\img.ico')
         master.geometry("{winw}x{winh}+{centerw}+{centerh}".format(
             winw=WIN_W_START,
             winh=WIN_H_START,
@@ -90,8 +93,8 @@ class App:
     def new_height(self, event):
         if self.last_ch_bool:
             self.main_frame.cont.config(
-                height=self.master.winfo_height()-94-
-                self.last_ch_frame.canvas.winfo_height())
+                height=self.master.winfo_height() - 94 -
+                       self.last_ch_frame.canvas.winfo_height())
         else:
             self.main_frame.cont.config(height=self.master.winfo_height() - 70)
 
@@ -192,20 +195,20 @@ class FiltrFrame(Frame):
     def content(self):
         """ asd"""
         title_1 = Label(self, text="Производители:", bg=COLOR_BG_FRAME_FILTR,
-                        fg=COLOR_FG_FRAME_FILTR,)
+                        fg=COLOR_FG_FRAME_FILTR, )
         title_1.place(x=20, y=14)
         for i in range(len(self._list_filtr)):
             check = Checkbutton(self, bg=COLOR_BG_FRAME_FILTR, bd=0,
                                 fg=COLOR_FG_FRAME_FILTR,
                                 text="{}".format(self._list_filtr[i]))
             check.bind("<Button-1>", self.click_check)
-            check.place(x=10, y=40 + 24*i)
+            check.place(x=10, y=40 + 24 * i)
         title_2 = Label(self, text="Цена:", bg=COLOR_BG_FRAME_FILTR,
                         fg=COLOR_FG_FRAME_FILTR, )
-        title_2.place(x=20, y=40 + 24*(i+1))
+        title_2.place(x=20, y=40 + 24 * (i + 1))
         scale = Scale(self, orient="horizontal", length=100, from_=0, to=228,
                       bg=COLOR_BG_FRAME_FILTR)
-        scale.place(x=20, y=40 + 24*(i+2))
+        scale.place(x=20, y=40 + 24 * (i + 2))
 
 
 class BDFrame(Canvas):
@@ -351,9 +354,9 @@ class BDFrame(Canvas):
         self.cont.configure(yscrollcommand=scroll_y.set)
         self.canvas.configure(xscrollcommand=scroll_x.set)
         self.frame.bind("<Configure>", lambda event, canvas=self.canvas:
-                        self.on_frame_configure(self.canvas))
+        self.on_frame_configure(self.canvas))
         self.frame2.bind("<Configure>", lambda event, canvas=self.cont:
-                         self.on_frame_configure(self.cont))
+        self.on_frame_configure(self.cont))
         self.content(self.titles, self.frame2)
 
         self.menu = Menu(self.master, tearoff=0)
@@ -363,7 +366,6 @@ class BDFrame(Canvas):
         self.plus = Menu(self.master, tearoff=0)
         self.plus.add_command(label="мб плюс что-то")
         self.plus.add_command(label="или кого-то")
-
 
     def context_menu(self, event):
         self.menu.post(event.x_root, event.y_root)
@@ -401,14 +403,14 @@ class BDFrame(Canvas):
                         self.cell.bind("<Button-1>", self.click_plus)
                     else:
                         self.cell = Label(frame1, width=10, text="{}".format(
-                            self._bd_array[r][c-1]))
+                            self._bd_array[r][c - 1]))
                 else:
                     if c == 0:
                         self.cell = CheckBD(frame2, r)
                         self.cell.bind("<Button-1>", self.click_check)
                     else:
                         self.cell = Label(frame2, width=10, text="{}".format(
-                            self._bd_array[r][c-1]))
+                            self._bd_array[r][c - 1]))
                 self.cell.bind("<Button-3>", self.context_menu)
                 self.cell.grid(row=r, column=c)
                 self.cell.config(bd=2, fg=COLOR_TEXT_TABLE,
@@ -423,6 +425,7 @@ class BDFrame(Canvas):
 
 class CheckBD(Checkbutton):
     """"asd"""
+
     def __init__(self, master, r, **kw):
         super().__init__(master, {}, **kw)
 
@@ -440,7 +443,7 @@ class InfoFrame(Canvas):
         ("red", "Наиль лох"), ("red", "и не только он"),
         ("red", "(я тоже лох)"), ("red", "Но зато я не Наиль"),
         ("red", "что хорошо"), ("black", "конечноже")
-        ]
+    ]
 
     def __init__(self, master, **kw):
         super().__init__(master, {}, **kw)
@@ -462,13 +465,14 @@ class InfoFrame(Canvas):
         top_lab = Label(self, text="Последние изменения", anchor="w",
                         bg=COLOR_BG_TITLE_LAST_CH)
 
-        self.canvas = Canvas(self, bg=COLOR_BG_LAST_CH, height=HEIGHT_INFO_FRAME)
+        self.canvas = Canvas(self, bg=COLOR_BG_LAST_CH,
+                             height=HEIGHT_INFO_FRAME)
         frame = Frame(self.canvas, bg=COLOR_BG_LAST_CH)
         scroll = Scrollbar(self, orient="vertical", command=self.canvas.yview)
         self.canvas.create_window((0, 0), window=frame, anchor="n")
         self.canvas.configure(yscrollcommand=scroll.set)
         frame.bind("<Configure>", lambda event, canvas=self.canvas:
-                   self.on_frame_configure(self.canvas))
+        self.on_frame_configure(self.canvas))
         top_lab.grid(row=0, column=0, columnspan=2, sticky="nwes")
         self.canvas.grid(row=1, column=0, sticky="nwes")
         scroll.grid(row=1, column=1, sticky="nwes")
@@ -526,11 +530,12 @@ class TableFrame(Frame):
                                  fg=COLOR_FG_FRAME_TABLE,
                                  text="{}".format(self._list_table[j]))
             tables_name.bind("<Button-1>", self.click)
-            tables_name.place(x=10, y=24*j)
+            tables_name.place(x=10, y=24 * j)
 
 
 class MainMenu(Menu):
     """ asd"""
+
     def __init__(self, master, **kw):
         super().__init__(master, {}, **kw)
 
@@ -559,10 +564,14 @@ class MainMenu(Menu):
         otchet_menu.add_command(label="Простой отчёт")
         otchet_menu.add_command(label="Статистика")
         otchet_menu.add_command(label="Сводная таблица")
-        otchet_menu.add_command(label="Столбчатая диаграмма", command=self.create_bar_chart)
-        otchet_menu.add_command(label="Гистограмма", command=self.create_histogram)
-        otchet_menu.add_command(label="Диаграмма 'Ящика с усами'", command=self.create_box_and_whisker)
-        otchet_menu.add_command(label="Диаграмма рассеивания", command=self.create_scatter_chart)
+        otchet_menu.add_command(label="Столбчатая диаграмма",
+                                command=self.create_bar_chart)
+        otchet_menu.add_command(label="Гистограмма",
+                                command=self.create_histogram)
+        otchet_menu.add_command(label="Диаграмма 'Ящика с усами'",
+                                command=self.create_box_and_whisker)
+        otchet_menu.add_command(label="Диаграмма рассеивания",
+                                command=self.create_scatter_chart)
 
         main_menu.add_cascade(label="Файл", menu=file)
         main_menu.add_cascade(label="Изменить", menu=change)
@@ -585,5 +594,6 @@ class MainMenu(Menu):
     @staticmethod
     def create_histogram():
         SettingsHistogram(Tk())
+
 
 App(Tk(), "База данных продуктов")

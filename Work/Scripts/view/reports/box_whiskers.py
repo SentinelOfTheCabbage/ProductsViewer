@@ -4,7 +4,7 @@
 """
 import matplotlib.pyplot as plt
 
-import chart_interfaces
+from Work.Scripts.view.reports import chart_interfaces
 
 
 class Diagram(chart_interfaces.IChart):
@@ -72,13 +72,13 @@ class Diagram(chart_interfaces.IChart):
         на основе переданных значений. Если значение не передавалось,
         то используется значение по умолчанию.
         """
-        plt.title(self._title)
+
         if len(self._box_labels) != len(self._prices):
             raise Exception(self._except_x_axis_and_vals)
 
         dpi = 80
         fig = plt.figure(dpi=dpi, figsize=(512 / dpi, 384 / dpi))
-
+        plt.title(self._title)
         plt.boxplot(self._prices,
                     patch_artist=True,
                     medianprops={'color': self._median_color},
@@ -94,10 +94,10 @@ class Diagram(chart_interfaces.IChart):
         plt.xlabel(self._x_title)
         plt.show()
 
-
-Diagram().set_prices([[10, 20, 30, 40, 50], [1, 45, 23, 12, 34]]) \
-    .set_box_labels(["Ящик 1", "Ящик 2"]) \
-    .set_title("Заголовок") \
-    .set_x_title("Название оси X") \
-    .set_y_title("Название оси Y") \
-    .show()
+#
+# Diagram().set_prices([[10, 20, 30, 40, 50], [1, 45, 23, 12, 34]]) \
+#     .set_box_labels(["Ящик 1", "Ящик 2"]) \
+#     .set_title("Заголовок") \
+#     .set_x_title("Название оси X") \
+#     .set_y_title("Название оси Y") \
+#     .show()

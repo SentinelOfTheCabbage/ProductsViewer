@@ -5,7 +5,8 @@
 
 import random
 import matplotlib.pyplot as plt
-import chart_interfaces
+
+from Work.Scripts.view.reports import chart_interfaces
 
 
 class ClusteredChart(chart_interfaces.IChart):
@@ -89,6 +90,11 @@ class ClusteredChart(chart_interfaces.IChart):
         на основе переданных значений. Если значение не передавалось,
         то используется значение по умолчанию.
         """
+
+        if self._colors is None:
+            self._colors = [self.random_color()
+                            for _ in range(len(self._quality_labels))]
+
         if len(self._groups) != len(self._qualities_by_group):
             raise Exception(self._except_diff_group_and_vals)
         elif len(self._quality_labels) != len(self._colors):
@@ -97,9 +103,6 @@ class ClusteredChart(chart_interfaces.IChart):
         dpi = 80
         fig = plt.figure(dpi=dpi, figsize=(512 / dpi, 384 / dpi))
 
-        if self._colors is None:
-            self._colors = [self.random_color()
-                            for _ in range(len(self._quality_labels))]
         self.set_title(self._title)
         axis = plt.gca()
         axis.yaxis.grid(True, zorder=1)
@@ -129,15 +132,15 @@ class ClusteredChart(chart_interfaces.IChart):
         plt.show()
 
 
-ClusteredChart()\
-    .set_groups(["Groups 1", "Groups 2", "Groups 3", "Groups 4",
-                 "Groups 1", "Groups 2", "Groups 3", "Groups 4",
-                 "Groups 1", "Groups 2", "Groups 3", "Groups 4"]) \
-    .set_quality_labels(["ГОСТ", "СТО", "ТУ"]) \
-    .set_colors(["red", "blue", "green"]) \
-    .set_prices([[12, 34, 45], [34, 12, 43], [34, 12, 43], [34, 12, 43],
-                 [12, 34, 45], [34, 12, 43], [34, 12, 43], [34, 12, 43],
-                 [12, 34, 45], [34, 12, 43], [34, 12, 43], [34, 12, 43]])\
-    .set_x_title("Название оси X")\
-    .set_y_title("Название оси Y")\
-    .show()
+# ClusteredChart()\
+#     .set_groups(["Groups 1", "Groups 2", "Groups 3", "Groups 4",
+#                  "Groups 1", "Groups 2", "Groups 3", "Groups 4",
+#                  "Groups 1", "Groups 2", "Groups 3", "Groups 4"]) \
+#     .set_quality_labels(["ГОСТ", "СТО", "ТУ"]) \
+#     .set_colors(["red", "blue", "green"]) \
+#     .set_prices([[12, 34, 45], [34, 12, 43], [34, 12, 43], [34, 12, 43],
+#                  [12, 34, 45], [34, 12, 43], [34, 12, 43], [34, 12, 43],
+#                  [12, 34, 45], [34, 12, 43], [34, 12, 43], [34, 12, 43]])\
+#     .set_x_title("Название оси X")\
+#     .set_y_title("Название оси Y")\
+#     .show()

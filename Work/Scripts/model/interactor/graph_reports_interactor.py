@@ -1,13 +1,16 @@
 # Метод/функция для получения средних цен по выбранным категориям
 # продуктов и выбранному качеству
 
-# Метод/функция на вход получает список групп продуктов и список категорий качества.
-#   Исходя из входных данныx необходимо получить список средних цен по каждой категории качества каждой группы вида
-#   [[группа1-качество1, группа1-качество2], [группа2-качество1, группа2-качество2]]
+# Метод/функция на вход получает список групп продуктов и список категорий
+# качества. Исходя из входных данныx необходимо получить список средних цен
+# по каждой категории качества каждой группы вида [[группа1-качество1,
+# группа1-качество2], [группа2-качество1, группа2-качество2]]
 import pandas
 
 import os
-os.chdir('C:/Users/ирбисик/Documents/PYTHON/ProductsViewer/Work/Data')
+
+path = "D:\PycharmProjects\ProductsViewer\Work\Data"
+os.chdir(path)
 
 
 class ReportsInteractor:
@@ -37,10 +40,11 @@ class ReportsInteractor:
 
         def arithmetic_mean_series(groups: list, quality: list):
             products_list = self.DB_Products
-            sorted_series_table = products_list.groupby(['group_name', 'quality'])[
+            sorted_series_table = \
+            products_list.groupby(['group_name', 'quality'])[
                 'price'].mean()
             changes = True
-            print(sorted_series_table)
+            #print(sorted_series_table)
             table_group_keys_list = list(sorted_series_table.index.levels[0])
             while changes == True:
                 changes = False
@@ -53,7 +57,7 @@ class ReportsInteractor:
                         changes = True
                         break
 
-            del(table_group_keys_list)
+            del (table_group_keys_list)
 
             table_quality_keys_list = list(sorted_series_table.index.levels[1])
             changes = True
@@ -84,12 +88,18 @@ class ReportsInteractor:
 
         for i in range(len(sorted_series_table.index.codes[0])):
             #  взять key продукта и соотнести с позицией в groups
-            groups_position = table_pos(groups, sorted_series_table.index.levels[
-                0][sorted_series_table.index.codes[0][i]])
+            groups_position = table_pos(groups,
+                                        sorted_series_table.index.levels[
+                                            0][
+                                            sorted_series_table.index.codes[0][
+                                                i]])
 
             #  взять key качества и соотнести с позицией в quality
-            quality_position = table_pos(quality, sorted_series_table.index.levels[
-                1][sorted_series_table.index.codes[1][i]])
+            quality_position = table_pos(quality,
+                                         sorted_series_table.index.levels[
+                                             1][
+                                             sorted_series_table.index.codes[
+                                                 1][i]])
 
             #  записать в нужную ячейку инфомрацию
             Result[groups[groups_position]][
@@ -100,11 +110,13 @@ class ReportsInteractor:
     def get_prices_by_group(self, product_group: str, products: list):
         Result = {} * 0
         for i in range(len(DB.index)):
-            if (DB.iloc[i]['group_name'] == product_group) and (DB.iloc[i]['name'] in products):
+            if (DB.iloc[i]['group_name'] == product_group) and (
+                    DB.iloc[i]['name'] in products):
                 Result.update({DB.iloc[i]['name']: int(DB.iloc[i]['price'])})
         return Result
 
-    def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):
+    def get_box_and_whisker_prices(self, product_group: str, qualities: list,
+                                   products: list):
         database = self.DB_Products
         Result = {}
         Result.fromkeys(qualities, [])
@@ -140,15 +152,20 @@ class ReportsInteractor:
         for i in sales.index:
             saved_product_list = []
             Result = []
-            if (first_sale <= int(sales.iloc[i]['check_id']) <= last_sale) and (
-                    products.iloc[sales.iloc[i]['products_id'] - 1]['group_name'] == product_group):
-                if products.iloc[sales.iloc[i]['products_id'] - 1]['name'] not in saved_product_list:
+            if (first_sale <= int(
+                    sales.iloc[i]['check_id']) <= last_sale) and (
+                    products.iloc[sales.iloc[i]['products_id'] - 1][
+                        'group_name'] == product_group):
+                if products.iloc[sales.iloc[i]['products_id'] - 1][
+                    'name'] not in saved_product_list:
                     saved_product_list.append(
-                        products.iloc[sales.iloc[i]['products_id'] - 1]['name'])
+                        products.iloc[sales.iloc[i]['products_id'] - 1][
+                            'name'])
                     Result.append({'price': products.iloc[sales.iloc[i][
-                                  'products_id'] - 1]['price'], 'amount': sales.iloc[i]['amount']})
+                                                              'products_id'] - 1][
+                        'price'], 'amount': sales.iloc[i]['amount']})
                 else:
                     pos = current_position(saved_product_list, products.iloc[
-                                           sales.iloc[i]['products_id'] - 1]['name'])
+                        sales.iloc[i]['products_id'] - 1]['name'])
                     Result[pos]['amount'] += sales.iloc[i]['amount']
         return Result

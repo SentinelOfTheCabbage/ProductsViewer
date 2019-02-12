@@ -1,75 +1,72 @@
-from tkinter import Checkbutton, BooleanVar
-
-from Work.Scripts.view.ui.custom_widgets import VerticalScrolledFrame
+from Work.Scripts.view.reports.histogram import Histogram
 from Work.Scripts.view.ui.reports_settings.choice_frames import \
-    MultiChoiceFrame
+    MultiChoiceFrame, SingleChoiceFrame
 from Work.Scripts.view.ui.reports_settings.report_settings_window import \
-    SettingsWindow
+    SettingsWindow, SUCCESS_INFO_TEXT
+
+ERROR_LEFT_INFO_TEXT = "Выберите группу продуктов"
+ERROR_RIGHT_INFO_TEXT = "Выберите продукты"
 
 
 class SettingsHistogram(SettingsWindow):
 
     def __init__(self, main):
-        self.frame_1 = MultiChoiceFrame(main,
-                                        ["Производитель", "Группа продуктов",
-                                         "Чеки"])
-        self.frame_2 = MultiChoiceFrame(main, ["Молочное", "Овощи",
-                                               "Мясопродукты и яйца",
-                                               "Фруктоы и ягоды",
-                                               "Зерннвые",
-                                               "Картофель"])
+        self.frame_1 = SingleChoiceFrame(main, ["Ягоды", "Картошка", "Зёрна",
+                                                "Мясо", "Для беременных",
+                                                "Деликатесы",
+                                                "Птица", "Рыба", "Хлеб",
+                                                "Молочное", "Овощи",
+                                                "Фрукты и ягоды"])
+        self.left_choice_is_done = True
+
+        self.frame_2 = MultiChoiceFrame(main, ["Молоко", "Курица", "Индейка",
+                                               "Сосиски",
+                                               "Петрушка",
+                                               "Мука", "Макороны", "Хлеб"],
+                                        True, listener=self)
         super().__init__(main, self.frame_1, self.frame_2)
 
-        self.set_left_title("Категория")
+        self.set_left_title("Группа продуктов")
         self.set_right_title("Продукты")
 
         # Запуск обработчика событий
         self.main.mainloop()
 
-    def get_group_list(self):
-        chosen_group_list = []
-        for k, v in dict(self.frame_1.get_data()).items():
-            chosen_group_list.append(k) if v.get() == 1 else None
-        return chosen_group_list
-
-    def get_quality_list(self):
-        quality_list = []
-        for k, v in dict(self.frame_2.get_data()).items():
-            quality_list.append(k) if v.get() == 1 else None
-        return quality_list
+    def click_reports(self, event):
+        prices = list(SettingsWindow.reports_interactor
+                      .get_prices_by_group(self.frame_1.get_data(),
+                                           self.frame_2.get_data()))
+        Histogram(self.frame_1.get_data()) \
+            .set_prices(prices) \
+            .set_products(self.frame_2.get_data()) \
+            .set_color("#FF0000") \
+            .set_y_title("Цены") \
+            .show()
 
     def click_clear(self, event):
-        pass
+        self.frame_1.clear()
+        self.frame_2.clear()
 
     def click_default(self, event):
-        pass
+        self.frame_1.default_choice()
+        self.frame_2.default_choice()
 
-    def click_reports(self, event):
-        pass
+    def error(self, frame):
+        if frame == self.frame_2:
+            self.right_choice_is_done = False
+        self.output_success_info()
 
+    def success(self, frame):
+        if frame == self.frame_2:
+            self.right_choice_is_done = True
+        self.output_success_info()
 
-class RightFrame(VerticalScrolledFrame):
-    chosen_quality_dict = {}
+    def output_success_info(self):
+        if not self.left_choice_is_done:
+            self.set_info_text("red", ERROR_LEFT_INFO_TEXT)
+        elif not self.right_choice_is_done:
+            self.set_info_text("red", ERROR_RIGHT_INFO_TEXT)
+        else:
+            self.set_info_text("green", SUCCESS_INFO_TEXT)
 
-    def __init__(self, products: list, **kw):
-        super().__init__(**kw)
-        buttons = []
-        for prod in products:
-            var = self.chosen_quality_dict[prod] = BooleanVar()
-            buttons.append(
-                Checkbutton(self.interior, text=prod))
-            buttons[-1].pack()
-            var.set(True)
-
-    def get_chosen_subgroups(self):
-        return self.chosen_quality_dict
-
-    def default(self):
-        for var in self.chosen_quality_dict.values():
-            var.set(True)
-
-    def clear(self):
-        for var in self.chosen_quality_dict.values():
-            var.set(False)
-
-# SettingsHistogram(Tk())
+# SettingsBoxAndWhisker(Tk())

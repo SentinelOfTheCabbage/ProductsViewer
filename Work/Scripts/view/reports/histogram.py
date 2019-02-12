@@ -5,7 +5,7 @@
 import random
 import matplotlib.pyplot as plt
 
-import chart_interfaces
+from Work.Scripts.view.reports import chart_interfaces
 
 
 class Histogram(chart_interfaces.IChart):
@@ -86,10 +86,10 @@ class Histogram(chart_interfaces.IChart):
         plt.show()
 
 
-Histogram("Заголовок") \
-    .set_prices([1, 2, 3]) \
-    .set_products(["текст", "текст", "текст"]) \
-    .set_color("#FF0000")\
-    .set_x_title("Название оси X")\
-    .set_y_title("Название оси Y")\
-    .show()
+# Histogram("Заголовок") \
+#     .set_prices([1, 2, 3]) \
+#     .set_products(["текст", "текст", "текст"]) \
+#     .set_color("#FF0000")\
+#     .set_x_title("Название оси X")\
+#     .set_y_title("Название оси Y")\
+#     .show()

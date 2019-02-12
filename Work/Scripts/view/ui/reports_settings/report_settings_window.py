@@ -2,6 +2,10 @@
 from abc import ABC, abstractmethod
 from tkinter import *
 
+from Work.Scripts.test.graph_reports_interactor import ReportsInteractor
+from Work.Scripts.view.ui.reports_settings.choice_frames import \
+    OnEventInfoListener
+
 TITLE_MAIN_TEXT = "Выберите параметры"
 
 BTN_REPORT_TEXT = "Отчёт"
@@ -16,8 +20,13 @@ FONT_SIZE_SUBTITLE = 14
 TITLE_MAIN_KEY_PARAM = "title_main"
 BTN_CLICK_EVENT = "<ButtonRelease-1>"
 
+TEXT_KEY = "text"
+FG_KEY = "fg"
 
-class SettingsWindow(ABC):
+SUCCESS_INFO_TEXT = "Нажмите на 'Отчёт' "
+
+
+class SettingsWindow(OnEventInfoListener, ABC):
     """Главный класс для конфигурации UI.
 
     Соединяет во едино все фреймы интерфейса. Прописывает основные настройки
@@ -29,6 +38,9 @@ class SettingsWindow(ABC):
 
     title_left_label = None
     title_right_label = None
+    left_choice_is_done = False
+    right_choice_is_done = False
+    reports_interactor = ReportsInteractor()
 
     def __init__(self, main, frame_left: Frame, frame_right: Frame,
                  **params):
@@ -90,19 +102,20 @@ class SettingsWindow(ABC):
 
         frame_right.master = self.main
         frame_right.grid(row=2, column=2, sticky=NSEW, padx=10, pady=5)
+        self.set_info_text("green", SUCCESS_INFO_TEXT)
 
     def set_info_text(self, color: str, text):
-        self.info_text['fg'] = color
-        self.info_text['text'] = text
+        self.info_text[FG_KEY] = color
+        self.info_text[TEXT_KEY] = text
 
     def set_main_title(self, title):
-        self.title_main['text'] = title
+        self.title_main[TEXT_KEY] = title
 
     def set_left_title(self, title):
         self.title_left_label.configure(text=title)
 
     def set_right_title(self, title):
-        self.title_right_label['text'] = title
+        self.title_right_label[TEXT_KEY] = title
 
     @abstractmethod
     def click_reports(self, event):
@@ -114,4 +127,8 @@ class SettingsWindow(ABC):
 
     @abstractmethod
     def click_clear(self, event):
+        pass
+
+    @abstractmethod
+    def output_success_info(self):
         pass

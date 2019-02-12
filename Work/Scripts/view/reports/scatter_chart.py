@@ -48,7 +48,11 @@ class ScatterChart(chart_interfaces.IChart):
         """
         self._x_coord.clear()
         self._y_coord.clear()
+        tuple_points = [(point['price'], point['amount']) for point in points]
         try:
+            for (x_coord, y_coord) in tuple_points:
+                self._x_coord.append(x_coord)
+                self._y_coord.append(y_coord)
             for (x_coord, y_coord) in points:
                 self._x_coord.append(x_coord)
                 self._y_coord.append(y_coord)
@@ -80,9 +84,9 @@ class ScatterChart(chart_interfaces.IChart):
         plt.show()
 
 
-ScatterChart()\
-    .set_points([[1, 2], [2, 3]])\
-    .set_color("#FF0000")\
-    .set_x_title("Название оси X")\
-    .set_y_title("Название оси Y")\
-    .show()
+# ScatterChart()\
+#     .set_points([[1, 2], [2, 3]])\
+#     .set_color("#FF0000")\
+#     .set_x_title("Название оси X")\
+#     .set_y_title("Название оси Y")\
+#     .show()

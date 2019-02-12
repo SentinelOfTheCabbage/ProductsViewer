@@ -98,6 +98,15 @@ class ReportsInteractor:
         return Result
 
     def get_prices_by_group(self, product_group: str, products: list):
+        """Author: Suleymanov Nail
+        output: Result
+        Result=[
+            {'product[i].name': price[i] },
+            ...
+        ]
+        product[i] is in products and have product[i].group_name == product_group
+
+        """
         Result = {} * 0
         for i in range(len(DB.index)):
             if (DB.iloc[i]['group_name'] == product_group) and (DB.iloc[i]['name'] in products):
@@ -105,6 +114,11 @@ class ReportsInteractor:
         return Result
 
     def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):
+        """Author: Suleymanov Nail
+        output: Result
+        ХЗ ЧТО ЭТО И НАХУЯ, НО ВРОДЕ РАБОТАЕТ!)
+
+        """
         database = self.DB_Products
         Result = {}
         Result.fromkeys(qualities, [])
@@ -117,6 +131,17 @@ class ReportsInteractor:
         return Result
 
     def get_spreading(self, product_group: str, date: str):
+        """Author: Suleymanov Nail
+        output: Result
+        Return information about amount of sold production of product_group and price
+        in DD.MM.YYYY date
+        Return =[
+            {'price': price of 1 object,
+             'amount': amount of this product},
+            ...
+        ]
+
+        """
         vouchers = self.DB_Vouchers
         sales = self.DB_Sales
         products = self.DB_Products
@@ -151,4 +176,21 @@ class ReportsInteractor:
                     pos = current_position(saved_product_list, products.iloc[
                                            sales.iloc[i]['products_id'] - 1]['name'])
                     Result[pos]['amount'] += sales.iloc[i]['amount']
+        return Result
+
+    def get_groups_list(self):
+        """Author: Suleymanov Nail
+        Returns list of product's groups
+
+        """
+        return list(self.DB_Groups['name'])
+
+    def get_quality_list(self):
+        """Author: Suleymanov Nail
+        output: Result
+        Returns list of sorted product's qualities
+
+        """
+        Result=list(set(list(self.DB_Products['quality'])))
+        Result.sort()
         return Result

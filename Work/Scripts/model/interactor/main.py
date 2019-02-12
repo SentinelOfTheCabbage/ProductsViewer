@@ -47,12 +47,12 @@ class ReportsInteractor:
 
             return date_begin <= now <= date_end
 
-        for i in range(1, len(self.DB_Products) + 1):
-            Result.append(list(self.DB_Products.iloc[i - 1]))
+        for i in range(len(self.DB_Products)):
+            Result.append(list(self.DB_Products.iloc[i]))
 
             if is_discount_works(self, Result[i][5]):
-                Result[i][5] = self.DB_Discount.iloc[Result[i][5]]['amount']
-                Result[i][2] = round(
+                Result[i + 1][5] = self.DB_Discount.iloc[Result[i + 1][5]]['amount']
+                Result[i + 1][2] = round(
                     Result[i][2] * (1 - Result[i][5] / 100.0), 2)
             else:
                 Result[i][5] = 0
@@ -77,7 +77,6 @@ class ReportsInteractor:
             sorted_series_table = products_list.groupby(['group_name', 'quality'])[
                 'price'].mean()
             changes = True
-            print(sorted_series_table)
             table_group_keys_list = list(sorted_series_table.index.levels[0])
             while changes == True:
                 changes = False
@@ -153,18 +152,30 @@ class ReportsInteractor:
     def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):
         """Author: Suleymanov Nail
         output: Result
-        ХЗ ЧТО ЭТО И НАХУЯ, НО ВРОДЕ РАБОТАЕТ!
+        I forgot for what it was created but it works !=)
 
         """
+        def get_quality_pos(quality: str,quality_list:str):
+            for i in range(len(quality_list)):
+                if quality == quality_list[i]:
+                    return i
+
         database = self.DB_Products
-        Result = {} * 0
-        Result.fromkeys(qualities, [])
+        Result = {}
+        List_of_list= [None]*len(qualities)
+        for i in range(len(List_of_list)):
+            List_of_list[i]=[]
+
+        Result = Result.fromkeys(qualities, [])
         for i in range(len(database)):
             if (database.iloc[i]['name'] in products) and (
                     database.iloc[i]['quality'] in qualities) and (
                     database.iloc[i]['group_name'] == product_group):
-                Result[database.iloc[i]['quality']].append(
-                    int(database.iloc[i]['price']))
+                current_quality_pos=get_quality_pos(database.iloc[i]['quality'],qualities)
+                List_of_list[current_quality_pos].append(int(database.iloc[i]['price']))
+        for i in range(len(List_of_list)):
+            Result[qualities[i]]=List_of_list[i]
+
         return Result
 
     def get_spreading(self, product_group: str, date: str):
@@ -189,7 +200,7 @@ class ReportsInteractor:
             if vouchers.iloc[i]['date'] == date:
                 if first_sale == None:
                     first_sale = i
-                else:
+                if first_sale != None:
                     last_sale = i
             elif last_sale != None:
                 break
@@ -202,17 +213,18 @@ class ReportsInteractor:
         for i in sales.index:
             saved_product_list = []
             Result = []
-            if (first_sale <= int(sales.iloc[i]['check_id']) <= last_sale) and (
-                    products.iloc[sales.iloc[i]['products_id'] - 1]['group_name'] == product_group):
-                if products.iloc[sales.iloc[i]['products_id'] - 1]['name'] not in saved_product_list:
-                    saved_product_list.append(
-                        products.iloc[sales.iloc[i]['products_id'] - 1]['name'])
-                    Result.append({'price': products.iloc[sales.iloc[i][
-                                  'products_id'] - 1]['price'], 'amount': sales.iloc[i]['amount']})
-                else:
-                    pos = current_position(saved_product_list, products.iloc[
-                                           sales.iloc[i]['products_id'] - 1]['name'])
-                    Result[pos]['amount'] += sales.iloc[i]['amount']
+            if (first_sale != None):
+                if (first_sale <= int(sales.iloc[i]['check_id']) <= last_sale) and (
+                        products.iloc[sales.iloc[i]['products_id']]['group_name'] == product_group):
+                    if products.iloc[sales.iloc[i]['products_id']]['name'] not in saved_product_list:
+                        saved_product_list.append(
+                            products.iloc[sales.iloc[i]['products_id']]['name'])
+                        Result.append({'price': products.iloc[sales.iloc[i][
+                                      'products_id']]['price'], 'amount': sales.iloc[i]['amount']})
+                    else:
+                        pos = current_position(saved_product_list, products.iloc[
+                                               sales.iloc[i]['products_id']]['name'])
+                        Result[pos]['amount'] += sales.iloc[i]['amount']
         return Result
 
     def get_groups_list(self):

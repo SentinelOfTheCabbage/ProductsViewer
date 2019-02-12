@@ -2,7 +2,8 @@
 # продуктов и выбранному качеству
 
 # Метод/функция на вход получает список групп продуктов и список категорий качества.
-#   Исходя из входных данныx необходимо получить список средних цен по каждой категории качества каждой группы вида
+#   Исходя из входных данныx необходимо получить список средних цен
+#   по каждой категории качества каждой группы вида
 #   [[группа1-качество1, группа1-качество2], [группа2-качество1, группа2-качество2]]
 import pandas
 
@@ -17,12 +18,48 @@ class ReportsInteractor:
         file_name = 'database.txt'
         with open(file_name) as file:
             DB_List = [row.strip() for row in file]
+
         self.DB_Products = pandas.read_csv(DB_List[0], sep=';')
         self.DB_Producer = pandas.read_csv(DB_List[2], sep=';')
         self.DB_Vouchers = pandas.read_csv(DB_List[5], sep=';')
         self.DB_Sales = pandas.read_csv(DB_List[1], sep=';')
         self.DB_Groups = pandas.read_csv(DB_List[3], sep=';')
         self.DB_Discount = pandas.read_csv(DB_List[4], sep=';')
+
+    def get_main_table(self):
+        """
+        Author: Suleymanov Nail
+        Function returns list of lists that contain all needed information for main table
+        as: product_id,product_name,product_price,product_producer,product_group,dicsount, quality
+        Return[0]==list of headers for table
+        """
+        Table = self.DB_Products
+        Result = [] * 1
+        Result.append(list(self.DB_Products.columns))
+
+        def is_discount_works(self, discount_id):
+            import datetime
+            now = time.mktime(datetime.datetime.now().timetuple())
+            date_begin = time.mktime(datetime.datetime.strptime(self.DB_Discount.iloc[
+                                     discount_id]['date_begin'], "%d.%m.%Y").timetuple())
+            date_end = time.mktime(datetime.datetime.strptime(self.DB_Discount.iloc[
+                                   discount_id]['date_end'], "%d.%m.%Y").timetuple())
+
+            return date_begin <= now <= date_end
+
+        for i in range(1, len(self.DB_Products) + 1):
+            Result.append(list(self.DB_Products.iloc[i - 1]))
+
+            if is_discount_works(self, Result[i][5]):
+                Result[i][5] = self.DB_Discount.iloc[Result[i][5]]['amount']
+                Result[i][2] = round(
+                    Result[i][2] * (1 - Result[i][5] / 100.0), 2)
+            else:
+                Result[i][5] = 0
+
+            Result[i]
+
+        return Result
 
     def get_prices_by_group_and_quality(self, groups: list, quality: list):
         """Author: Suleymanov Nail
@@ -116,11 +153,11 @@ class ReportsInteractor:
     def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):
         """Author: Suleymanov Nail
         output: Result
-        ХЗ ЧТО ЭТО И НАХУЯ, НО ВРОДЕ РАБОТАЕТ!)
+        ХЗ ЧТО ЭТО И НАХУЯ, НО ВРОДЕ РАБОТАЕТ!
 
         """
         database = self.DB_Products
-        Result = {}
+        Result = {} * 0
         Result.fromkeys(qualities, [])
         for i in range(len(database)):
             if (database.iloc[i]['name'] in products) and (
@@ -180,7 +217,7 @@ class ReportsInteractor:
 
     def get_groups_list(self):
         """Author: Suleymanov Nail
-        Returns list of product's groups
+        Returns list of products groups
 
         """
         return list(self.DB_Groups['name'])
@@ -188,9 +225,9 @@ class ReportsInteractor:
     def get_quality_list(self):
         """Author: Suleymanov Nail
         output: Result
-        Returns list of sorted product's qualities
+        Returns list of sorted products qualities
 
         """
-        Result=list(set(list(self.DB_Products['quality'])))
+        Result = list(set(list(self.DB_Products['quality'])))
         Result.sort()
         return Result

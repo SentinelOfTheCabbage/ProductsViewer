@@ -2,25 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="354b98a3-f7e7-4bec-b02a-0a6dd65eeb4e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Work/Library/import_libs.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/test/graph_reports_interactor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Data/1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/model/interactor/1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/model/interactor/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/model/interactor/graph_reports_interactor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/box_whiskers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/reports/box_whiskers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/clustered_chart.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/reports/clustered_chart.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/histogram.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/reports/histogram.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/scatter_chart.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/reports/scatter_chart.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/calend.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/custom_widgets.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/ui/custom_widgets.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/ui/main_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/choice_frames.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/choice_frames.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/report_settings_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/report_settings_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_bar_chart.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_bar_chart.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_box_and_whisker.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_box_and_whisker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_histogram.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_histogram.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_scatter_chart.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_scatter_chart.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/controller/1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/controller/1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/res/values/colors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/model/interactor/graph_reports_interactor.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/model/repository/1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/res/values/styles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/test/graph_reports_interactor.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/box_whiskers.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/chart_interfaces.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/clustered_chart.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/histogram.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/scatter_chart.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/config.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/custom_widgets.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/img.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/main_window.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/choice_frames.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/report_settings_window.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_bar_chart.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_box_and_whisker.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_histogram.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_scatter_chart.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,120 +32,117 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/ProductsViewer$settings_box_and_whisker.coverage" NAME="settings_box_and_whisker Coverage Results" MODIFIED="1549996743517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings" />
-    <SUITE FILE_PATH="coverage/ProductsViewer$main.coverage" NAME="main Coverage Results" MODIFIED="1549928587020" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
     <SUITE FILE_PATH="coverage/ProductsViewer$calend.coverage" NAME="calend Coverage Results" MODIFIED="1550001665524" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
-    <SUITE FILE_PATH="coverage/ProductsViewer$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1550001908677" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
-    <SUITE FILE_PATH="coverage/ProductsViewer$choice_frames.coverage" NAME="choice_frames Coverage Results" MODIFIED="1549928594207" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings" />
+    <SUITE FILE_PATH="coverage/ProductsViewer$main.coverage" NAME="main Coverage Results" MODIFIED="1550004560592" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
+    <SUITE FILE_PATH="coverage/ProductsViewer$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1550007971419" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
+    <SUITE FILE_PATH="coverage/ProductsViewer$choice_frames.coverage" NAME="choice_frames Coverage Results" MODIFIED="1550004204092" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/choice_frames.py">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/report_settings_window.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="188" lean-forward="true" selection-start-line="188" selection-end-line="188" />
+            <state relative-caret-position="305">
+              <caret line="133" column="12" lean-forward="true" selection-start-line="133" selection-start-column="12" selection-end-line="133" selection-end-column="12" />
               <folding>
-                <element signature="e#0#35#0" expanded="true" />
+                <element signature="e#59#94#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_box_and_whisker.py">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_bar_chart.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-426">
-              <caret line="34" column="16" lean-forward="true" selection-start-line="34" selection-start-column="16" selection-end-line="34" selection-end-column="16" />
+            <state relative-caret-position="221">
+              <caret line="13" selection-start-line="13" selection-end-line="13" selection-end-column="64" />
               <folding>
-                <element signature="e#0#58#0" expanded="true" />
+                <element signature="e#0#79#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_histogram.py">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/src/test/graph_reports_interactor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="19" column="8" lean-forward="true" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="39" />
+            <state relative-caret-position="254">
+              <caret line="53" column="47" selection-start-line="53" selection-start-column="47" selection-end-line="53" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/res/values/colors.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="16" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/choice_frames.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2839">
+              <caret line="9" column="30" lean-forward="true" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
               <folding>
-                <element signature="e#0#57#0" expanded="true" />
+                <element signature="e#0#15#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/main_window.py">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/res/values/styles.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="291">
-              <caret line="482" column="26" lean-forward="true" selection-start-line="482" selection-start-column="26" selection-end-line="482" selection-end-column="26" />
+            <state relative-caret-position="68">
+              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_box_and_whisker.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
               <folding>
-                <element signature="e#10#105#0" expanded="true" />
+                <element signature="e#0#59#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_scatter_chart.py">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/reports/scatter_chart.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="697">
-              <caret line="41" column="28" lean-forward="true" selection-start-line="41" selection-start-column="28" selection-end-line="41" selection-end-column="28" />
+            <state relative-caret-position="1104">
+              <caret line="77" column="14" selection-start-line="77" selection-start-column="14" selection-end-line="77" selection-end-column="14" />
               <folding>
-                <element signature="e#0#57#0" expanded="true" />
+                <element signature="e#115#146#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Work/Scripts/view/reports/histogram.py">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_scatter_chart.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="65" column="16" lean-forward="true" selection-start-line="65" selection-start-column="16" selection-end-line="65" selection-end-column="16" />
-              <folding>
-                <element signature="e#104#117#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="866">
+              <caret line="67" column="55" selection-start-line="67" selection-start-column="55" selection-end-line="67" selection-end-column="55" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Work/Scripts/view/reports/scatter_chart.py">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_histogram.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="220">
-              <caret line="86" selection-start-line="86" selection-end-line="91" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Work/Scripts/view/reports/box_whiskers.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="101" column="38" lean-forward="true" selection-start-line="101" selection-start-column="38" selection-end-line="101" selection-end-column="38" />
+              <caret line="67" column="43" lean-forward="true" selection-start-line="67" selection-start-column="43" selection-end-line="67" selection-end-column="43" />
               <folding>
-                <element signature="e#97#128#0" expanded="true" />
+                <element signature="e#0#59#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/custom_widgets.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="40" column="30" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Work/Scripts/test/graph_reports_interactor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="22" column="17" lean-forward="true" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -166,6 +165,7 @@
       <find>SE</find>
       <find>anch</find>
       <find>Tk</find>
+      <find>img</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -178,26 +178,38 @@
         <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/item_factory.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/model/interactor/main.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/view/ui/custom_widgets.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/ьфшт.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/main.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/listener.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/reports/clustered_chart.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_bar_chart.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/report_settings_window.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/reports/box_whiskers.py" />
         <option value="$PROJECT_DIR$/Work/Library/extern_libraries" />
         <option value="$PROJECT_DIR$/Work/Library/extern_libraries.bat" />
         <option value="$PROJECT_DIR$/Work/Library/import_libs.bat" />
         <option value="$PROJECT_DIR$/Work/Scripts/model/interactor/graph_reports_interactor.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/reports/histogram.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/view/ui/main_window.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/test/graph_reports_interactor.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_box_and_whisker.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_histogram.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/reports/scatter_chart.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/view/ui/calend.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_scatter_chart.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/ьфшт.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/main.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/choice_frames.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/test/graph_reports_interactor.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/view/reports/scatter_chart.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/view/reports/histogram.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/view/reports/clustered_chart.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/view/reports/box_whiskers.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_histogram.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_scatter_chart.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_box_and_whisker.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_bar_chart.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/main_window.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/res/values/strings.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_bar_chart.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/res/values/colors.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/reports/box_whiskers.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/res/values/styles.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/report_settings_window.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/test/graph_reports_interactor.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_scatter_chart.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_box_and_whisker.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_histogram.py" />
       </list>
     </option>
   </component>
@@ -228,30 +240,6 @@
               <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
               <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
               <item name="Work" type="462c0819:PsiDirectoryNode" />
-              <item name="Data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
-              <item name="Work" type="462c0819:PsiDirectoryNode" />
-              <item name="Library" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
-              <item name="Work" type="462c0819:PsiDirectoryNode" />
-              <item name="Notes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
-              <item name="Work" type="462c0819:PsiDirectoryNode" />
-              <item name="Output" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
-              <item name="Work" type="462c0819:PsiDirectoryNode" />
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -259,43 +247,29 @@
               <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
               <item name="Work" type="462c0819:PsiDirectoryNode" />
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
               <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
               <item name="Work" type="462c0819:PsiDirectoryNode" />
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="462c0819:PsiDirectoryNode" />
+              <item name="values" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
               <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
               <item name="Work" type="462c0819:PsiDirectoryNode" />
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="interactor" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
               <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
               <item name="Work" type="462c0819:PsiDirectoryNode" />
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="repository" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
-              <item name="Work" type="462c0819:PsiDirectoryNode" />
-              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
-              <item name="Work" type="462c0819:PsiDirectoryNode" />
-              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="view" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -303,6 +277,7 @@
               <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
               <item name="Work" type="462c0819:PsiDirectoryNode" />
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="view" type="462c0819:PsiDirectoryNode" />
               <item name="reports" type="462c0819:PsiDirectoryNode" />
             </path>
@@ -311,6 +286,7 @@
               <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
               <item name="Work" type="462c0819:PsiDirectoryNode" />
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="view" type="462c0819:PsiDirectoryNode" />
               <item name="ui" type="462c0819:PsiDirectoryNode" />
             </path>
@@ -319,6 +295,17 @@
               <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
               <item name="Work" type="462c0819:PsiDirectoryNode" />
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="view" type="462c0819:PsiDirectoryNode" />
+              <item name="ui" type="462c0819:PsiDirectoryNode" />
+              <item name="main_window" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="view" type="462c0819:PsiDirectoryNode" />
               <item name="ui" type="462c0819:PsiDirectoryNode" />
               <item name="reports_settings" type="462c0819:PsiDirectoryNode" />
@@ -375,6 +362,11 @@
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Ignored.Files" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\src\view\ui\main_window" />
+      <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\res\drawable" />
+      <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\src" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\test" />
     </key>
@@ -505,10 +497,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main_window" />
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.choice_frames" />
         <item itemvalue="Python.calend" />
         <item itemvalue="Python.settings_box_and_whisker" />
-        <item itemvalue="Python.choice_frames" />
-        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -523,12 +515,12 @@
       <option name="presentableId" value="Default" />
       <updated>1549892510168</updated>
       <workItem from="1549892513317" duration="29803000" />
-      <workItem from="1549980121677" duration="18262000" />
+      <workItem from="1549980121677" duration="26270000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48065000" />
+    <option name="totallyTimeSpent" value="56073000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -541,13 +533,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="835" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25302014" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25302014" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32859176" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4899329" visible="true" weight="0.32859176" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4899329" weight="0.32859176" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4966443" weight="0.3997155" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -556,7 +549,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49530202" weight="0.32859176" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5080537" side_tool="true" weight="0.32859176" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4919463" weight="0.32859176" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4919463" visible="true" weight="0.32859176" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49932885" weight="0.32859176" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -570,6 +563,13 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_bar_chart.py</url>
+          <line>84</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -721,28 +721,7 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/reports/chart_interfaces.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="40" column="28" selection-start-line="40" selection-start-column="28" selection-end-line="40" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/tkinter/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="1704" selection-start-line="1704" selection-end-line="1704" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/main.py">
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" selection-start-line="7" selection-end-line="7" />
@@ -777,7 +756,7 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/controller/1.txt">
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/controller/1.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Work/Library/extern_libraries">
@@ -794,81 +773,10 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_bar_chart.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="13" column="16" lean-forward="true" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#68#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/reports/clustered_chart.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="8" column="47" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/report_settings_window.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-970">
-          <caret line="42" column="30" lean-forward="true" selection-start-line="42" selection-start-column="30" selection-end-line="42" selection-end-column="30" />
-          <folding>
-            <element signature="e#59#94#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/model/interactor/graph_reports_interactor.py">
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/model/interactor/graph_reports_interactor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="148" column="18" selection-start-line="148" selection-start-column="18" selection-end-line="148" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/test/graph_reports_interactor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="22" column="17" lean-forward="true" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_box_and_whisker.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-426">
-          <caret line="34" column="16" lean-forward="true" selection-start-line="34" selection-start-column="16" selection-end-line="34" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#58#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_histogram.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="19" column="8" lean-forward="true" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#57#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/reports/scatter_chart.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="86" selection-start-line="86" selection-end-line="91" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/reports/box_whiskers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="101" column="38" lean-forward="true" selection-start-line="101" selection-start-column="38" selection-end-line="101" selection-end-column="38" />
-          <folding>
-            <element signature="e#97#128#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -882,49 +790,224 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/reports/histogram.py">
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/site-packages/tkcalendar/calendar_.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="65" column="16" lean-forward="true" selection-start-line="65" selection-start-column="16" selection-end-line="65" selection-end-column="16" />
+        <state relative-caret-position="-9677">
+          <caret line="696" column="26" selection-start-line="696" selection-start-column="26" selection-end-line="696" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/datetime.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="1627" column="68" selection-start-line="1627" selection-start-column="68" selection-end-line="1627" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/res/drawable/img.ico">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/site-packages/numpy/core/numeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="590" selection-start-line="590" selection-end-line="590" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/site-packages/matplotlib/collections.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="898" selection-start-line="898" selection-end-line="898" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/site-packages/matplotlib/axes/_axes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="4296" selection-start-line="4296" selection-end-line="4296" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/tkinter/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="1704" selection-start-line="1704" selection-end-line="1704" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/site-packages/matplotlib/pyplot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="2863" selection-start-line="2863" selection-end-line="2863" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/site-packages/matplotlib/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="1809" selection-start-line="1809" selection-end-line="1809" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="39" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/res/values/strings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="22" selection-start-column="22" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/custom_widgets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="74" lean-forward="true" selection-start-line="12" selection-start-column="74" selection-end-line="12" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/reports/chart_interfaces.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-59">
+          <caret line="12" column="17" lean-forward="true" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/reports/clustered_chart.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1607">
+          <caret line="128" column="29" selection-start-line="128" selection-start-column="29" selection-end-line="128" selection-end-column="29" />
+          <folding>
+            <element signature="e#112#125#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/reports/histogram.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1105">
+          <caret line="65" column="8" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
           <folding>
             <element signature="e#104#117#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/main_window.py">
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/reports/box_whiskers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="482" column="26" lean-forward="true" selection-start-line="482" selection-start-column="26" selection-end-line="482" selection-end-column="26" />
+        <state relative-caret-position="-1096">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+          <folding>
+            <element signature="e#97#128#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/main_window.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="169" column="31" selection-start-line="169" selection-start-column="31" selection-end-line="169" selection-end-column="31" />
           <folding>
             <element signature="e#10#105#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/custom_widgets.py">
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/res/values/styles.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="40" column="30" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
+        <state relative-caret-position="68">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_scatter_chart.py">
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/reports/scatter_chart.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="41" column="28" lean-forward="true" selection-start-line="41" selection-start-column="28" selection-end-line="41" selection-end-column="28" />
+        <state relative-caret-position="1104">
+          <caret line="77" column="14" selection-start-line="77" selection-start-column="14" selection-end-line="77" selection-end-column="14" />
           <folding>
-            <element signature="e#0#57#0" expanded="true" />
+            <element signature="e#115#146#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/choice_frames.py">
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/test/graph_reports_interactor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="188" lean-forward="true" selection-start-line="188" selection-end-line="188" />
+        <state relative-caret-position="254">
+          <caret line="53" column="47" selection-start-line="53" selection-start-column="47" selection-end-line="53" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_bar_chart.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" selection-start-line="13" selection-end-line="13" selection-end-column="64" />
           <folding>
-            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#0#79#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_box_and_whisker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="e#0#59#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/res/values/colors.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="16" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_histogram.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="67" column="43" lean-forward="true" selection-start-line="67" selection-start-column="43" selection-end-line="67" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#59#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_scatter_chart.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="866">
+          <caret line="67" column="55" selection-start-line="67" selection-start-column="55" selection-end-line="67" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/choice_frames.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2839">
+          <caret line="9" column="30" lean-forward="true" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/report_settings_window.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="305">
+          <caret line="133" column="12" lean-forward="true" selection-start-line="133" selection-start-column="12" selection-end-line="133" selection-end-column="12" />
+          <folding>
+            <element signature="e#59#94#0" expanded="true" />
           </folding>
         </state>
       </provider>

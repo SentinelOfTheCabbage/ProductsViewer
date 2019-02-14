@@ -1,6 +1,6 @@
 """asd"""
 from tkinter import Frame, Canvas, Label, BOTH, Button, \
-    Checkbutton, Tk, Scrollbar, Menu, Scale
+    Checkbutton, Tk, Scrollbar, Menu, Scale, Entry
 from config import WIN_W_START, WIN_H_START, COLOR_BG_TITLE_TABLE, \
     COLOR_BG_EVENT_ROW, COLOR_BG_ODD_ROW, COLOR_TEXT_TABLE, COLOR_BG_LAST_CH, \
     COLOR_BG_TITLE_LAST_CH, COLOR_BG_FRAME_TABLE, COLOR_BG_FRAME_FILTR, \
@@ -112,8 +112,6 @@ class App:
     def on_mousewheel(self, event):
         """ asd"""
         widget = self.widget_pointer()
-        print(self)
-        print(widget)
         sgn = -1 * (event.delta // 120)
         if "bdframe" in widget and "canvas" in widget:
             self.main_frame.cont.yview_scroll(sgn, "units")
@@ -312,7 +310,10 @@ class BDFrame(Canvas):
     ]
     col = len(_bd_array[0])
     row = len(_bd_array)
-
+    list_cell = []
+    list_check = []
+    widget = ""
+    z = 0
     def __init__(self, master, **kw):
         super().__init__(master, {}, **kw)
         self.grid_rowconfigure(0, weight=1)
@@ -328,7 +329,7 @@ class BDFrame(Canvas):
         self.titles = Canvas(self.frame, bg="orange")
         self.cont = Canvas(self.frame, bg="#f0f0f0", height=350)
         self.titles.grid(row=0, column=0, sticky="nwes")
-        self.frame2 = Frame(self.cont, background="blue")
+        self.frame2 = Frame(self.cont, background="yellow")
         self.cont.create_window((0, 0), window=self.frame2, anchor="nw")
         self.cont.grid(row=1, column=0, sticky="nwes")
 
@@ -346,16 +347,28 @@ class BDFrame(Canvas):
                          self.on_frame_configure(self.cont))
         self.content(self.titles, self.frame2)
 
-        self.menu = Menu(self.master, tearoff=0)
-        self.menu.add_command(label="Undo")
-        self.menu.add_command(label="Redo")
+        self.menu = Menu(self.master, tearoff=0, postcommand=self.new_xy_menu)
+        self.menu.add_command(label="Изменить", command=self.change)
+        self.menu.add_command(label="Подробнее")
 
         self.plus = Menu(self.master, tearoff=0)
         self.plus.add_command(label="мб плюс что-то")
         self.plus.add_command(label="или кого-то")
 
+    def new_xy_menu(self):
+        self.widget = self.widget_pointer()
+
+    def save_change(self, event):
+        self._bd_array[1 + self.z//self.col][self.z%self.col] = self.list_cell[self.z].get()
+        self.list_cell[self.z].config(state="disabled")
+
+    def change(self):
+        self.z = int(self.widget[47:]) - 1
+        self.list_cell[self.z].config(state="normal")
+        self.list_cell[self.z].bind('<Return>', self.save_change)
 
     def context_menu(self, event):
+        z = self.widget_pointer()
         self.menu.post(event.x_root, event.y_root)
 
     def click_plus(self, event):
@@ -369,12 +382,25 @@ class BDFrame(Canvas):
         return widget
 
     def click_check(self, event):
-        for i in range(self.row):
-            if "checkbd{}".format(i) in "{}".format(self.widget_pointer()):
-                for r in range(self.row):
-                    for c in range(self.col + 1):
-                        if r == i:
-                            self.cell.config(bg="#000")
+        widget = self.widget_pointer()
+        if widget[49:] == "":
+            z = 0
+        else:
+            z = int(widget[49:]) - 1
+        if "#000" in "{}".format(self.list_cell[self.col * z]["disabledbackground"]):
+            if z % 2 == 0:
+                self.list_check[z].config(background=COLOR_BG_ODD_ROW)
+                for i in range(self.col):
+                    self.list_cell[self.col * z + i].config(disabledbackground=COLOR_BG_ODD_ROW)
+            else:
+                self.list_check[z].config(background=COLOR_BG_EVENT_ROW)
+                for i in range(self.col):
+                    self.list_cell[self.col * z + i].config(disabledbackground=COLOR_BG_EVENT_ROW)
+        else:
+            self.list_check[z].config(background="#000")
+            for i in range(self.col):
+                self.list_cell[self.col * z + i].config(disabledbackground="#000")
+
 
     def on_frame_configure(self, main_lab2):
         """Reset the scroll region to encompass the inner frame"""
@@ -390,17 +416,27 @@ class BDFrame(Canvas):
                                           relief="flat")
                         self.cell.bind("<Button-1>", self.click_plus)
                     else:
-                        self.cell = Label(frame1, width=10, text="{}".format(
+                        self.cell = Entry(frame1, relief="flat", width=11,
+                                          disabledbackground=COLOR_BG_TITLE_TABLE)
+                        self.cell.insert(0, "{}".format(
                             self._bd_array[r][c-1]))
+                        self.cell.config(state="disabled", bg="red")
                 else:
                     if c == 0:
                         self.cell = CheckBD(frame2, r)
                         self.cell.bind("<Button-1>", self.click_check)
+                        self.list_check.append(self.cell)
                     else:
-                        self.cell = Label(frame2, width=10, text="{}".format(
+                        self.cell = Entry(frame2, relief="flat", width=11,
+                                          disabledbackground=COLOR_BG_ODD_ROW)
+                        self.cell.insert(0, "{}".format(
                             self._bd_array[r][c-1]))
+                        self.cell.config(state="disabled", bg="red")
+                        self.list_cell.append(self.cell)
+                        if r % 2 == 0:
+                            self.cell.config(disabledbackground=COLOR_BG_EVENT_ROW)
                 self.cell.bind("<Button-3>", self.context_menu)
-                self.cell.grid(row=r, column=c)
+                self.cell.grid(row=r, column=c, sticky="nwes")
                 self.cell.config(bd=2, fg=COLOR_TEXT_TABLE,
                                  bg=COLOR_BG_ODD_ROW,
                                  )

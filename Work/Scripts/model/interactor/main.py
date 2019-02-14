@@ -8,6 +8,8 @@
 import pandas
 
 import os
+import datetime
+import time
 os.chdir('C:/Users/ирбисик/Documents/PYTHON/ProductsViewer/Work/Data')
 
 
@@ -33,11 +35,10 @@ class ReportsInteractor:
         as: product_id,product_name,product_price,product_producer,product_group,dicsount, quality
         Return[0]==list of headers for table
         """
-        Table = self.DB_Products
         Result = [] * 1
         Result.append(list(self.DB_Products.columns))
 
-        def is_discount_works(self, discount_id):
+        def is_discount_works(self, discount_id: int):
             import datetime
             now = time.mktime(datetime.datetime.now().timetuple())
             date_begin = time.mktime(datetime.datetime.strptime(self.DB_Discount.iloc[
@@ -49,15 +50,12 @@ class ReportsInteractor:
 
         for i in range(len(self.DB_Products)):
             Result.append(list(self.DB_Products.iloc[i]))
-
-            if is_discount_works(self, Result[i][5]):
+            if is_discount_works(self, Result[i + 1][5]):
                 Result[i + 1][5] = self.DB_Discount.iloc[Result[i + 1][5]]['amount']
-                Result[i + 1][2] = round(
-                    Result[i][2] * (1 - Result[i][5] / 100.0), 2)
+                Result[i + 1][2] = round(int(Result[i + 1][2])
+                                         * (1 - int(Result[i + 1][5]) / 100.0), 2)
             else:
-                Result[i][5] = 0
-
-            Result[i]
+                Result[i + 1][5] = 0
 
         return Result
 
@@ -155,26 +153,28 @@ class ReportsInteractor:
         I forgot for what it was created but it works !=)
 
         """
-        def get_quality_pos(quality: str,quality_list:str):
+        def get_quality_pos(quality: str, quality_list: str):
             for i in range(len(quality_list)):
                 if quality == quality_list[i]:
                     return i
 
         database = self.DB_Products
         Result = {}
-        List_of_list= [None]*len(qualities)
+        List_of_list = [None] * len(qualities)
         for i in range(len(List_of_list)):
-            List_of_list[i]=[]
+            List_of_list[i] = []
 
         Result = Result.fromkeys(qualities, [])
         for i in range(len(database)):
             if (database.iloc[i]['name'] in products) and (
                     database.iloc[i]['quality'] in qualities) and (
                     database.iloc[i]['group_name'] == product_group):
-                current_quality_pos=get_quality_pos(database.iloc[i]['quality'],qualities)
-                List_of_list[current_quality_pos].append(int(database.iloc[i]['price']))
+                current_quality_pos = get_quality_pos(
+                    database.iloc[i]['quality'], qualities)
+                List_of_list[current_quality_pos].append(
+                    int(database.iloc[i]['price']))
         for i in range(len(List_of_list)):
-            Result[qualities[i]]=List_of_list[i]
+            Result[qualities[i]] = List_of_list[i]
 
         return Result
 

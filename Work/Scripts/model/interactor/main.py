@@ -19,14 +19,14 @@ class ReportsInteractor:
     def __init__(self):
         file_name = 'database.txt'
         with open(file_name) as file:
-            DB_List = [row.strip() for row in file]
+            self.DB_List = [row.strip() for row in file]
 
-        self.DB_Products = pandas.read_csv(DB_List[0], sep=';')
-        self.DB_Producer = pandas.read_csv(DB_List[2], sep=';')
-        self.DB_Vouchers = pandas.read_csv(DB_List[5], sep=';')
-        self.DB_Sales = pandas.read_csv(DB_List[1], sep=';')
-        self.DB_Groups = pandas.read_csv(DB_List[3], sep=';')
-        self.DB_Discount = pandas.read_csv(DB_List[4], sep=';')
+        for i in range(len(self.DB_List)):
+            attr_name=self.DB_List[i].strip('csv')
+            attr_name=attr_name.strip('.')
+            attr_name='DB_'+attr_name
+            setattr(self,attr_name,pandas.read_csv(self.DB_List[i], sep=';'))
+            
 
     def get_main_table(self):
         """
@@ -41,9 +41,9 @@ class ReportsInteractor:
         def is_discount_works(self, discount_id: int):
             import datetime
             now = time.mktime(datetime.datetime.now().timetuple())
-            date_begin = time.mktime(datetime.datetime.strptime(self.DB_Discount.iloc[
+            date_begin = time.mktime(datetime.datetime.strptime(self.DB_Discounts.iloc[
                                      discount_id]['date_begin'], "%d.%m.%Y").timetuple())
-            date_end = time.mktime(datetime.datetime.strptime(self.DB_Discount.iloc[
+            date_end = time.mktime(datetime.datetime.strptime(self.DB_Discounts.iloc[
                                    discount_id]['date_end'], "%d.%m.%Y").timetuple())
 
             return date_begin <= now <= date_end
@@ -51,7 +51,7 @@ class ReportsInteractor:
         for i in range(len(self.DB_Products)):
             Result.append(list(self.DB_Products.iloc[i]))
             if is_discount_works(self, Result[i + 1][5]):
-                Result[i + 1][5] = self.DB_Discount.iloc[Result[i + 1][5]]['amount']
+                Result[i + 1][5] = self.DB_Discounts.iloc[Result[i + 1][5]]['amount']
                 Result[i + 1][2] = round(int(Result[i + 1][2])
                                          * (1 - int(Result[i + 1][5]) / 100.0), 2)
             else:

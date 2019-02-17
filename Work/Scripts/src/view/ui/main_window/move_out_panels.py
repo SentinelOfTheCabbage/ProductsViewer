@@ -113,7 +113,7 @@ class ChangeHistoryPanel(Canvas):
     def open(self):
         """ asd"""
         self.content()
-        self.grid(row=1, column=0, columnspan=4, sticky="nwes")
+        self.grid(row=2, column=0, columnspan=4, sticky="nwes")
     # def remove(self):
     #     self.canvas.create_window((0, 0), window=self.frame, anchor="nw")
     #

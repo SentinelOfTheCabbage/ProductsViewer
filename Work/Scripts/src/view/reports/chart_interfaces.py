@@ -1,10 +1,9 @@
 """
 В модуле находятся все классы и интерфейсы для создания диаграмм
 """
-from abc import ABC, abstractmethod
 
 
-class IChart(ABC):
+class IChart():
     """Интерфейс для созданияя диаграмм. Содержит в себе заголовок
     и метод для открытия окна с отчётом. """
 
@@ -24,7 +23,6 @@ class IChart(ABC):
         self._title = title
         return self
 
-    @abstractmethod
     def show(self):
         """Создаёт график на основе переданных данных и
         открывает окно отчёта"""

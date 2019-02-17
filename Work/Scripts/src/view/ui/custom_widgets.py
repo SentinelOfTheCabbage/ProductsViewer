@@ -10,7 +10,7 @@ class VerticalScrolledFrame(Frame):
     def __init__(self, parent, *args, **kw):
         Frame.__init__(self, parent, *args, **kw)
 
-        # create a canvas object and a vertical scrollbar for scrolling it
+        # create a canvas object and a vertical scrollbar for scrolling itz
         vscrollbar = Scrollbar(self, orient=VERTICAL)
         vscrollbar.pack(fill=Y, side=RIGHT, expand=FALSE)
         canvas = Canvas(self, bd=0, highlightthickness=0,

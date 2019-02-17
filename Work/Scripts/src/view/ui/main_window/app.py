@@ -4,6 +4,7 @@ from tkinter import Frame, Canvas, Label, Button, PhotoImage, \
 
 from Work.Scripts.res.values.menu import MainMenuFactory, MainMenuListener
 from Work.Scripts.src.test.main_table_interactor import MainTableInteractor
+from Work.Scripts.src.view.ui.db_editor.db_editor import DbEditorWindow
 from Work.Scripts.src.view.ui.main_window.config import WIN_W_START, \
     WIN_H_START, \
     WIDTH_FILR_FRAME, COLOR_TEXT_TABLE, COLOR_BG_ODD_ROW, COLOR_BG_EVENT_ROW, \
@@ -35,7 +36,7 @@ class MainWindow:
         self.master = master
         master.title(title)
         master.iconbitmap(
-            r'D:\main\projects\python\ProductsViewer\Work\Scripts\res\drawable\img.ico')
+            r'D:\PycharmProjects\ProductsViewer\Work\Scripts\res\drawable\img.ico')
         master.geometry("{winw}x{winh}+{centerw}+{centerh}".format(
             winw=WIN_W_START,
             winh=WIN_H_START,
@@ -549,14 +550,11 @@ class OptionsMenu(Menu, MainMenuListener):
 
         menu_file = menu_factory.get_menu(MENU_FILE_TEXT,
                                           menu_factory.get_file_items())
-        menu_change = menu_factory.get_menu(MENU_CHANGE_TEXT,
-                                            menu_factory.get_change_items())
         menu_report = menu_factory.get_menu(MENU_REPORT_TEXT,
                                             menu_factory.get_report_items())
 
         main_menu = Menu()
         main_menu.add_cascade(menu_file)
-        main_menu.add_cascade(menu_change)
         main_menu.add_cascade(menu_report)
 
         self.master.config(menu=main_menu)
@@ -588,3 +586,7 @@ class OptionsMenu(Menu, MainMenuListener):
     @staticmethod
     def create_histogram():
         SettingsHistogram(Tk())
+
+    @staticmethod
+    def edit_db():
+        DbEditorWindow(Tk(), "Расширенное редактирование БД")

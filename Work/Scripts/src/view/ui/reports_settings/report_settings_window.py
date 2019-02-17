@@ -54,9 +54,6 @@ class SettingsWindow(OnEventInfoListener, ABC):
         self.main.resizable(width=False, height=False)
         self.main.title(WINDOW_TITLE.format(title))
 
-        self.frame_1: ChoiceFrameListener = None
-        self.frame_2: ChoiceFrameListener = None
-
         # Конфигурация таблицы упаковки виджетов
         self.main.grid_rowconfigure(0, minsize=20)
         self.main.grid_rowconfigure(1, weight=0)

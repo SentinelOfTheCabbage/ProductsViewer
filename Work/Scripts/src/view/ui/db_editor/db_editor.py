@@ -27,15 +27,12 @@ class DbEditorWindow:
         master.grid_rowconfigure(2, weight=1, minsize=150)
         master.grid_rowconfigure(3)
 
-        self.command_var = StringVar()
-
         edit_type_label = Label(master, text=EDIT_TYPE_TEXT)
-        edit_type_choice = Combobox(master, width=30, height=20,
-                                    state="readonly",
-                                    textvariable=self.command_var)
-        edit_type_choice['values'] = self.commands
-        edit_type_choice.bind('<<ComboboxSelected>>', self.choose_command)
-        edit_type_choice.current(0)
+        self.edit_type_choice = Combobox(master, width=30, height=20,
+                                    state="readonly")
+        self.edit_type_choice['values'] = self.commands
+        self.edit_type_choice.bind('<<ComboboxSelected>>', self.choose_command)
+        self.edit_type_choice.current(0)
 
         self.table_var = StringVar()
 
@@ -47,7 +44,7 @@ class DbEditorWindow:
         table_choice.current(0)
         table_choice.grid(row=1, column=1, sticky=EW, padx=10)
 
-        edit_type_choice.grid(row=0, column=1, sticky=EW, padx=10)
+        self.edit_type_choice.grid(row=0, column=1, sticky=EW, padx=10)
 
         empty_frame = Frame(master)
         empty_frame.grid(row=0, column=2)
@@ -59,7 +56,7 @@ class DbEditorWindow:
         self.btn_exec.bind("<Button-1>", self.click_exec)
         self.btn_exec.grid(row=3, column=2)
 
-        self.set_command_frame(self.command_var.get())
+        self.set_command_frame(self.edit_type_choice.get())
         master.mainloop()
 
     def set_command_frame(self, command: str):
@@ -75,10 +72,10 @@ class DbEditorWindow:
         self.content_frame.grid(row=2, column=0, columnspan=3, sticky=NSEW)
 
     def choose_command(self, event):
-        self.set_command_frame(self.command_var.get())
+        self.set_command_frame(self.edit_type_choice.get())
 
     def click_exec(self, event):
         self.content_frame.click_exec()
 
 
-DbEditorWindow(Tk(), "Расширенное редактирование БД")
+# DbEditorWindow(Tk(), "Расширенное редактирование БД")

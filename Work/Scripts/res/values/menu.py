@@ -44,6 +44,11 @@ class MainMenuListener(ABC):
     def create_histogram():
         pass
 
+    @staticmethod
+    @abstractmethod
+    def edit_db():
+        pass
+
 
 class MainMenuFactory(ABC):
 
@@ -64,6 +69,7 @@ class MainMenuFactory(ABC):
                 LABEL_KEY: "Сводная таблица",
                 COMMAND_KEY: self.listener.create_pivot_report
             },
+            None,
             {
                 LABEL_KEY: "Столбчатая диаграмма",
                 COMMAND_KEY: self.listener.create_bar_chart
@@ -82,8 +88,20 @@ class MainMenuFactory(ABC):
             }
         ]
 
-    def get_change_items(self):
+    def get_file_items(self):
         return [
+            {
+                LABEL_KEY: "Открыть",
+                COMMAND_KEY: None
+            },
+            {
+                LABEL_KEY: "Сохраниить",
+                COMMAND_KEY: None
+            },
+            {
+                LABEL_KEY: "Сохранить как...",
+                COMMAND_KEY: None
+            },
             {
                 LABEL_KEY: "Назад",
                 COMMAND_KEY: None
@@ -93,43 +111,11 @@ class MainMenuFactory(ABC):
                 COMMAND_KEY: None
             },
             {
-                LABEL_KEY: "Вырезать",
-                COMMAND_KEY: None
+                LABEL_KEY: "Редактировать БД",
+                COMMAND_KEY: self.listener.edit_db
             },
             {
-                LABEL_KEY: "Копировать",
-                COMMAND_KEY: None
-            },
-            {
-                LABEL_KEY: "Вставить",
-                COMMAND_KEY: None
-            },
-            {
-                LABEL_KEY: "Найти и заменить",
-                COMMAND_KEY: None
-            },
-        ]
-
-    def get_file_items(self):
-        return [
-            {
-                LABEL_KEY: "Открыть",
-                COMMAND_KEY: None
-            },
-            {
-                LABEL_KEY: "Создать копию",
-                COMMAND_KEY: None
-            },
-            {
-                LABEL_KEY: "Переименовать",
-                COMMAND_KEY: None
-            },
-            {
-                LABEL_KEY: "Сохранить",
-                COMMAND_KEY: None
-            },
-            {
-                LABEL_KEY: "Сохранить как...",
+                LABEL_KEY: "О программе",
                 COMMAND_KEY: None
             },
             None,

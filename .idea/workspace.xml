@@ -2,69 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="354b98a3-f7e7-4bec-b02a-0a6dd65eeb4e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/ProductsViewer.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Data/Discounts.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Data/Groups.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Data/Producers.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Data/Products.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Data/Sales.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Data/Vouchers.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Data/database.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Library/import_libs.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/res/values/colors.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/res/values/menu.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/res/values/styles.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/model/interactor/graph_reports_interactor.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/test/change_viewer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/test/graph_reports_interactor.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/test/main_table_interactor.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/reports/box_whiskers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/reports/chart_interfaces.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/reports/clustered_chart.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/reports/histogram.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/reports/scatter_chart.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/custom_widgets.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/move_out_panels.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/choice_frames.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/report_settings_window.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_bar_chart.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_box_and_whisker.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_histogram.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_scatter_chart.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Data/1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/src/controller/1.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Graphics/1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Library/1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Notes/1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Output/1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/controller/1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/src/model/repository/1.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/model/interactor/1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/model/respository/1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/box_whisker.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/chart_interfaces.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/clustered_chart.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/histogram.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/scatter_chart.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/calend.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/custom_widgets.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/img.ico" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/res/drawable/img.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/listeners.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/ui/main_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/item_factory.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/report_settings_window.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_bar_chart.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_box_and_whiskey.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_histogram.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_scatter_chart.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -78,7 +16,7 @@
     <SUITE FILE_PATH="coverage/ProductsViewer$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1550007971419" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
     <SUITE FILE_PATH="coverage/ProductsViewer$settings_box_and_whisker.coverage" NAME="settings_box_and_whisker Coverage Results" MODIFIED="1549996743517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings" />
     <SUITE FILE_PATH="coverage/ProductsViewer$main.coverage" NAME="main Coverage Results" MODIFIED="1550004560592" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
-    <SUITE FILE_PATH="coverage/ProductsViewer$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1550412496806" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src" />
+    <SUITE FILE_PATH="coverage/ProductsViewer$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1550416142910" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src" />
     <SUITE FILE_PATH="coverage/ProductsViewer$calend.coverage" NAME="calend Coverage Results" MODIFIED="1550001665524" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
     <SUITE FILE_PATH="coverage/ProductsViewer$main_window__1_.coverage" NAME="main_window (1) Coverage Results" MODIFIED="1550125943859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window" />
     <SUITE FILE_PATH="coverage/ProductsViewer$app.coverage" NAME="app Coverage Results" MODIFIED="1550181257747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window" />
@@ -102,11 +40,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="510" column="53" lean-forward="true" selection-start-line="510" selection-start-column="53" selection-end-line="510" selection-end-column="53" />
+            <state relative-caret-position="-3884">
+              <caret line="139" column="6" lean-forward="true" selection-start-line="139" selection-start-column="6" selection-end-line="139" selection-end-column="6" />
               <folding>
                 <element signature="e#5317#5659#0" />
-                <element signature="e#5697#6989#0" />
                 <element signature="e#7034#7161#0" />
                 <element signature="e#7203#7409#0" />
                 <element signature="e#7452#7610#0" />
@@ -123,7 +60,6 @@
                 <element signature="e#13709#14133#0" />
                 <element signature="e#14169#14539#0" />
                 <element signature="e#14572#15318#0" />
-                <element signature="e#15351#15571#0" />
                 <element signature="e#15618#15689#0" />
                 <element signature="e#15726#15794#0" />
                 <element signature="e#15828#16630#0" />
@@ -135,7 +71,6 @@
                 <element signature="e#18892#20370#0" />
                 <element signature="e#20420#20522#0" />
                 <element signature="e#20577#20699#0" />
-                <element signature="e#22633#23951#0" />
                 <marker date="1550412474719" expanded="true" signature="18949:19015" ph="..." />
               </folding>
             </state>
@@ -145,7 +80,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Work/Scripts/src/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
+            <state relative-caret-position="68">
               <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
@@ -266,15 +201,147 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="793" />
-    <option name="width" value="814" />
+    <option name="x" value="705" />
+    <option name="width" value="902" />
     <option name="height" value="861" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="462c0819:PsiDirectoryNode" />
+              <item name="drawable" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="462c0819:PsiDirectoryNode" />
+              <item name="values" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="interactor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="repository" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="view" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="view" type="462c0819:PsiDirectoryNode" />
+              <item name="reports" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="view" type="462c0819:PsiDirectoryNode" />
+              <item name="ui" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="view" type="462c0819:PsiDirectoryNode" />
+              <item name="ui" type="462c0819:PsiDirectoryNode" />
+              <item name="main_window" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -449,12 +516,12 @@
       <workItem from="1550311804023" duration="723000" />
       <workItem from="1550319333249" duration="24884000" />
       <workItem from="1550354454399" duration="3588000" />
-      <workItem from="1550397737433" duration="9620000" />
+      <workItem from="1550397737433" duration="13147000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="168513000" />
+    <option name="totallyTimeSpent" value="172040000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -466,12 +533,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="793" y="0" width="814" height="861" extended-state="0" />
+    <frame x="705" y="0" width="902" height="861" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="1" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="2" weight="0.49469495" />
+      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.44299287" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3282967" />
       <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4899329" visible="true" weight="0.3653846" />
@@ -979,23 +1046,6 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/move_out_panels.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2125">
@@ -1027,13 +1077,29 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="510" column="53" lean-forward="true" selection-start-line="510" selection-start-column="53" selection-end-line="510" selection-end-column="53" />
+        <state relative-caret-position="-3884">
+          <caret line="139" column="6" lean-forward="true" selection-start-line="139" selection-start-column="6" selection-end-line="139" selection-end-column="6" />
           <folding>
             <element signature="e#5317#5659#0" />
-            <element signature="e#5697#6989#0" />
             <element signature="e#7034#7161#0" />
             <element signature="e#7203#7409#0" />
             <element signature="e#7452#7610#0" />
@@ -1050,7 +1116,6 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
             <element signature="e#13709#14133#0" />
             <element signature="e#14169#14539#0" />
             <element signature="e#14572#15318#0" />
-            <element signature="e#15351#15571#0" />
             <element signature="e#15618#15689#0" />
             <element signature="e#15726#15794#0" />
             <element signature="e#15828#16630#0" />
@@ -1062,7 +1127,6 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
             <element signature="e#18892#20370#0" />
             <element signature="e#20420#20522#0" />
             <element signature="e#20577#20699#0" />
-            <element signature="e#22633#23951#0" />
             <marker date="1550412474719" expanded="true" signature="18949:19015" ph="..." />
           </folding>
         </state>

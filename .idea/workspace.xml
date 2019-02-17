@@ -2,7 +2,94 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="354b98a3-f7e7-4bec-b02a-0a6dd65eeb4e" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+<<<<<<< HEAD
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/controller/commands.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/controller/key_words.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/model/repository/DB_constants.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/model/repository/UI_table_constants.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor/command_frames.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor/db_editor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pylintrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Library/import_libs.bat" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Library/import_libs.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/src/controller/1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/src/model/repository/1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/src/test/main_table_interactor.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/src/test/main_table_interactor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/report_settings_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/report_settings_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_bar_chart.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_bar_chart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_box_and_whisker.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_box_and_whisker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_histogram.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_histogram.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_scatter_chart.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_scatter_chart.py" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/.idea/ProductsViewer.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Data/Discounts.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Data/Groups.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Data/Producers.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Data/Products.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Data/Sales.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Data/Vouchers.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Data/database.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Library/import_libs.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/res/values/colors.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/res/values/menu.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/res/values/styles.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/model/interactor/graph_reports_interactor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/test/change_viewer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/test/graph_reports_interactor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/test/main_table_interactor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/reports/box_whiskers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/reports/chart_interfaces.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/reports/clustered_chart.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/reports/histogram.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/reports/scatter_chart.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/custom_widgets.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/move_out_panels.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/choice_frames.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/report_settings_window.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_bar_chart.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_box_and_whisker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_histogram.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_scatter_chart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Data/1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/src/controller/1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Graphics/1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Library/1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Notes/1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Output/1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/controller/1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/src/model/repository/1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/model/interactor/1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/model/respository/1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/box_whisker.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/chart_interfaces.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/clustered_chart.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/histogram.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/reports/scatter_chart.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/calend.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/custom_widgets.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/img.ico" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/res/drawable/img.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/listeners.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Work/Scripts/view/ui/main_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/item_factory.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/report_settings_window.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_bar_chart.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_box_and_whiskey.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_histogram.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_scatter_chart.py" beforeDir="false" />
+>>>>>>> autist47
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -11,15 +98,30 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/ProductsViewer$choice_frames.coverage" NAME="choice_frames Coverage Results" MODIFIED="1550004204092" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings" />
-    <SUITE FILE_PATH="coverage/ProductsViewer$main_window__2_.coverage" NAME="main_window (2) Coverage Results" MODIFIED="1550172909877" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src/view/ui" />
-    <SUITE FILE_PATH="coverage/ProductsViewer$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1550007971419" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
     <SUITE FILE_PATH="coverage/ProductsViewer$settings_box_and_whisker.coverage" NAME="settings_box_and_whisker Coverage Results" MODIFIED="1549996743517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings" />
+<<<<<<< HEAD
     <SUITE FILE_PATH="coverage/ProductsViewer$main.coverage" NAME="main Coverage Results" MODIFIED="1550004560592" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
     <SUITE FILE_PATH="coverage/ProductsViewer$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1550416142910" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src" />
+=======
+    <SUITE FILE_PATH="coverage/ProductsViewer$main_window__2_.coverage" NAME="main_window (2) Coverage Results" MODIFIED="1550172909877" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src/view/ui" />
+<<<<<<< HEAD
+    <SUITE FILE_PATH="coverage/ProductsViewer$command_frames.coverage" NAME="command_frames Coverage Results" MODIFIED="1550405741411" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor" />
+    <SUITE FILE_PATH="coverage/ProductsViewer$app.coverage" NAME="app Coverage Results" MODIFIED="1550244404511" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window" />
+    <SUITE FILE_PATH="coverage/ProductsViewer$main__2_.coverage" NAME="main (2) Coverage Results" MODIFIED="1550404334426" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor" />
+    <SUITE FILE_PATH="coverage/ProductsViewer$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1550324099693" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src" />
     <SUITE FILE_PATH="coverage/ProductsViewer$calend.coverage" NAME="calend Coverage Results" MODIFIED="1550001665524" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
-    <SUITE FILE_PATH="coverage/ProductsViewer$main_window__1_.coverage" NAME="main_window (1) Coverage Results" MODIFIED="1550125943859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window" />
+    <SUITE FILE_PATH="coverage/ProductsViewer$main.coverage" NAME="main Coverage Results" MODIFIED="1550183477912" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src/view" />
+=======
     <SUITE FILE_PATH="coverage/ProductsViewer$app.coverage" NAME="app Coverage Results" MODIFIED="1550181257747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window" />
+    <SUITE FILE_PATH="coverage/ProductsViewer$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1550412496806" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src" />
+    <SUITE FILE_PATH="coverage/ProductsViewer$main.coverage" NAME="main Coverage Results" MODIFIED="1550004560592" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
+    <SUITE FILE_PATH="coverage/ProductsViewer$calend.coverage" NAME="calend Coverage Results" MODIFIED="1550001665524" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
+>>>>>>> autist47
+    <SUITE FILE_PATH="coverage/ProductsViewer$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1550007971419" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui" />
+    <SUITE FILE_PATH="coverage/ProductsViewer$choice_frames.coverage" NAME="choice_frames Coverage Results" MODIFIED="1550004204092" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings" />
+    <SUITE FILE_PATH="coverage/ProductsViewer$main_window__1_.coverage" NAME="main_window (1) Coverage Results" MODIFIED="1550125943859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window" />
+    <SUITE FILE_PATH="coverage/ProductsViewer$db_editor.coverage" NAME="db_editor Coverage Results" MODIFIED="1550411315581" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -37,11 +139,55 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+<<<<<<< HEAD
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/app.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="-3884">
               <caret line="139" column="6" lean-forward="true" selection-start-line="139" selection-start-column="6" selection-end-line="139" selection-end-column="6" />
+=======
+            <state relative-caret-position="388">
+              <caret line="373" column="24" selection-start-line="373" selection-start-column="24" selection-end-line="373" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor/db_editor.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="80" column="19" lean-forward="true" selection-start-line="80" selection-start-column="19" selection-end-line="80" selection-end-column="19" />
+              <folding>
+                <element signature="e#0#55#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/src/test/main_table_interactor.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="320">
+              <caret line="140" lean-forward="true" selection-start-line="140" selection-end-line="140" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+=======
+>>>>>>> autist47
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor/command_frames.py">
+          <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+            <state relative-caret-position="371">
+              <caret line="369" column="13" lean-forward="true" selection-start-line="369" selection-start-column="13" selection-end-line="369" selection-end-column="13" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+=======
+            <state relative-caret-position="247">
+              <caret line="510" column="53" lean-forward="true" selection-start-line="510" selection-start-column="53" selection-end-line="510" selection-end-column="53" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
               <folding>
                 <element signature="e#5317#5659#0" />
                 <element signature="e#7034#7161#0" />
@@ -72,12 +218,19 @@
                 <element signature="e#20420#20522#0" />
                 <element signature="e#20577#20699#0" />
                 <marker date="1550412474719" expanded="true" signature="18949:19015" ph="..." />
+>>>>>>> autist47
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
+        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/tkinter/ttk.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="243">
+              <caret line="558" column="25" lean-forward="true" selection-start-line="558" selection-start-column="25" selection-end-line="558" selection-end-column="25" />
+=======
         <entry file="file://$PROJECT_DIR$/Work/Scripts/src/main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
@@ -85,20 +238,36 @@
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
+>>>>>>> autist47
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
+        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/tkinter/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="107">
+              <caret line="1491" selection-start-line="1491" selection-end-line="1491" />
+=======
         <entry file="file://$PROJECT_DIR$/Work/Scripts/src/test/main_table_interactor.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="17">
               <caret line="6" column="18" lean-forward="true" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
+>>>>>>> autist47
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/src/controller/commands.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="833">
+              <caret line="49" column="21" selection-start-line="49" selection-start-column="21" selection-end-line="49" selection-end-column="21" />
+              <folding>
+                <element signature="e#0#60#0" expanded="true" />
+=======
         <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/config.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="204">
@@ -114,11 +283,24 @@
               <caret line="130" selection-start-line="62" selection-end-line="130" />
               <folding>
                 <element signature="e#0#79#0" expanded="true" />
+>>>>>>> autist47
               </folding>
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Work/Scripts/src/model/repository/DB_constants.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+=======
+>>>>>>> autist47
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -139,6 +321,11 @@
       <find>Tk</find>
       <find>img</find>
       <find>pylin</find>
+      <find>conte</find>
+      <find>ValueSetFra</find>
+      <find>Button(</find>
+      <find>get_exp</find>
+      <find>Combobox</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -147,25 +334,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/listeners.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/item_factory.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/model/interactor/main.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/custom_widgets.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/listener.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/report_settings_window.py" />
-        <option value="$PROJECT_DIR$/Work/Library/extern_libraries" />
-        <option value="$PROJECT_DIR$/Work/Library/extern_libraries.bat" />
-        <option value="$PROJECT_DIR$/Work/Library/import_libs.bat" />
-        <option value="$PROJECT_DIR$/Work/Scripts/model/interactor/graph_reports_interactor.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/main_window.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/calend.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/ьфшт.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/main.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/choice_frames.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/test/graph_reports_interactor.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/reports/scatter_chart.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/reports/histogram.py" />
-        <option value="$PROJECT_DIR$/Work/Scripts/view/reports/clustered_chart.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/view/reports/box_whiskers.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_histogram.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/view/ui/reports_settings/settings_scatter_chart.py" />
@@ -177,12 +345,48 @@
         <option value="$PROJECT_DIR$/Work/Scripts/src/test/graph_reports_interactor.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/Work/Scripts/src/view/reports/box_whiskers.py" />
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/choice_frames.py" />
+=======
+>>>>>>> autist47
         <option value="$PROJECT_DIR$/Work/Scripts/src/test/change_viewer.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/main_window.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/mainwindow.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/res/values/menu.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/Filter.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window.py" />
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_box_and_whisker.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_histogram.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_scatter_chart.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_bar_chart.py" />
+        <option value="$PROJECT_DIR$/pylintrc" />
+        <option value="$PROJECT_DIR$/Work/Library/import_libs.bat" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/app.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/main.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/model/repository/Ефиду.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/model/repository/table_constants.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/controller/DbNamesAdapter.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/controller/Expression.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/controller/expression.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/model/repository/RowPattern.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/model/repository/RowProdPattern.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/model/repository/UI_table_constants.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/controller/CommandDelete.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/controller/CommandInsert.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/controller/CommandSelect.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/controller/CommandUpdate.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/report_settings_window.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/controller/key_words.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/custom_widgets.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/model/repository/DB_constants.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/controller/commands.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor/db_editor.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor/main.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/test/main_table_interactor.py" />
+        <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor/command_frames.py" />
+=======
         <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/report_settings_window.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_scatter_chart.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_histogram.py" />
@@ -197,19 +401,33 @@
         <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/config.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/src/test/main_table_interactor.py" />
         <option value="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/app.py" />
+>>>>>>> autist47
       </list>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="ProjectFrameBounds">
     <option name="x" value="705" />
     <option name="width" value="902" />
     <option name="height" value="861" />
+=======
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="792" />
+    <option name="width" value="815" />
+    <option name="height" value="862" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
+<<<<<<< HEAD
     <panes>
+=======
+<<<<<<< HEAD
+    <panes>
+      <pane id="Scope" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -226,7 +444,27 @@
               <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
               <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
               <item name="Work" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="Data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Library" type="462c0819:PsiDirectoryNode" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
+              <item name="res" type="462c0819:PsiDirectoryNode" />
+=======
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
             </path>
             <path>
               <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
@@ -234,14 +472,10 @@
               <item name="Work" type="462c0819:PsiDirectoryNode" />
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
               <item name="res" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
-              <item name="Work" type="462c0819:PsiDirectoryNode" />
-              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="res" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name="drawable" type="462c0819:PsiDirectoryNode" />
+=======
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
             </path>
             <path>
               <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
@@ -249,7 +483,11 @@
               <item name="Work" type="462c0819:PsiDirectoryNode" />
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
               <item name="res" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name="values" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="drawable" type="462c0819:PsiDirectoryNode" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
             </path>
             <path>
               <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
@@ -281,7 +519,11 @@
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="model" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name="interactor" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="repository" type="462c0819:PsiDirectoryNode" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
             </path>
             <path>
               <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
@@ -289,16 +531,24 @@
               <item name="Work" type="462c0819:PsiDirectoryNode" />
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name="model" type="462c0819:PsiDirectoryNode" />
               <item name="repository" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
-              <item name="Work" type="462c0819:PsiDirectoryNode" />
-              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+=======
               <item name="test" type="462c0819:PsiDirectoryNode" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="view" type="462c0819:PsiDirectoryNode" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
             </path>
             <path>
               <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
@@ -307,15 +557,23 @@
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="view" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
-              <item name="Work" type="462c0819:PsiDirectoryNode" />
-              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="view" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
+=======
               <item name="reports" type="462c0819:PsiDirectoryNode" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="view" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
+              <item name="reports" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="ui" type="462c0819:PsiDirectoryNode" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
             </path>
             <path>
               <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
@@ -325,6 +583,10 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="view" type="462c0819:PsiDirectoryNode" />
               <item name="ui" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
+=======
+              <item name="db_editor" type="462c0819:PsiDirectoryNode" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
             </path>
             <path>
               <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
@@ -336,12 +598,70 @@
               <item name="ui" type="462c0819:PsiDirectoryNode" />
               <item name="main_window" type="462c0819:PsiDirectoryNode" />
             </path>
+<<<<<<< HEAD
+=======
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProductsViewer" type="462c0819:PsiDirectoryNode" />
+              <item name="Work" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="view" type="462c0819:PsiDirectoryNode" />
+              <item name="ui" type="462c0819:PsiDirectoryNode" />
+              <item name="reports_settings" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (untitled) &gt;" type="70bed36:NamedLibraryElementNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (untitled) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (untitled) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (untitled) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="capath" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProductsViewer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (untitled) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Lib" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="cjkencodings" type="462c0819:PsiDirectoryNode" />
+            </path>
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
           </expand>
           <select />
         </subPane>
       </pane>
+<<<<<<< HEAD
       <pane id="Scope" />
     </panes>
+=======
+    </panes>
+=======
+    <panes />
+>>>>>>> autist47
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -352,14 +672,17 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\src\view\ui" />
-      <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\test" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\src\view\ui\db_editor" />
       <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\src\view\ui\main_window" />
       <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\res\drawable" />
       <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\src" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\res\drawable" />
+      <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\src\view" />
+      <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\src\view\ui" />
+      <recent name="D:\PycharmProjects\ProductsViewer\Work\Scripts\test" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -374,7 +697,11 @@
       </list>
     </option>
   </component>
+<<<<<<< HEAD
+  <component name="RunManager" selected="Python.db_editor">
+=======
   <component name="RunManager" selected="Python.main (1)">
+>>>>>>> autist47
     <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ProductsViewer" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -389,6 +716,50 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="command_frames" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="ProductsViewer" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor/command_frames.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="db_editor" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="ProductsViewer" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor/db_editor.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -419,7 +790,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main_window (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="main (2)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ProductsViewer" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -427,56 +798,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="D:\PycharmProjects\ProductsViewer\Work\Scripts\src\view\ui\main_window\app.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="main_window (2)" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="ProductsViewer" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Work/Scripts/src/view/ui" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="main_window" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="ProductsViewer" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Work/Scripts/view/ui" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Work/Scripts/view/ui/main_window.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -487,11 +814,19 @@
     </configuration>
     <recent_temporary>
       <list>
+<<<<<<< HEAD
+        <item itemvalue="Python.db_editor" />
+        <item itemvalue="Python.command_frames" />
+        <item itemvalue="Python.main (2)" />
+        <item itemvalue="Python.main (1)" />
+        <item itemvalue="Python.app" />
+=======
         <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.app" />
         <item itemvalue="Python.main_window (2)" />
         <item itemvalue="Python.main_window (1)" />
         <item itemvalue="Python.main_window" />
+>>>>>>> autist47
       </list>
     </recent_temporary>
   </component>
@@ -509,6 +844,10 @@
       <workItem from="1549980121677" duration="26590000" />
       <workItem from="1550037196099" duration="6263000" />
       <workItem from="1550060119314" duration="1853000" />
+<<<<<<< HEAD
+      <workItem from="1550122447371" duration="27231000" />
+      <workItem from="1550220987742" duration="62847000" />
+=======
       <workItem from="1550122447371" duration="17003000" />
       <workItem from="1550179783604" duration="7795000" />
       <workItem from="1550229548418" duration="33866000" />
@@ -516,12 +855,25 @@
       <workItem from="1550311804023" duration="723000" />
       <workItem from="1550319333249" duration="24884000" />
       <workItem from="1550354454399" duration="3588000" />
+<<<<<<< HEAD
       <workItem from="1550397737433" duration="13147000" />
+=======
+      <workItem from="1550397737433" duration="9620000" />
+>>>>>>> autist47
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="172040000" />
+=======
+<<<<<<< HEAD
+    <option name="totallyTimeSpent" value="154587000" />
+=======
+    <option name="totallyTimeSpent" value="168513000" />
+>>>>>>> autist47
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -538,7 +890,17 @@
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="1" side_tool="true" />
+<<<<<<< HEAD
       <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.44299287" />
+=======
+<<<<<<< HEAD
+      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.2409396" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32859176" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4899329" visible="true" weight="0.18634424" />
+=======
+      <window_info content_ui="combo" id="Project" order="2" weight="0.49469495" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3282967" />
       <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4899329" visible="true" weight="0.3653846" />
@@ -565,6 +927,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32859176" />
       <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4899329" visible="true" weight="0.3653846" />
+>>>>>>> autist47
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4966443" weight="0.3997155" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -578,7 +941,11 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+<<<<<<< HEAD
+      <window_info anchor="right" id="SciView" order="3" visible="true" weight="0.21006711" />
+=======
       <window_info anchor="right" id="SciView" order="3" weight="0.10861182" />
+>>>>>>> autist47
       <window_info anchor="right" id="Database" order="4" />
     </layout-to-restore>
   </component>
@@ -685,6 +1052,8 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
     </expressions>
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
+=======
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/abc.py" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/python-skeletons/os/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -737,17 +1106,11 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
         </state>
       </provider>
     </entry>
+>>>>>>> autist47
     <entry file="file://$PROJECT_DIR$/Work/Scripts/res/values/styles.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="11" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -907,6 +1270,21 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
           <SelectedNodes />
           <Categories />
           <SCOPE>All</SCOPE>
+<<<<<<< HEAD
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/test/graph_reports_interactor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="901">
+          <caret line="53" column="47" selection-start-line="53" selection-start-column="47" selection-end-line="53" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/test/change_viewer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -917,26 +1295,105 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/reports/box_whiskers.py">
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/Filter.py" />
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/res/values/menu.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="521">
-          <caret line="49" column="69" selection-start-line="49" selection-start-column="69" selection-end-line="49" selection-end-column="69" />
+        <state relative-caret-position="255">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
           <folding>
-            <element signature="e#97#128#0" expanded="true" />
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+=======
+>>>>>>> autist47
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window.py" />
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/config.py" />
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_scatter_chart.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="23" />
+          <folding>
+            <element signature="e#113#181#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/reports/scatter_chart.py">
+    <entry file="file://$PROJECT_DIR$/pylintrc">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
+        <state relative-caret-position="-1737">
+          <caret line="151" lean-forward="true" selection-start-line="151" selection-end-line="151" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="11" lean-forward="true" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/main_window.py" />
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/reports/clustered_chart.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="29" column="16" lean-forward="true" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
           <folding>
-            <element signature="e#115#146#0" expanded="true" />
+            <element signature="e#112#125#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Data/Products.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Data/Vouchers.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/model/repository/RowProdPattern.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="23" lean-forward="true" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/controller/DbNamesAdapter.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/controller/CommandSelect.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="23" />
+          <folding>
+            <element signature="e#0#60#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/controller/CommandInsert.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/controller/CommandUpdate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+          <folding>
+            <element signature="e#0#60#0" expanded="true" />
+=======
     <entry file="file://$PROJECT_DIR$/Work/Scripts/Filter.py" />
     <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/config.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/tkinter/__init__.py" />
@@ -954,10 +1411,46 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
           <caret line="15" selection-start-line="15" selection-end-line="15" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
+>>>>>>> autist47
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/controller/CommandDelete.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="17" />
+          <folding>
+            <element signature="e#0#60#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/reports/histogram.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="644">
+          <caret line="65" column="8" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
+          <folding>
+            <element signature="e#104#117#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/reports/scatter_chart.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
+          <folding>
+            <element signature="e#115#146#0" expanded="true" />
+=======
     <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_box_and_whisker.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -992,21 +1485,80 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
           <caret line="5" column="23" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="23" />
           <folding>
             <element signature="e#826#3429#0" />
+>>>>>>> autist47
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_histogram.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_box_and_whisker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28">
+          <caret line="20" column="27" lean-forward="true" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Library/import_libs.bat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/model/repository/UI_table_constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-193">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/reports/box_whiskers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1264">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="e#97#128#0" expanded="true" />
+=======
     <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_scatter_chart.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="40">
           <caret line="15" column="11" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
           <folding>
             <element signature="e#790#3117#0" />
+>>>>>>> autist47
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/reports/chart_interfaces.py">
+<<<<<<< HEAD
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="7" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/move_out_panels.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-720">
+          <caret line="70" column="13" selection-start-line="70" selection-start-column="13" selection-end-line="70" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#79#0" expanded="true" />
+=======
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" column="13" lean-forward="true" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
@@ -1032,30 +1584,156 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
           <folding>
             <element signature="e#135#214#0" expanded="true" />
             <element signature="e#825#3751#0" />
+>>>>>>> autist47
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/choice_frames.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="-210">
+          <caret line="259" column="14" lean-forward="true" selection-start-line="259" selection-start-column="14" selection-end-line="259" selection-end-column="14" />
+=======
         <state relative-caret-position="145">
           <caret line="65" column="49" selection-start-line="65" selection-start-column="30" selection-end-line="65" selection-end-column="49" />
+>>>>>>> autist47
           <folding>
             <element signature="e#86#101#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+=======
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="-669">
+          <caret line="84" column="13" selection-start-line="84" selection-start-column="13" selection-end-line="84" selection-end-column="13" />
+          <folding>
+            <element signature="e#96#131#0" expanded="true" />
+=======
+        <state relative-caret-position="34">
+          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+>>>>>>> autist47
+          </folding>
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/reports_settings/settings_bar_chart.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-720">
+          <caret line="32" column="43" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/controller/key_words.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="15" column="53" selection-start-line="15" selection-start-column="53" selection-end-line="15" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+=======
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
     <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/move_out_panels.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2125">
           <caret line="130" selection-start-line="62" selection-end-line="130" />
           <folding>
             <element signature="e#0#79#0" expanded="true" />
+>>>>>>> autist47
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/tkinter/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="17" column="2" lean-forward="true" selection-start-line="17" selection-start-column="2" selection-end-line="17" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/custom_widgets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="37" column="40" lean-forward="true" selection-start-line="37" selection-start-column="40" selection-end-line="37" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/model/repository/DB_constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/tkinter/ttk.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="558" column="25" lean-forward="true" selection-start-line="558" selection-start-column="25" selection-end-line="558" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/res/drawable/warning.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="9" column="47" lean-forward="true" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/tkinter/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="1491" selection-start-line="1491" selection-end-line="1491" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/controller/commands.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="833">
+          <caret line="49" column="21" selection-start-line="49" selection-start-column="21" selection-end-line="49" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#60#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor/db_editor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="80" column="19" lean-forward="true" selection-start-line="80" selection-start-column="19" selection-end-line="80" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#55#0" expanded="true" />
+          </folding>
+=======
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/tkinter/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="145">
@@ -1074,6 +1752,14 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="145">
           <caret line="3677" column="8" selection-start-line="3677" selection-start-column="8" selection-end-line="3677" selection-end-column="8" />
+>>>>>>> autist47
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/test/main_table_interactor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="140" lean-forward="true" selection-start-line="140" selection-end-line="140" />
         </state>
       </provider>
     </entry>
@@ -1096,8 +1782,26 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/main_window/app.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="-3884">
           <caret line="139" column="6" lean-forward="true" selection-start-line="139" selection-start-column="6" selection-end-line="139" selection-end-column="6" />
+=======
+<<<<<<< HEAD
+        <state relative-caret-position="388">
+          <caret line="373" column="24" selection-start-line="373" selection-start-column="24" selection-end-line="373" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Work/Scripts/src/view/ui/db_editor/command_frames.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="369" column="13" lean-forward="true" selection-start-line="369" selection-start-column="13" selection-end-line="369" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+=======
+        <state relative-caret-position="247">
+          <caret line="510" column="53" lean-forward="true" selection-start-line="510" selection-start-column="53" selection-end-line="510" selection-end-column="53" />
+>>>>>>> fe90f3b686c50e05b68f8b6055829dfc48924d5d
           <folding>
             <element signature="e#5317#5659#0" />
             <element signature="e#7034#7161#0" />
@@ -1128,6 +1832,7 @@ self.dict_btn_manager[&quot;var&quot;].get()</expression-string>
             <element signature="e#20420#20522#0" />
             <element signature="e#20577#20699#0" />
             <marker date="1550412474719" expanded="true" signature="18949:19015" ph="..." />
+>>>>>>> autist47
           </folding>
         </state>
       </provider>

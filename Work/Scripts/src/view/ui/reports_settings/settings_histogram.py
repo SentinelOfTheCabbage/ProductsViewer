@@ -1,9 +1,9 @@
+# pylint: disable=R0801
 """
 Создаёт окно конфигурации для отображения графического отчёта
 'Категоризированная гистограмма'
 """
 
-# pylint: disable=R0801
 from Work.Scripts.res.values.colors import ERROR_INFO_COLOR, SUCCESS_INFO_COLOR
 from Work.Scripts.src.view.reports.histogram import Histogram
 from Work.Scripts.src.view.ui.reports_settings.choice_frames import \

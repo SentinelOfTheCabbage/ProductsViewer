@@ -1,9 +1,9 @@
+# pylint: disable=R0801
 """
 Создаёт окно конфигурации для отображения графического отчёта
 'Кластеризованная столбчатая диаграмма'
 """
 
-# pylint: disable=R0801
 from Work.Scripts.res.values.colors import ERROR_INFO_COLOR, SUCCESS_INFO_COLOR
 from Work.Scripts.src.view.reports.clustered_chart import ClusteredChart
 from Work.Scripts.src.view.ui.reports_settings.choice_frames import \

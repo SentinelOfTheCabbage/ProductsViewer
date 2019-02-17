@@ -1,9 +1,9 @@
+# pylint: disable=R0801
 """
 Создаёт окно конфигурации для отображения графического отчёта
 'Категоризированная диаграмма Бокса-Вискера'
 """
 
-# pylint: disable=R0801
 from Work.Scripts.res.values.colors import ERROR_INFO_COLOR, SUCCESS_INFO_COLOR
 from Work.Scripts.src.view.reports.box_whiskers import Diagram
 from Work.Scripts.src.view.ui.reports_settings.choice_frames import \

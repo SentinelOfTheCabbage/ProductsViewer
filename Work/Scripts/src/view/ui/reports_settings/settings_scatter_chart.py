@@ -1,9 +1,9 @@
+# pylint: disable=R0801
 """
 Создаёт окно конфигурации для отображения графического отчёта
 'Категоризированная диаграмма рассеивания'
 """
 
-# pylint: disable=R0801
 from Work.Scripts.src.view.reports.scatter_chart import ScatterChart
 from Work.Scripts.src.view.ui.reports_settings.choice_frames import \
     SingleChoiceFrame, CalendarFrame

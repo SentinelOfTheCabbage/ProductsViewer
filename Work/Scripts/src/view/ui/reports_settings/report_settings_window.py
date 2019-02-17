@@ -1,6 +1,6 @@
 """Реализация UI с использованием библиотеки tkinter.  """
 
-# pylint: disable=W0612,W0613
+# pylint: disable=W0612,W0613,R0801
 from abc import ABC, abstractmethod
 from tkinter import Frame, NSEW, Label, RIGHT, Button, E
 
@@ -45,8 +45,8 @@ class SettingsWindow(OnEventInfoListener, ABC):
                  frame_left: Frame, frame_right: Frame):
         """Создаёт окно для настройки параметров графических отчётов"""
         self.main = main
-        window_width = 800
-        window_height = 400
+        window_width = 600
+        window_height = 350
         center_width = (self.main.winfo_screenwidth() - window_width) // 2
         center_height = (self.main.winfo_screenheight() - window_height) // 2
         self.main.geometry("{}x{}+{}+{}".format(window_width, window_height,

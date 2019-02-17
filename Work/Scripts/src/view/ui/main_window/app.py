@@ -290,7 +290,7 @@ class MainTableFrame(Canvas):
                         self.cell.config(state="disabled", bg="red")
                 else:
                     if c == 0:
-                        self.cell = CheckRowButton(frame2, r)
+                        self.cell = CheckRowButton(frame2)
                         self.cell.bind("<Button-1>", self.click_check)
                         self.list_check.append(self.cell)
                     else:
@@ -313,6 +313,7 @@ class MainTableFrame(Canvas):
                     self.cell.config(bg=COLOR_BG_EVENT_ROW)
                 if r == 0:
                     self.cell.config(bg=COLOR_BG_TITLE_TABLE)
+
 
 class CheckRowButton(Checkbutton):
     """"asd"""

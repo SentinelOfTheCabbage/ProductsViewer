@@ -1,8 +1,10 @@
+from abc import ABC, abstractmethod
+
 from Work.Scripts.src.controller.key_words import Expression
 from Work.Scripts.src.model.repository.DB_constants import TableName
 
 
-class ICommand:
+class ICommand(ABC):
     _table_name: TableName = None
 
     def set_table_name(self, table_name: TableName):
@@ -10,6 +12,10 @@ class ICommand:
 
     def get_table_name(self):
         return self._table_name
+
+    @abstractmethod
+    def get_data(self):
+        pass
 
 
 class ConditionProvider:
@@ -43,6 +49,9 @@ class CommandSelect(ICommand, ConditionProvider):
     def get_columns(self):
         return self._columns
 
+    def get_data(self):
+        pass
+
 
 class CommandInsert(ICommand):
     _row = []
@@ -52,6 +61,9 @@ class CommandInsert(ICommand):
 
     def get_row(self):
         return self._row
+
+    def get_data(self):
+        pass
 
 
 class CommandUpdate(ICommand, ConditionProvider):
@@ -63,6 +75,10 @@ class CommandUpdate(ICommand, ConditionProvider):
     def get_values(self):
         return self._values
 
+    def get_data(self):
+        pass
+
 
 class CommandDelete(ICommand, ConditionProvider):
-    pass
+    def get_data(self):
+        pass

@@ -5,9 +5,6 @@ import random
 
 class ReportsInteractor:
 
-    def __init__(self):
-        pass
-
     def get_prices_by_group_and_quality(self, groups: list, quality: list):
         data = {}
         for group in groups:

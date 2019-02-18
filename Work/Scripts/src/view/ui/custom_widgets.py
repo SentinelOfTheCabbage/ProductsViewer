@@ -1,20 +1,98 @@
 from tkinter import *
+from tkinter.ttk import Combobox
+
+from Work.Scripts.src.view.ui.main_window.config import MAIN_BACKGROUND
 
 
-class VerticalScrolledFrame(Frame):
+class PVStandardButton(Button):
+    def __init__(self, master, **kw):
+        super().__init__(master, **kw)
+        self['bg'] = '#80DEEA'
+        self['activebackground'] = '#4DD0E1'
+        self['padx'] = 2
+        self['pady'] = 2
+        self['font'] = ("Courier", 14)
+
+
+class PVAddButton(Button):
+    def __init__(self, master, **kw):
+        super().__init__(master, **kw)
+        self['bg'] = '#80CBC4'
+        self['activebackground'] = '#80CBC4'
+        self['font'] = ("Courier", 12)
+
+
+class PVCancelButton(Button):
+    def __init__(self, master, **kw):
+        super().__init__(master, **kw)
+        self['bg'] = MAIN_BACKGROUND
+        self['fg'] = '#B71C1C'
+        self['relief'] = 'flat'
+        self['activebackground'] = '#EF9A9A'
+        self['font'] = ("Courier", 10, "bold")
+
+
+class PVCombobox(Combobox):
+    def __init__(self, master, **kw):
+        super().__init__(master, **kw)
+        font = ("Times", 12)
+        self['font'] = font
+        master.option_add("*TCombobox*Listbox*Font", font)
+
+
+class PVEntry(Entry):
+    def __init__(self, master, **kw):
+        super().__init__(master, **kw)
+        self['font'] = ("Times", 12)
+
+
+class PVFrame(Frame):
+    def __init__(self, master, **kw):
+        super().__init__(master, **kw)
+        self['bg'] = MAIN_BACKGROUND
+
+
+class PVLabel(Label):
+    def __init__(self, master, **kw):
+        super().__init__(master, **kw)
+        self['bg'] = MAIN_BACKGROUND
+        self['padx'] = 10
+        self['pady'] = 4
+        self['font'] = ("Comic Sans MS", 12, "italic")
+
+
+class PVCheckbutton(Checkbutton):
+    def __init__(self, master, **kw):
+        super().__init__(master, **kw)
+        self['bg'] = MAIN_BACKGROUND
+        self['activebackground'] = MAIN_BACKGROUND
+        self['padx'] = 8
+        self['font'] = ("Times", 12)
+
+
+class SubtitleLabel(PVLabel):
+    def __init__(self, master, **kw):
+        super().__init__(master, **kw)
+        self['pady'] = 10
+        self['font'] = ("Comic Sans MS", 16, "italic")
+
+
+class VerticalScrolledFrame(PVFrame):
     """A pure Tkinter scrollable frame that actually works!
     * Use the 'interior' attribute to place widgets inside the scrollable frame
     * Construct and pack/place/grid normally
     * This frame only allows vertical scrolling
     """
+
     def __init__(self, parent, *args, **kw):
         Frame.__init__(self, parent, *args, **kw)
 
         # create a canvas object and a vertical scrollbar for scrolling itz
-        vscrollbar = Scrollbar(self, orient=VERTICAL)
+        vscrollbar = Scrollbar(self, orient=VERTICAL, width=16)
         vscrollbar.pack(fill=Y, side=RIGHT, expand=FALSE)
         canvas = Canvas(self, bd=0, highlightthickness=0,
                         yscrollcommand=vscrollbar.set)
+        canvas['bg'] = parent['bg']
         canvas.pack(side=LEFT, fill=BOTH, expand=TRUE)
         vscrollbar.config(command=canvas.yview)
 
@@ -23,7 +101,7 @@ class VerticalScrolledFrame(Frame):
         canvas.yview_moveto(0)
 
         # create a frame inside the canvas which will be scrolled with it
-        self.interior = interior = Frame(canvas)
+        self.interior = interior = PVFrame(canvas)
         interior_id = canvas.create_window(0, 0, window=interior,
                                            anchor=NW)
 
@@ -36,10 +114,12 @@ class VerticalScrolledFrame(Frame):
             if interior.winfo_reqwidth() != canvas.winfo_width():
                 # update the canvas's width to fit the inner frame
                 canvas.config(width=interior.winfo_reqwidth())
+
         interior.bind('<Configure>', _configure_interior)
 
         def _configure_canvas(event):
             if interior.winfo_reqwidth() != canvas.winfo_width():
                 # update the inner frame's width to fill the canvas
                 canvas.itemconfigure(interior_id, width=canvas.winfo_width())
+
         canvas.bind('<Configure>', _configure_canvas)

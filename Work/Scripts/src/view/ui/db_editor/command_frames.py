@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from tkinter import Label, Frame, NSEW, W, StringVar, \
+from tkinter import Frame, NSEW, W, StringVar, \
     Checkbutton, BooleanVar, Entry, EW, Button
 from tkinter.ttk import Combobox, Style
 
@@ -8,7 +8,9 @@ from Work.Scripts.src.controller.commands import CommandSelect, CommandInsert, \
 from Work.Scripts.src.controller.key_words import CompareOp, Expression
 from Work.Scripts.src.model.repository.UI_table_constants import ProductColumns
 from Work.Scripts.src.test.main_table_interactor import MainTableInteractor
-from Work.Scripts.src.view.ui.custom_widgets import VerticalScrolledFrame
+from Work.Scripts.src.view.ui.custom_widgets import VerticalScrolledFrame, \
+    SubtitleLabel, PVAddButton, PVCancelButton, PVFrame, PVLabel, \
+    PVCheckbutton, PVCombobox, PVEntry
 
 
 class IRemoveListener(ABC):
@@ -25,21 +27,21 @@ class ICommandCreator(ABC):
         pass
 
 
-class ExpressionEditor(Frame):
+class ExpressionEditor(PVFrame):
     expr_frames = []
 
-    def __init__(self, master, cnf=None, **kw):
-        super().__init__(master, cnf, **kw)
+    def __init__(self, master, **kw):
+        super().__init__(master, **kw)
 
-        where_label = Label(self, text="Где")
+        where_label = SubtitleLabel(self, text="Где")
         self.where_frame = VerticalScrolledFrame(self, bg='blue')
 
         where_label.grid(row=0, column=1, sticky=NSEW)
         self.where_frame.grid(row=1, column=1, sticky=NSEW)
 
-        btn_add_expr = Button(self, text="+")
+        btn_add_expr = PVAddButton(self, text="+")
         btn_add_expr.bind("<Button-1>", self.click_add_expr)
-        btn_add_expr.grid(row=2, column=1, padx=10, sticky=NSEW)
+        btn_add_expr.grid(row=2, column=1, padx=8, sticky=NSEW)
 
     def click_add_expr(self, event):
         expression_frame = ExpressionFrame(self.where_frame.interior, self)
@@ -60,10 +62,10 @@ class ExpressionEditor(Frame):
         return expressions
 
 
-class ExpressionFrame(Frame):
+class ExpressionFrame(PVFrame):
 
-    def __init__(self, master, remove_listener: ExpressionEditor, cnf=None):
-        super().__init__(master, cnf)
+    def __init__(self, master, remove_listener: ExpressionEditor):
+        super().__init__(master)
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1)
@@ -82,7 +84,7 @@ class ExpressionFrame(Frame):
                         ProductColumns.QUALITY.value]
 
         self.field = StringVar()
-        self.field_chooser = Combobox(self, width=20, height=20,
+        self.field_chooser = PVCombobox(self, width=20, height=20,
                                       state="readonly",
                                       textvariable=self.field)
         self.field_chooser['values'] = self.columns
@@ -97,17 +99,17 @@ class ExpressionFrame(Frame):
         ]
 
         self.compare_var = StringVar(self)
-        self.compare_op_chooser = Combobox(self, width=3, height=20,
+        self.compare_op_chooser = PVCombobox(self, width=3, height=20,
                                            state="readonly",
                                            textvariable=self.compare_var)
         self.compare_op_chooser['values'] = self.compare_ops
         self.compare_op_chooser.current(0)
 
         self.value_var = StringVar(self)
-        self.value_entry = Entry(self, width=20, text="Text",
+        self.value_entry = PVEntry(self, width=20, text="Text",
                                  textvariable=self.value_var)
 
-        btn_cancel = Button(self, text="X")
+        btn_cancel = PVCancelButton(self, text="X")
         btn_cancel.bind("<Button-1>", self.click_cancel)
 
         self.field_chooser.grid(row=0, column=0, sticky=NSEW)
@@ -132,9 +134,9 @@ class ExpressionFrame(Frame):
                               self.value_entry.get())
 
 
-class ValueSetFrame(Frame):
-    def __init__(self, master, cnf=None):
-        super().__init__(master, cnf)
+class ValueSetFrame(PVFrame):
+    def __init__(self, master, **kw):
+        super().__init__(master, **kw)
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1)
@@ -150,17 +152,17 @@ class ValueSetFrame(Frame):
                    ProductColumns.PRODUCER_NAME.value,
                    ProductColumns.QUALITY.value]
 
-        self.column_chooser = Combobox(self, width=20, height=20,
+        self.column_chooser = PVCombobox(self, width=20, height=20,
                                        state="readonly")
         self.column_chooser['values'] = columns
         self.column_chooser.current(0)
 
-        assign_label = Label(self, text='=')
+        assign_label = PVLabel(self, text='=')
 
-        self.value_entry = Entry(self, width=20, text="Text",
+        self.value_entry = PVEntry(self, width=20, text="Text",
                                  textvariable=StringVar())
 
-        btn_cancel = Button(self, text="X")
+        btn_cancel = PVCancelButton(self, text="X")
         btn_cancel.bind("<Button-1>", self.click_cancel)
 
         self.column_chooser.grid(row=0, column=0, sticky=NSEW)
@@ -189,7 +191,7 @@ class SelectFrame(ExpressionEditor, ICommandCreator):
         self.grid_rowconfigure(0, weight=0, minsize=10)
         self.grid_rowconfigure(1, weight=1)
 
-        columns_label = Label(self, text="Столбцы")
+        columns_label = SubtitleLabel(self, text="Столбцы")
         columns_frame = VerticalScrolledFrame(self)
 
         columns = [ProductColumns.NAME.value,
@@ -201,7 +203,7 @@ class SelectFrame(ExpressionEditor, ICommandCreator):
         for col in columns:
             checking_var = BooleanVar()
             self.check_vars[col] = checking_var
-            check_btn = Checkbutton(columns_frame.interior, text=col,
+            check_btn = PVCheckbutton(columns_frame.interior, text=col,
                                     variable=checking_var)
             check_btn.pack(anchor=W)
 
@@ -230,13 +232,13 @@ class SelectFrame(ExpressionEditor, ICommandCreator):
             self.main_table_inter.select(self.command_select)
 
 
-class InsertFrame(Frame, ICommandCreator):
+class InsertFrame(PVFrame, ICommandCreator):
     command_insert = CommandInsert()
     main_table_inter = MainTableInteractor()
     values = {}
 
     def __init__(self, master, **kw):
-        super().__init__(master, kw)
+        super().__init__(master, **kw)
 
         self.grid_columnconfigure(0)
         self.grid_columnconfigure(1, weight=10)
@@ -260,15 +262,15 @@ class InsertFrame(Frame, ICommandCreator):
         #                      bg="black")
 
         for col_name in columns:
-            col_and_val_frame = Frame(col_and_vals.interior)
+            col_and_val_frame = PVFrame(col_and_vals.interior)
             col_and_val_frame.grid_columnconfigure(0, weight=1, minsize=180)
             col_and_val_frame.grid_columnconfigure(1, weight=2)
 
             value_var = StringVar()
-            col_label = Label(col_and_val_frame, text=col_name)
+            col_label = PVLabel(col_and_val_frame, text=col_name)
             style = Style()
             style.configure("custom.TCombobox", fieldbackground="#000")
-            value_entry = Combobox(col_and_val_frame, textvariable=value_var,
+            value_entry = PVCombobox(col_and_val_frame, textvariable=value_var,
                                    style="custom.TCombobox")
             value_entry['values'] = ['1', '2', '3']
             col_label.grid(row=0, column=0, sticky=W, padx=(24, 0))
@@ -304,7 +306,7 @@ class UpdateFrame(ExpressionEditor, ICommandCreator):
     main_table_inter = MainTableInteractor()
 
     def __init__(self, master, **kw):
-        super().__init__(master, kw)
+        super().__init__(master, **kw)
         self.master = master
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
@@ -312,16 +314,16 @@ class UpdateFrame(ExpressionEditor, ICommandCreator):
         self.grid_rowconfigure(0, weight=0, minsize=10)
         self.grid_rowconfigure(1, weight=1)
 
-        set_label = Label(self, text="Установить")
+        set_label = SubtitleLabel(self, text="Установить")
         set_label.grid(row=0, column=0)
 
         self.set_frame = VerticalScrolledFrame(self)
 
         self.set_frame.grid(row=1, column=0, padx=10, sticky=NSEW)
 
-        btn_add_value = Button(self, text="+")
+        btn_add_value = PVAddButton(self, text="+")
         btn_add_value.bind("<Button-1>", self.click_add_value)
-        btn_add_value.grid(row=2, column=0, padx=10, sticky=NSEW)
+        btn_add_value.grid(row=2, column=0, padx=(8, 18), sticky=NSEW)
 
     def click_add_value(self, event):
         value_set_frame = ValueSetFrame(self.set_frame.interior)
@@ -354,7 +356,7 @@ class DeleteFrame(ExpressionEditor, ICommandCreator):
     main_table_inter = MainTableInteractor()
 
     def __init__(self, master, **kw):
-        super().__init__(master, kw)
+        super().__init__(master, **kw)
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)

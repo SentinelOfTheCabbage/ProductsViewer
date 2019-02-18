@@ -1,10 +1,13 @@
-from tkinter import Tk, Label, Frame, Button, StringVar, NSEW, W, E, EW
+from tkinter import Tk, StringVar, NSEW, E, EW
 from tkinter.ttk import Combobox
 
+from Work.Scripts.src.view.ui.custom_widgets import PVStandardButton, PVFrame, \
+    PVLabel, PVCombobox
 from Work.Scripts.src.view.ui.db_editor.command_frames import InsertFrame, \
     SelectFrame, UpdateFrame, DeleteFrame
+from Work.Scripts.src.view.ui.main_window.config import MAIN_BACKGROUND
 
-EDIT_TYPE_TEXT = "Выберите команду для редактироавния БД"
+EDIT_TYPE_TEXT = "Команда для редактироавния БД"
 TABLE_CHOICE_TEXT = "Выберите таблицу"
 BTN_EXEC_TEXT = "Изменить"
 
@@ -14,8 +17,8 @@ class DbEditorWindow:
     tables = ['Продукты', 'Чеки']
 
     def __init__(self, master, title):
-
         self.master = master
+        master['bg'] = MAIN_BACKGROUND
         master.title(title)
 
         master.grid_columnconfigure(0, weight=1)
@@ -27,8 +30,8 @@ class DbEditorWindow:
         master.grid_rowconfigure(2, weight=1, minsize=150)
         master.grid_rowconfigure(3)
 
-        edit_type_label = Label(master, text=EDIT_TYPE_TEXT)
-        self.edit_type_choice = Combobox(master, width=30, height=20,
+        edit_type_label = PVLabel(master, text=EDIT_TYPE_TEXT)
+        self.edit_type_choice = PVCombobox(master, width=30, height=20,
                                     state="readonly")
         self.edit_type_choice['values'] = self.commands
         self.edit_type_choice.bind('<<ComboboxSelected>>', self.choose_command)
@@ -36,8 +39,8 @@ class DbEditorWindow:
 
         self.table_var = StringVar()
 
-        table_choice_label = Label(master, text=TABLE_CHOICE_TEXT)
-        table_choice = Combobox(master, width=30, height=20,
+        table_choice_label = PVLabel(master, text=TABLE_CHOICE_TEXT)
+        table_choice = PVCombobox(master, width=30, height=20,
                                 state="readonly",
                                 textvariable=self.table_var)
         table_choice['values'] = self.tables
@@ -46,15 +49,16 @@ class DbEditorWindow:
 
         self.edit_type_choice.grid(row=0, column=1, sticky=EW, padx=10)
 
-        empty_frame = Frame(master)
+        empty_frame = PVFrame(master)
         empty_frame.grid(row=0, column=2)
 
         table_choice_label.grid(row=1, column=0, sticky=E)
         edit_type_label.grid(row=0, column=0, sticky=E)
 
-        self.btn_exec = Button(master)
+        self.btn_exec = PVStandardButton(master)
         self.btn_exec.bind("<Button-1>", self.click_exec)
-        self.btn_exec.grid(row=3, column=2)
+        self.btn_exec.grid(row=3, column=0, columnspan=3,
+                           sticky=E, padx=8, pady=8)
 
         self.set_command_frame(self.edit_type_choice.get())
         master.mainloop()

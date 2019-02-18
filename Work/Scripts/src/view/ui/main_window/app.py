@@ -10,7 +10,8 @@ from Work.Scripts.src.view.ui.main_window.config import WIN_W_START, \
     WIDTH_FILR_FRAME, COLOR_TEXT_TABLE, COLOR_BG_ODD_ROW, COLOR_BG_EVENT_ROW, \
     COLOR_BG_TITLE_TABLE, FILTER_TAB_TEXT, TABLES_TAB_TEXT, \
     LAST_CHANGES_CLOSED_TAB, LAST_CHANGES_OPENED_TAB, MENU_FILE_TEXT, \
-    MENU_CHANGE_TEXT, MENU_REPORT_TEXT, DEFAULT_SEARCH_TEXT
+    MENU_CHANGE_TEXT, MENU_REPORT_TEXT, DEFAULT_SEARCH_TEXT, HEIGHT_ROW, \
+    COLOR_BG_SELECT_ROW, COLOR_TEXT_TITLE
 from Work.Scripts.src.view.ui.main_window.move_out_panels import \
     ChangeHistoryPanel, ColumnFilterPanel, RowFilterPanel
 from Work.Scripts.src.view.ui.reports_settings.settings_bar_chart import \
@@ -36,7 +37,7 @@ class MainWindow:
         self.master = master
         master.title(title)
         master.iconbitmap(
-            r'D:\PycharmProjects\ProductsViewer\Work\Scripts\res\drawable\img.ico')
+            r'D:\main\projects\python\ProductsViewer\Work\Scripts\res\drawable\img.ico')
         master.geometry("{winw}x{winh}+{centerw}+{centerh}".format(
             winw=WIN_W_START,
             winh=WIN_H_START,
@@ -62,21 +63,25 @@ class MainWindow:
         self.search_frame.grid_columnconfigure(2, minsize=30)
         self.search_frame.grid_columnconfigure(3, minsize=30)
         self.search_frame.grid_columnconfigure(4, minsize=49)
-        self.btn_plus = Button(self.search_frame, text="+", bd=0, command=self.plus)
+        self.btn_plus = Button(self.search_frame, text="+", bd=0,
+                               command=self.plus)
         self.btn_plus.grid(row=0, column=0)
         self.search = Entry(self.search_frame, fg="#d0d0d0")
         self.search.insert(0, DEFAULT_SEARCH_TEXT)
         self.search.bind("<Button-1>", self.click_search)
         self.search.grid(row=0, column=1, sticky="w")
 
-        self.btn_save = Button(self.search_frame, bd=1, relief="ridge", text="save", command=self.save_new_row)
-        self.btn_or_no = Button(self.search_frame, bd=1, relief="ridge", text="or no", command=self.plus)
+        self.btn_save = Button(self.search_frame, bd=1, relief="ridge",
+                               text="save", command=self.save_new_row)
+        self.btn_or_no = Button(self.search_frame, bd=1, relief="ridge",
+                                text="or no", command=self.plus)
         self.btn_save.grid(row=0, column=2)
         self.btn_or_no.grid(row=0, column=3)
         self.btn_save.grid_forget()
         self.btn_or_no.grid_forget()
 
-        self.main_frame = MainTableFrame(master, self.btn_save, self.btn_or_no,  bg="#f0f0f0")
+        self.main_frame = MainTableFrame(master, self, self.btn_save, self.btn_or_no,
+                                         bg="#f0f0f0")
         self.filtr_frame = RowFilterPanel(master)
         self.filtr_frame.content()
         self.table_frame = ColumnFilterPanel(master)
@@ -262,12 +267,13 @@ class MainWindow:
 class MainTableFrame(Canvas):
     """ asd"""
     _bd_array = main_table_interactor.get_data(None, None)
+    _array_titles = _bd_array[0]
+    _array_cell = []
+    for i in range(len(_bd_array)-1):
+        _array_cell.append(_bd_array[i+1])
     col = len(_bd_array[0])
     row = len(_bd_array)
-    list_cell = []
-    list_titles = []
     list_new_col = []
-    list_frame = []
     list_max = {}
     for i in range(col):
         list_new_col.append(1)
@@ -275,8 +281,11 @@ class MainTableFrame(Canvas):
     start_value = ""
     z = 0
     list_row = {}
+    list_cell = []
+    list_titles = []
+    list_frame = []
 
-    def __init__(self, master, btn1, btn2, **kw):
+    def __init__(self, master, main, btn1, btn2, **kw):
         super().__init__(master, {}, **kw)
         self.btn1 = btn1
         self.btn2 = btn2
@@ -290,7 +299,7 @@ class MainTableFrame(Canvas):
         self.canvas.create_window((0, 0), window=self.frame, anchor=NW)
         self.canvas.grid(row=0, column=0, sticky=NSEW)
 
-        self.titles = Canvas(self.frame, bg="orange")
+        self.titles = Canvas(self.frame, bg=COLOR_BG_TITLE_TABLE)
         self.cont = Canvas(self.frame, height=350)
         self.titles.grid(row=0, column=0, sticky=NSEW)
         self.frame2 = Frame(self.cont, background="blue")
@@ -309,16 +318,19 @@ class MainTableFrame(Canvas):
         self.on_frame_configure(self.canvas))
         self.frame2.bind("<Configure>", lambda event, canvas=self.cont:
         self.on_frame_configure(self.cont))
-        self.content(self.titles, self.frame2)
+        self.add_arrow(self._bd_array[0])
+        self.content(self.titles, self.frame2, self._bd_array)
 
         self.menu = Menu(self.master, tearoff=0, postcommand=self.new_xy_menu)
         self.menu.add_command(label="Изменить", command=self.before_change)
-        self.menu.add_command(label="Добавить строку")
+        self.menu.add_command(label="Добавить строку", command=main.plus)
         self.menu.add_command(label="Удалить строку", command=self.delete_row)
 
         self.black_menu = Menu(self.master, tearoff=0)
-        self.black_menu.add_command(label="Отменить выделение", command=self.deselect)
-        self.black_menu.add_command(label="Удалить строки", command=self.del_select)
+        self.black_menu.add_command(label="Отменить выделение",
+                                    command=self.deselect)
+        self.black_menu.add_command(label="Удалить строки",
+                                    command=self.del_select)
         #self.master.bind("<Escape>", self.deselect)
 
     def del_select(self):
@@ -347,20 +359,24 @@ class MainTableFrame(Canvas):
     def repaint(self):
         j = -1
         for i in range(len(self._bd_array)-1):
-            if self.frame2.rowconfigure(i+1)['minsize'] == 22:
+            if self.frame2.rowconfigure(i+1)['minsize'] == HEIGHT_ROW:
                 j += 1
                 if j % 2 == 0:
                     for z in range(len(self._bd_array[0])):
-                        self.list_frame[i * len(self._bd_array[0]) + z].config(bg=COLOR_BG_ODD_ROW)
-                        self.list_cell[i * len(self._bd_array[0]) + z].config(disabledbackground=COLOR_BG_ODD_ROW)
+                        self.list_frame[i * len(self._bd_array[0]) + z].config(
+                            bg=COLOR_BG_ODD_ROW)
+                        self.list_cell[i * len(self._bd_array[0]) + z].config(
+                            disabledbackground=COLOR_BG_ODD_ROW)
                 else:
                     for y in range(len(self._bd_array[0])):
-                        self.list_frame[i * len(self._bd_array[0]) + y].config(bg=COLOR_BG_EVENT_ROW)
-                        self.list_cell[i * len(self._bd_array[0]) + y].config(disabledbackground=COLOR_BG_EVENT_ROW)
+                        self.list_frame[i * len(self._bd_array[0]) + y].config(
+                            bg=COLOR_BG_EVENT_ROW)
+                        self.list_cell[i * len(self._bd_array[0]) + y].config(
+                            disabledbackground=COLOR_BG_EVENT_ROW)
 
     def new_row(self):
         for r in range(self.col):
-            new = Entry(self.titles, bd=0, width=11)
+            new = Entry(self.titles, bd=0, width=self.list_max[r]+2)
             self.list_new_col[r] = new
             new.bind("<Key>", self.change_new_row)
             new.grid(row=1, column=1*r, sticky="w")
@@ -399,13 +415,26 @@ class MainTableFrame(Canvas):
         self.btn_off.destroy()
         self.list_titles[self.z%self.col].config(width=11)
         self.list_cell[self.z].config(state="normal")
-        self._bd_array[1 + self.z//self.col][self.z%self.col] = self.list_cell[self.z].get()
+        self._bd_array[1 + self.z // self.col][self.z % self.col] = \
+        self.list_cell[self.z].get()
         self.list_cell[self.z].config(state="disabled")
+        self.max_width(self._bd_array, self.list_max, self.z%self.col)
+        self.set_max_width(len(self._bd_array), len(self._bd_array[0]),
+                           self.list_max)
+
+    def set_max_width(self, num_row, num_col, list):
+        for r in range(num_row):
+            for c in range(num_col):
+                if r == 0:
+                    self.list_titles[c].config(width=self.list_max[c]+2)
+                else:
+                    self.list_cell[(r-1)*self.col + c].config(width=list[c]+2)
 
     def del_change(self, event=None):
         self.btn_on.destroy()
         self.btn_off.destroy()
-        self.list_titles[self.z%self.col].config(width=11)
+        self.list_titles[self.z % self.col].config(
+            width=self.list_max[self.z % self.col] + 2)
         self.list_cell[self.z].delete(0, "end")
         self.list_cell[self.z].insert(0, self.start_value)
         self.list_cell[self.z].config(state="disabled")
@@ -415,14 +444,25 @@ class MainTableFrame(Canvas):
         self.change()
 
     def change(self):
-        if self.widget[54:-7] == "":
-            self.z = 0
+        if "entry" in self.widget:
+            if self.widget[54:-7] == "":
+                self.z = 0
+            else:
+                self.z = int(self.widget[54:-7]) - 1
         else:
-            self.z = int(self.widget[54:-7]) - 1
-        self.list_titles[self.z % self.col].config(width=19)
+            if self.widget[54:] == "":
+                self.z = 0
+            else:
+                self.z = int(self.widget[54:]) - 1
+        for c in range(self.col):
+                self.list_titles[c].config(width=self.list_max[c] + 2)
+        self.list_titles[self.z % self.col].config(
+            width=self.list_max[self.z % self.col] + 9)
         self.list_cell[self.z].config(state="normal")
-        self.btn_on = Button(self.list_frame[self.z], text="on", bd=0, command=self.save_change)
-        self.btn_off = Button(self.list_frame[self.z], text="off", bd=0, command=self.del_change)
+        self.btn_on = Button(self.list_frame[self.z], text="on", bd=0,
+                             command=self.save_change)
+        self.btn_off = Button(self.list_frame[self.z], text="off", bd=0,
+                              command=self.del_change)
         self.btn_on.grid(row=0, column=1)
         self.btn_off.grid(row=0, column=2)
         self.start_value = self.list_cell[self.z].get()
@@ -432,11 +472,18 @@ class MainTableFrame(Canvas):
 
     def context_menu(self, event):
         self.new_xy_menu()
-        if self.widget[54:-7] == "":
-            z = 0
+        if "entry" in self.widget:
+            if self.widget[54:-7] == "":
+                z = 0
+            else:
+                z = int(self.widget[54:-7]) - 1
         else:
-            z = int(self.widget[54:-7]) - 1
-        if "#000" == "{}".format(self.list_cell[z]["disabledbackground"]):
+            if self.widget[54:] == "":
+                z = 0
+            else:
+                z = int(self.widget[54:]) - 1
+        if COLOR_BG_SELECT_ROW == "{}".format(
+            self.list_cell[z]["disabledbackground"]):
             self.black_menu.post(event.x_root, event.y_root)
         else:
             self.menu.post(event.x_root, event.y_root)
@@ -448,27 +495,60 @@ class MainTableFrame(Canvas):
         widget = "{}".format(widget)
         return widget
 
+    def click_title(self, event):
+        widget = self.widget_pointer()
+        if "entry" in widget:
+            if widget[46:-7] == "":
+                num = 0
+            else:
+                num = int(widget[46:-7]) - 1
+        else:
+            if widget[46:] == "":
+                num = 0
+            else:
+                num = int(widget[46:]) - 1
+
+        def sort_col(i):
+            return i[num]
+
+        self._array_cell.sort(key=sort_col)
+        array = []
+        for i in range(len(self._array_cell)):
+            array.append(self._array_cell[i])
+        array.insert(0, self._array_titles)
+
+        self.recontent(self.titles, self.frame2, array)
+
     def click_cell(self, event):
         widget = self.widget_pointer()
-        if widget[54:-7] == "":
-            num = 0
+        print(widget)
+        if "entry" in widget:
+            if widget[54:-7] == "":
+                num = 0
+            else:
+                num = int(widget[54:-7]) - 1
         else:
-            num = int(widget[54:-7]) - 1
+            if widget[54:] == "":
+                num = 0
+            else:
+                num = int(widget[54:]) - 1
         self.list_row[num // self.col] = not self.list_row[num // self.col]
         if "disabled" in "{}".format(
                 self.list_cell[num]["state"]):
-            if "#000" in "{}".format(
+            if COLOR_BG_SELECT_ROW in "{}".format(
                     self.list_cell[num]["disabledbackground"]):
                 if (num // self.col) % 2 == 0:
                     for i in range(self.col):
-                        self.list_cell[self.col * (num // self.col) + i].config(
+                        self.list_cell[
+                            self.col * (num // self.col) + i].config(
                             disabledbackground=COLOR_BG_ODD_ROW)
                         self.list_frame[
                             self.col * (num // self.col) + i].config(
                             bg=COLOR_BG_ODD_ROW)
                 else:
                     for i in range(self.col):
-                        self.list_cell[self.col * (num // self.col) + i].config(
+                        self.list_cell[
+                            self.col * (num // self.col) + i].config(
                             disabledbackground=COLOR_BG_EVENT_ROW)
                         self.list_frame[
                             self.col * (num // self.col) + i].config(
@@ -476,9 +556,9 @@ class MainTableFrame(Canvas):
             else:
                 for i in range(self.col):
                     self.list_cell[self.col * (num // self.col) + i].config(
-                        disabledbackground="#000")
+                        disabledbackground=COLOR_BG_SELECT_ROW)
                     self.list_frame[self.col * (num // self.col) + i].config(
-                        bg="#000")
+                        bg=COLOR_BG_SELECT_ROW)
 
     def double_click_cell(self, event):
         self.del_change(event)
@@ -490,42 +570,79 @@ class MainTableFrame(Canvas):
         """Reset the scroll region to encompass the inner frame"""
         main_lab2.configure(scrollregion=main_lab2.bbox("all"))
 
-    def content(self, frame1, frame2):
+    def max_width(self, array, list, only=-1):
+        if only != -1:
+            max = len(self._bd_array[0][only])
+            for row in range(len(array)):
+                if max < len(self._bd_array[row][only]):
+                    max = len(self._bd_array[row][only])
+            list[only] = max
+        else:
+            for col in range(len(array[0])):
+                max = len(self._bd_array[0][col])
+                for row in range(len(array)):
+                    if max < len(self._bd_array[row][col]):
+                        max = len(self._bd_array[row][col])
+                list[col] = max
+
+    def add_arrow(self, list):
+        for i in range(len(list)):
+            list[i] += " ▲▼"
+
+    def content(self, frame1, frame2, array):
         """ asd"""
-        for c in range(self.col):
-            max = len(self._bd_array[0][c])
-            for r in range(self.row):
-                if max < len(self._bd_array[r][c]):
-                    max = len(self._bd_array[r][c])
-            self.list_max[c] = max
-            # frame2.grid_columnconfigure(c+1, minsize=self.list_max[c]*7.5)
-            # frame1.grid_columnconfigure(c+1, minsize=self.list_max[c]*7.5)
+        for child in frame1.winfo_children():
+            for child2 in child.winfo_children():
+                child2.destroy()
+            child.destroy()
+        for child in frame2.winfo_children():
+            for child2 in child.winfo_children():
+                child2.destroy()
+            child.destroy()
+        self.max_width(array, self.list_max)
+        # for c in range(self.col):
+        #     max = len(self._bd_array[0][c])
+        #     for r in range(self.row):
+        #         if max < len(self._bd_array[r][c]):
+        #             max = len(self._bd_array[r][c])
+        #     self.list_max[c] = max
 
         self.btn_on = Button(frame2, text="on")
         self.btn_off = Button(frame2, text="off")
-        for r in range(self.row):
+        self.list_row = {}
+        self.list_cell = []
+        self.list_titles = []
+        self.list_frame = []
+        for r in range(len(array)):
             self.list_row[r] = 0
-            frame2.grid_rowconfigure(r, minsize=22)
-            for c in range(self.col):
+            frame2.grid_rowconfigure(r, minsize=HEIGHT_ROW)
+            for c in range(len(array[0])):
                 if r == 0:
                     self.new_frame = Frame(frame1)
-                    self.cell = Entry(self.new_frame)
+                    self.cell = Entry(self.new_frame,
+                                      disabledforeground=COLOR_TEXT_TITLE,
+                                      fg=COLOR_TEXT_TITLE)
+                    self.cell.bind("<Button-1>", self.click_title)
                     self.list_titles.append(self.cell)
                 else:
                     self.new_frame = Frame(frame2)
-                    self.cell = Entry(self.new_frame)
+                    self.cell = Entry(self.new_frame,
+                                      disabledforeground=COLOR_TEXT_TABLE,
+                                      fg=COLOR_TEXT_TABLE)
                     self.list_frame.append(self.new_frame)
                     self.list_cell.append(self.cell)
                     self.cell.bind("<Button-1>", self.click_cell)
                     self.cell.bind("<Double-1>", self.double_click_cell)
                     self.cell.bind("<Button-3>", self.context_menu)
-                self.cell.insert(0, "{}".format(self._bd_array[r][c]))
-                self.new_frame.config(bg=COLOR_BG_ODD_ROW)
+                    self.new_frame.bind("<Button-1>", self.click_cell)
+                    self.new_frame.bind("<Double-1>", self.double_click_cell)
+                    self.new_frame.bind("<Button-3>", self.context_menu)
+                self.cell.insert(0, "{}".format(array[r][c]))
+                self.new_frame.config(bg=COLOR_BG_ODD_ROW, pady=5)
                 self.new_frame.grid(row=r, column=c, sticky="nwes")
-                self.cell.grid()
-                self.cell.config(relief="flat", width=11,
+                self.cell.grid(sticky="nwes")
+                self.cell.config(relief="flat", width=self.list_max[c]+2,
                                  state="disabled",
-                                 fg=COLOR_TEXT_TABLE,
                                  bg="#fff",
                                  disabledbackground=COLOR_BG_ODD_ROW
                                  )
@@ -537,6 +654,15 @@ class MainTableFrame(Canvas):
                     self.cell.config(disabledbackground=COLOR_BG_TITLE_TABLE)
             frame2.grid_rowconfigure(0, minsize=0)
 
+    def recontent(self, frame1, frame2, array):
+        """ asd"""
+        for r in range(len(array)-1):
+            for c in range(len(array[0])):
+                self.list_cell[r*len(array[0])+c].config(state="normal")
+                self.list_cell[r*len(array[0])+c].delete(0, "end")
+                self.list_cell[r*len(array[0])+c].insert(0, "{}".format(array[r+1][c]))
+                self.list_cell[r*len(array[0])+c].config(state="disabled")
+            frame2.grid_rowconfigure(0, minsize=0)
 
 class OptionsMenu(Menu, MainMenuListener):
     """ asd"""

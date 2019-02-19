@@ -19,7 +19,7 @@ class ICommand(ABC):
 
 
 class ConditionProvider:
-    _conditions = {}
+    _conditions = []
 
     def add_condition(self, conditions: Expression):
         self._conditions[conditions.field] = conditions
@@ -28,10 +28,14 @@ class ConditionProvider:
         self._conditions = conditions
 
     def remove_condition(self, conditions: Expression):
-        self._conditions.pop(conditions.field, None)
+        self._conditions.remove(conditions.field)
 
     def get_conditions(self):
         return self._conditions
+
+    def items(self):
+        return [(expr.field, expr.compare_op, expr.value)
+                for expr in self._conditions]
 
 
 class CommandSelect(ICommand, ConditionProvider):

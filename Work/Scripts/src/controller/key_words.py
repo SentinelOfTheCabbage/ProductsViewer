@@ -13,7 +13,7 @@ class CompareOp(Enum):
 
 
 class Expression:
-    def __init__(self, field: str, compare_op: str,  value):
+    def __init__(self, field: str, compare_op: CompareOp,  value):
         self.field = field
         self.compare_op = compare_op
         self.value = value

@@ -37,7 +37,7 @@ class MainWindow:
         self.master = master
         master.title(title)
         master.iconbitmap(
-            r'D:\main\projects\python\ProductsViewer\Work\Scripts\res\drawable\img.ico')
+            r'D:\PycharmProjects\ProductsViewer\Work\Scripts\res\drawable\img.ico')
         master.geometry("{winw}x{winh}+{centerw}+{centerh}".format(
             winw=WIN_W_START,
             winh=WIN_H_START,

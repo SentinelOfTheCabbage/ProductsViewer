@@ -54,7 +54,7 @@ class MainTableInteractor:
         return data
 
     def get_data_frame(self):
-        df = pd.DataFrame(self.get_np_array()[1:],
+        df = pd.DataFrame(data=self.get_np_array()[1:],
                           columns=self.get_np_array()[0])
         return df
 
@@ -100,7 +100,8 @@ class MainTableInteractor:
 inter = MainTableInteractor()
 selector = CommandSelect()
 exprs = [
-    Expression('Наименование', CompareOp.EQUAL, "Молоко"),
+    Expression('Цена', CompareOp.MORE, 6),
+    Expression('Наименование', CompareOp.MORE, 7),
 ]
 selector.set_conditions(exprs)
 selector.set_columns(['Наименование', 'Цена'])

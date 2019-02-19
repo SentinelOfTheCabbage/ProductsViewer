@@ -18,20 +18,22 @@ class ReportsInteractor:
     file_name = 'database.txt'
 
     def __init__(self):
-        # DB_Name = 'db.pickle'
-        # with open(DB_Name,"rb") as DB:
-        #     DataBase = pickle.load(DB)
-        file_name = 'database.txt'
-        with open(file_name) as file:
-            self.DB_List = [row.strip() for row in file]
+        DB_Name = 'db.pickle'
+        with open(DB_Name,"rb") as DB:
+            DataBase = pickle.load(DB)
+        for i in range(len(DataBase.keys())):
+            db_name=list(DataBase.keys())[i]
+            exec('self.%s=DataBase["%s"]' % (db_name,db_name))
+        # file_name = 'database.txt'
+        # with open(file_name) as file:
+        #     self.DB_List = [row.strip() for row in file]
 
-        for i in range(len(self.DB_List)):
-            attr_name = self.DB_List[i].strip('csv')
-            attr_name = attr_name.strip('.')
-            key_name = attr_name
-            attr_name = 'DB_' + attr_name
-            # exec('self.%s=DataBase["%s"]' % (attr_name, key_name))
-            setattr(self, attr_name, pandas.read_csv(self.DB_List[i], sep=';'))
+        # for i in range(len(self.DB_List)):
+        #     attr_name = self.DB_List[i].strip('csv')
+        #     attr_name = attr_name.strip('.')
+        #     key_name = attr_name
+        #     attr_name = 'DB_' + attr_name
+        #     setattr(self, attr_name, pandas.read_csv(self.DB_List[i], sep=';'))
 
     def get_main_table(self):
         """

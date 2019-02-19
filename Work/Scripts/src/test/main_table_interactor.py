@@ -7,8 +7,13 @@ from Work.Scripts.src.controller.key_words import CompareOp, Expression
 
 
 class MainTableInteractor:
+    selector = CommandSelect()
+    df = pd.DataFrame()
+    select_df = pd.DataFrame()
+
     def __init__(self):
-        pass
+        self.df = self.get_data_frame()
+
 
     def get_np_array(self):
         data = np.array([
@@ -66,43 +71,83 @@ class MainTableInteractor:
             data = []
         return data
 
-    def select(self, command_select: CommandSelect):
-        df = inter.get_data_frame()
-        drop_list = [item for item in df.columns.values if item not in
-                     command_select.get_columns()]
-        df = df.drop(drop_list, axis=1)
-        print(df)
-        for col, op, val in command_select.items():
-            df = df[self.filter(df[col], op, val)]
-        return df
+    def select(self, command_select: CommandSelect = None):
+        if not(command_select is None):
+            self.selector = command_select
+        drop_list = [item for item in self.df.columns.values if item not in
+                     self.selector.get_columns()]
+        self.select_df = self.df.drop(drop_list, axis=1)
+        for col, op, val in self.selector.items():
+            self.select_df = self.select_df[self.filter(
+                self.select_df, col, op, val)]
+        return self.select_df
 
     @staticmethod
-    def filter(field: str, compare_op: str, value):
+    def get_type_of(series: pd.Series):
+        if series.array:
+            try:
+                float(series.array[0])
+                return float
+            except:
+                return str
+        return None
+
+    @staticmethod
+    def filter(df: pd.DataFrame, field, compare_op: str, value):
+        def get_type_of(series: pd.Series):
+            if series.array:
+                try:
+                    float(series.array[0])
+                    return float
+                except:
+                    return str
+            return None
+
+        field_val = df[field].astype(get_type_of(df[field]))
         return {
-            CompareOp.EQUAL: field == value,
-            CompareOp.NOT_EQUAL: field != value,
-            CompareOp.LESS: field < value,
-            CompareOp.LESS_OR_EQUAL: field <= value,
-            CompareOp.MORE: field > value,
-            CompareOp.MORE_OR_EQUAL: field >= value
+            CompareOp.EQUAL: field_val == value,
+            CompareOp.NOT_EQUAL: field_val != value,
+            CompareOp.LESS: field_val < value,
+            CompareOp.LESS_OR_EQUAL: field_val <= value,
+            CompareOp.MORE: field_val > value,
+            CompareOp.MORE_OR_EQUAL: field_val >= value
         }[compare_op]
 
     def insert(self, command_insert: CommandInsert):
-        print(command_insert)
+        index = self.df.index[-1] + 1
+        self.df.loc[index] = command_insert.get_row()
+        return self.select()
 
     def update(self, command_update: CommandUpdate):
-        print(command_update)
+        command_update.get_values()
+        for col, op, val in command_delete.items():
+            for field, set_val in command_update.get_values().items():
+                self.df.loc[self.filter(
+                    self.df, col, op, val
+                ), field] = set_val
 
     def delete(self, command_delete: CommandDelete):
-        print(command_delete)
+        # for col, op, val in command_delete.items():
+        #     self.df = self.df.drop(np.where(
+        #         self.filter(self.df, self.df[col].astype(
+        #             self.get_type_of(self.df[col])
+        #         ), op, val))[0])
+        return self.select()
 
 
 inter = MainTableInteractor()
 selector = CommandSelect()
 exprs = [
-    Expression('Наименование', CompareOp.EQUAL, "Молоко"),
+    # Expression('Наименование', CompareOp.EQUAL, "Молоко"),
+    # Expression('Цена', CompareOp.MORE, 60),
 ]
 selector.set_conditions(exprs)
-selector.set_columns(['Наименование', 'Цена'])
+selector.set_columns(['Наименование', 'Цена', 'Качество'])
+inter.select(selector)
+command_delete = CommandDelete()
 
-print(inter.select(selector))
+exprs_delete = [
+    Expression('Цена', CompareOp.MORE, 60)
+]
+command_delete.set_conditions(exprs_delete)
+print(inter.delete(command_delete))

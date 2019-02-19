@@ -1,31 +1,68 @@
 # Метод/функция для получения средних цен по выбранным категориям
 # продуктов и выбранному качеству
 
-# Метод/функция на вход получает список групп продуктов и список категорий
-# качества. Исходя из входных данныx необходимо получить список средних цен
-# по каждой категории качества каждой группы вида [[группа1-качество1,
-# группа1-качество2], [группа2-качество1, группа2-качество2]]
-import pandas
-
 import os
+# Метод/функция на вход получает список групп продуктов и список категорий качества.
+#   Исходя из входных данныx необходимо получить список средних цен
+#   по каждой категории качества каждой группы вида
+#   [[группа1-качество1, группа1-качество2], [группа2-качество1, группа2-качество2]]
+import pickle
+import time
 
-path = "D:\PycharmProjects\ProductsViewer\Work\Data"
-os.chdir(path)
+os.chdir('D:\PycharmProjects\ProductsViewer\Work\Data')
 
 
 class ReportsInteractor:
     file_name = 'database.txt'
 
     def __init__(self):
-        file_name = 'database.txt'
-        with open(file_name) as file:
-            DB_List = [row.strip() for row in file]
-        self.DB_Products = pandas.read_csv(DB_List[0], sep=';')
-        self.DB_Producer = pandas.read_csv(DB_List[2], sep=';')
-        self.DB_Vouchers = pandas.read_csv(DB_List[5], sep=';')
-        self.DB_Sales = pandas.read_csv(DB_List[1], sep=';')
-        self.DB_Groups = pandas.read_csv(DB_List[3], sep=';')
-        self.DB_Discount = pandas.read_csv(DB_List[4], sep=';')
+        DB_Name = 'db.pickle'
+        with open(DB_Name,"rb") as DB:
+            DataBase = pickle.load(DB)
+        for i in range(len(DataBase.keys())):
+            db_name=list(DataBase.keys())[i]
+            exec('self.%s=DataBase["%s"]' % (db_name,db_name))
+        # file_name = 'database.txt'
+        # with open(file_name) as file:
+        #     self.DB_List = [row.strip() for row in file]
+
+        # for i in range(len(self.DB_List)):
+        #     attr_name = self.DB_List[i].strip('csv')
+        #     attr_name = attr_name.strip('.')
+        #     key_name = attr_name
+        #     attr_name = 'DB_' + attr_name
+        #     setattr(self, attr_name, pandas.read_csv(self.DB_List[i], sep=';'))
+
+    def get_main_table(self):
+        """
+        Author: Suleymanov Nail
+        Function returns list of lists that contain all needed information for main table
+        as: product_id,product_name,product_price,product_producer,product_group,dicsount, quality
+        Return[0]==list of headers for table
+        """
+        Result = [] * 1
+        Result.append(list(self.DB_Products.columns))
+
+        def is_discount_works(self, discount_id: int):
+            import datetime
+            now = time.mktime(datetime.datetime.now().timetuple())
+            date_begin = time.mktime(datetime.datetime.strptime(self.DB_Discounts.iloc[
+                                     discount_id]['date_begin'], "%d.%m.%Y").timetuple())
+            date_end = time.mktime(datetime.datetime.strptime(self.DB_Discounts.iloc[
+                                   discount_id]['date_end'], "%d.%m.%Y").timetuple())
+
+            return date_begin <= now <= date_end
+
+        for i in range(len(self.DB_Products)):
+            Result.append(list(self.DB_Products.iloc[i]))
+            if is_discount_works(self, Result[i + 1][5]):
+                Result[i + 1][5] = self.DB_Discounts.iloc[Result[i + 1][5]]['amount']
+                Result[i + 1][2] = round(int(Result[i + 1][2])
+                                         * (1 - int(Result[i + 1][5]) / 100.0), 2)
+            else:
+                Result[i + 1][5] = 0
+
+        return Result
 
     def get_prices_by_group_and_quality(self, groups: list, quality: list):
         """Author: Suleymanov Nail
@@ -44,7 +81,6 @@ class ReportsInteractor:
             products_list.groupby(['group_name', 'quality'])[
                 'price'].mean()
             changes = True
-            #print(sorted_series_table)
             table_group_keys_list = list(sorted_series_table.index.levels[0])
             while changes == True:
                 changes = False
@@ -108,27 +144,65 @@ class ReportsInteractor:
         return Result
 
     def get_prices_by_group(self, product_group: str, products: list):
+        """Author: Suleymanov Nail
+        output: Result
+        Result=[
+            {'product[i].name': price[i] },
+            ...
+        ]
+        product[i] is in products and have product[i].group_name == product_group
+
+        """
         Result = {} * 0
-        for i in range(len(DB.index)):
-            if (DB.iloc[i]['group_name'] == product_group) and (
-                    DB.iloc[i]['name'] in products):
-                Result.update({DB.iloc[i]['name']: int(DB.iloc[i]['price'])})
+        for i in range(len(self.DB.index)):
+            if (self.DB.iloc[i]['group_name'] == product_group) and (
+                    self.DB.iloc[i]['name'] in products):
+                Result.update({self.DB.iloc[i]['name']: int(self.DB.iloc[i]['price'])})
         return Result
 
-    def get_box_and_whisker_prices(self, product_group: str, qualities: list,
-                                   products: list):
+    def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):
+        """Author: Suleymanov Nail
+        output: Result
+        I forgot for what it was created but it works !=)
+
+        """
+        def get_quality_pos(quality: str, quality_list: str):
+            for i in range(len(quality_list)):
+                if quality == quality_list[i]:
+                    return i
+
         database = self.DB_Products
         Result = {}
-        Result.fromkeys(qualities, [])
+        List_of_list = [None] * len(qualities)
+        for i in range(len(List_of_list)):
+            List_of_list[i] = []
+
+        Result = Result.fromkeys(qualities, [])
         for i in range(len(database)):
             if (database.iloc[i]['name'] in products) and (
                     database.iloc[i]['quality'] in qualities) and (
                     database.iloc[i]['group_name'] == product_group):
-                Result[database.iloc[i]['quality']].append(
+                current_quality_pos = get_quality_pos(
+                    database.iloc[i]['quality'], qualities)
+                List_of_list[current_quality_pos].append(
                     int(database.iloc[i]['price']))
+        for i in range(len(List_of_list)):
+            Result[qualities[i]] = List_of_list[i]
+
         return Result
 
     def get_spreading(self, product_group: str, date: str):
+        """Author: Suleymanov Nail
+        output: Result
+        Return information about amount of sold production of product_group and price
+        in DD.MM.YYYY date
+        Return =[
+            {'price': price of 1 object,
+             'amount': amount of this product},
+            ...
+        ]
+
+        """
         vouchers = self.DB_Vouchers
         sales = self.DB_Sales
         products = self.DB_Products
@@ -139,7 +213,7 @@ class ReportsInteractor:
             if vouchers.iloc[i]['date'] == date:
                 if first_sale == None:
                     first_sale = i
-                else:
+                if first_sale != None:
                     last_sale = i
             elif last_sale != None:
                 break
@@ -152,20 +226,36 @@ class ReportsInteractor:
         for i in sales.index:
             saved_product_list = []
             Result = []
-            if (first_sale <= int(
-                    sales.iloc[i]['check_id']) <= last_sale) and (
-                    products.iloc[sales.iloc[i]['products_id'] - 1][
-                        'group_name'] == product_group):
-                if products.iloc[sales.iloc[i]['products_id'] - 1][
-                    'name'] not in saved_product_list:
-                    saved_product_list.append(
-                        products.iloc[sales.iloc[i]['products_id'] - 1][
-                            'name'])
-                    Result.append({'price': products.iloc[sales.iloc[i][
-                                                              'products_id'] - 1][
-                        'price'], 'amount': sales.iloc[i]['amount']})
-                else:
-                    pos = current_position(saved_product_list, products.iloc[
-                        sales.iloc[i]['products_id'] - 1]['name'])
-                    Result[pos]['amount'] += sales.iloc[i]['amount']
+            if (first_sale != None):
+                if (first_sale <= int(sales.iloc[i]['check_id']) <= last_sale) and (
+                        products.iloc[sales.iloc[i]['products_id']]['group_name'] == product_group):
+                    if products.iloc[sales.iloc[i]['products_id']]['name'] not in saved_product_list:
+                        saved_product_list.append(
+                            products.iloc[sales.iloc[i]['products_id']]['name'])
+                        Result.append({'price': products.iloc[sales.iloc[i][
+                                      'products_id']]['price'], 'amount': sales.iloc[i]['amount']})
+                    else:
+                        pos = current_position(saved_product_list, products.iloc[
+                                               sales.iloc[i]['products_id']]['name'])
+                        Result[pos]['amount'] += sales.iloc[i]['amount']
         return Result
+
+    def get_groups_list(self):
+        """Author: Suleymanov Nail
+        Returns list of products groups
+
+        """
+        return list(self.DB_Groups['name'])
+
+    def get_quality_list(self):
+        """Author: Suleymanov Nail
+        output: Result
+        Returns list of sorted products qualities
+
+        """
+        Result = list(set(list(self.DB_Products['quality'])))
+        Result.sort()
+        return Result
+
+    def get_products_by_group(self, group: str):
+        pass

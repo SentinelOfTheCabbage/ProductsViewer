@@ -6,6 +6,7 @@
 #   по каждой категории качества каждой группы вида
 #   [[группа1-качество1, группа1-качество2], [группа2-качество1, группа2-качество2]]
 import pandas
+import pickle
 
 import os
 import datetime
@@ -17,16 +18,20 @@ class ReportsInteractor:
     file_name = 'database.txt'
 
     def __init__(self):
+        # DB_Name = 'db.pickle'
+        # with open(DB_Name,"rb") as DB:
+        #     DataBase = pickle.load(DB)
         file_name = 'database.txt'
         with open(file_name) as file:
             self.DB_List = [row.strip() for row in file]
 
         for i in range(len(self.DB_List)):
-            attr_name=self.DB_List[i].strip('csv')
-            attr_name=attr_name.strip('.')
-            attr_name='DB_'+attr_name
-            setattr(self,attr_name,pandas.read_csv(self.DB_List[i], sep=';'))
-            
+            attr_name = self.DB_List[i].strip('csv')
+            attr_name = attr_name.strip('.')
+            key_name = attr_name
+            attr_name = 'DB_' + attr_name
+            # exec('self.%s=DataBase["%s"]' % (attr_name, key_name))
+            setattr(self, attr_name, pandas.read_csv(self.DB_List[i], sep=';'))
 
     def get_main_table(self):
         """
@@ -243,3 +248,6 @@ class ReportsInteractor:
         Result = list(set(list(self.DB_Products['quality'])))
         Result.sort()
         return Result
+
+    def get_products_by_group(self, group: str):
+        pass

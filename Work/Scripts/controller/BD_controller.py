@@ -22,21 +22,28 @@ class DB_controller():
             for i in range(len(data.iloc[0])):
                 exec('%s.append(%s)' % ('self.' + pattern_name, 'type(1)' if str(
                     type(data.iloc[1][i])) == "<class 'numpy.int64'>" else 'type("a")'))
+            del(data)
 
     def check_input(self, new_walues: list, destination: str):
         pattern_name = 'self.' + destination + '_pattern'
         loyalty = True
+        status = 'good'
+        msg = ''
         exec('%s=%s' % ('self.current_file', pattern_name))
         if len(new_walues) == len(self.current_file):
             for i in range(len(self.current_file)):
                 if self.current_file[i] != type(new_walues[i]):
                     loyalty = False
-                    print('incompatible types of variable on', i + 1, 'position. Need',
-                          self.current_file[i], 'but', type(new_walues[i]), 'given')
+                    msg = 'incompatible types of variable on ' + str(i + 1) + ' position. Need ' + str(
+                        self.current_file[i]) + ' but ' + str(type(new_walues[i])) + ' given'
+                    status = 'error'
                     break
             if loyalty == True:
                 print('GJ!')
         else:
-            print('Bad len of new element. Need', len(self.current_file),
-                  'but just', len(new_walues), 'given')
+            msg = 'Bad len of new element. Need ' + \
+                str(len(self.current_file)) + ' but just ' + \
+                str(len(new_walues)) + ' given'
+            status = 'warning'
 
+        return [status, msg]

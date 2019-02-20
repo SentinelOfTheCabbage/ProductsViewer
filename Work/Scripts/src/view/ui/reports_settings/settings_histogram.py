@@ -26,15 +26,14 @@ class SettingsHistogram(SettingsWindow):
 
     def __init__(self, main):
         """Создаёт окно конфигурации графика"""
-        self.frame_1 = SingleChoiceFrame(main, self.reports_interactor
-                                         .get_products_groups())
+        frame_1 = SingleChoiceFrame(main, self.controller
+                                    .get_products_groups())
+
+        frame_2 = MultiChoiceFrame(main, self.controller
+                                   .get_products_by_group(None),
+                                   True, listener=self)
+        super().__init__(main, WINDOW_TITLE_GRAPH, frame_1, frame_2)
         self.left_choice_is_done = True
-
-        self.frame_2 = MultiChoiceFrame(main, self.reports_interactor
-                                        .get_products_by_group(None),
-                                        True, listener=self)
-        super().__init__(main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
-
         self.set_left_title(SUBTITLE_LEFT)
         self.set_right_title(SUBTITLE_RIGHT)
 
@@ -44,7 +43,7 @@ class SettingsHistogram(SettingsWindow):
     def click_reports(self, event):
         """Создаёт графический отчёт по выбранным данным"""
         if self.left_choice_is_done and self.right_choice_is_done:
-            prices = list(SettingsWindow.reports_interactor
+            prices = list(self.controller
                           .get_prices_by_group(self.frame_1.get_data(),
                                                self.frame_2.get_data()))
             self.main.destroy()

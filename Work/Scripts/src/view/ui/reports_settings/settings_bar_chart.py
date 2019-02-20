@@ -27,13 +27,15 @@ class SettingsBarChart(SettingsWindow):
 
     def __init__(self, main):
         """Создаёт окно конфигурации графика"""
-        self.frame_1 = MultiChoiceFrame(main, self.reports_interactor
+
+        frame_1 = MultiChoiceFrame(main, self.controller
                                         .get_products_groups(),
                                         listener=self)
-        self.frame_2 = MultiChoiceFrame(main, self.reports_interactor
+        frame_2 = MultiChoiceFrame(main, self.controller
                                         .get_quality_categories(),
                                         True, listener=self)
-        super().__init__(main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
+
+        super().__init__(main, WINDOW_TITLE_GRAPH, frame_1, frame_2)
 
         self.set_left_title(SUBTITLE_LEFT)
         self.set_right_title(SUBTITLE_RIGHT)
@@ -44,7 +46,7 @@ class SettingsBarChart(SettingsWindow):
     def click_reports(self, event):
         """Создаёт графический отчёт по выбранным данным"""
         if self.left_choice_is_done and self.right_choice_is_done:
-            prices = list(self.reports_interactor
+            prices = list(self.controller
                           .get_prices_by_group_and_quality(self.frame_1
                                                            .get_data(),
                                                            self.frame_2

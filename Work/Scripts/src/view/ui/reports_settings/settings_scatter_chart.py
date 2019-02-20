@@ -26,12 +26,12 @@ class SettingsScatterChart(SettingsWindow):
             'Диаграмма рассеивания' """
     def __init__(self, main):
         """Создаёт окно конфигурации графика"""
-        self.frame_1 = SingleChoiceFrame(main, self.reports_interactor
+        frame_1 = SingleChoiceFrame(main, self.controller
                                          .get_products_groups())
-        self.left_choice_is_done = True
 
-        self.frame_2 = CalendarFrame(main)
-        super().__init__(main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
+        frame_2 = CalendarFrame(main)
+        super().__init__(main, WINDOW_TITLE_GRAPH, frame_1, frame_2)
+        self.left_choice_is_done = True
 
         self.set_left_title(SUBTITLE_LEFT)
         self.set_right_title(SUBTITLE_RIGHT)
@@ -42,7 +42,7 @@ class SettingsScatterChart(SettingsWindow):
     def click_reports(self, event):
         """Создаёт графический отчёт по выбранным данным"""
         if self.left_choice_is_done and self.right_choice_is_done:
-            points = list(SettingsWindow.reports_interactor
+            points = list(self.controller
                           .get_spreading(self.frame_1.get_data(),
                                          self.frame_2.get_data()))
             self.main.destroy()

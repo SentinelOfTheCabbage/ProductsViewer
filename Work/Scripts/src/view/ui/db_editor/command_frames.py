@@ -6,8 +6,9 @@ from tkinter.ttk import Combobox, Style
 from Work.Scripts.src.controller.commands import CommandSelect, CommandInsert, \
     CommandUpdate, CommandDelete
 from Work.Scripts.src.controller.key_words import CompareOp, Expression
+from Work.Scripts.src.model.interactor.interactors import MainTableInteractor
 from Work.Scripts.src.model.repository.UI_table_constants import ProductColumns
-from Work.Scripts.src.test.main_table_interactor import MainTableInteractor
+from Work.Scripts.src.test.extractor import DataExtractor
 from Work.Scripts.src.view.ui.custom_widgets import VerticalScrolledFrame, \
     SubtitleLabel, PVAddButton, PVCancelButton, PVFrame, PVLabel, \
     PVCheckbutton, PVCombobox, PVEntry
@@ -180,7 +181,7 @@ class ValueSetFrame(PVFrame):
 class SelectFrame(ExpressionEditor, ICommandCreator):
     command_select = CommandSelect()
     check_vars = {}
-    main_table_inter = MainTableInteractor()
+    main_table_inter = MainTableInteractor(DataExtractor())
 
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
@@ -234,7 +235,7 @@ class SelectFrame(ExpressionEditor, ICommandCreator):
 
 class InsertFrame(PVFrame, ICommandCreator):
     command_insert = CommandInsert()
-    main_table_inter = MainTableInteractor()
+    main_table_inter = MainTableInteractor(DataExtractor())
     values = {}
 
     def __init__(self, master, **kw):
@@ -303,7 +304,7 @@ class InsertFrame(PVFrame, ICommandCreator):
 class UpdateFrame(ExpressionEditor, ICommandCreator):
     value_set_frames = []
     command_update = CommandUpdate()
-    main_table_inter = MainTableInteractor()
+    main_table_inter = MainTableInteractor(DataExtractor())
 
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
@@ -353,7 +354,7 @@ class DeleteFrame(ExpressionEditor, ICommandCreator):
     expr_frames = []
 
     command_delete = CommandDelete()
-    main_table_inter = MainTableInteractor()
+    main_table_inter = MainTableInteractor(DataExtractor())
 
     def __init__(self, master, **kw):
         super().__init__(master, **kw)

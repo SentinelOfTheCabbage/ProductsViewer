@@ -6,7 +6,7 @@ from tkinter import Frame, NSEW, Label, RIGHT, Button, E
 
 from Work.Scripts.res.values.colors import SUCCESS_INFO_COLOR, SEPARATOR_COLOR
 from Work.Scripts.res.values.styles import SUBTITLE_TEXT_FONT
-from Work.Scripts.src.test.graph_reports_interactor import ReportsInteractor
+from Work.Scripts.src.controller.db_controller import ReportsController
 from Work.Scripts.src.view.ui.reports_settings.choice_frames import \
     OnEventInfoListener, ChoiceFrameListener
 
@@ -39,7 +39,9 @@ class SettingsWindow(OnEventInfoListener, ABC):
 
     left_choice_is_done = True
     right_choice_is_done = True
-    reports_interactor = ReportsInteractor()
+    controller = ReportsController()
+    frame_1: ChoiceFrameListener = None
+    frame_2: ChoiceFrameListener = None
 
     def __init__(self, main, title: str,
                  frame_left: Frame, frame_right: Frame):
@@ -53,6 +55,9 @@ class SettingsWindow(OnEventInfoListener, ABC):
                                                 center_width, center_height))
         self.main.resizable(width=False, height=False)
         self.main.title(WINDOW_TITLE.format(title))
+
+        self.frame_1 = frame_left
+        self.frame_2 = frame_right
 
         # Конфигурация таблицы упаковки виджетов
         self.main.grid_rowconfigure(0, minsize=20)

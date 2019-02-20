@@ -1,16 +1,18 @@
 """asd"""
-from tkinter import Frame, Canvas, Label, Button, PhotoImage, \
-    Checkbutton, Tk, Scrollbar, Menu, NSEW, NE, W, NW, NS, EW, Entry
+from tkinter import Frame, Canvas, Button, Tk, Scrollbar, Menu, NSEW, NE, W, \
+    NW, NS, EW, Entry
 
 from Work.Scripts.res.values.menu import MainMenuFactory, MainMenuListener
-from Work.Scripts.src.test.main_table_interactor import MainTableInteractor
+import Work.Scripts.src.test.extractor as test
+from Work.Scripts.src.controller.db_controller import MainTableController
+from Work.Scripts.src.model.interactor.interactors import MainTableInteractor
 from Work.Scripts.src.view.ui.db_editor.db_editor import DbEditorWindow
 from Work.Scripts.src.view.ui.main_window.config import WIN_W_START, \
     WIN_H_START, \
     WIDTH_FILR_FRAME, COLOR_TEXT_TABLE, COLOR_BG_ODD_ROW, COLOR_BG_EVENT_ROW, \
     COLOR_BG_TITLE_TABLE, FILTER_TAB_TEXT, TABLES_TAB_TEXT, \
     LAST_CHANGES_CLOSED_TAB, LAST_CHANGES_OPENED_TAB, MENU_FILE_TEXT, \
-    MENU_CHANGE_TEXT, MENU_REPORT_TEXT, DEFAULT_SEARCH_TEXT, HEIGHT_ROW, \
+    MENU_REPORT_TEXT, DEFAULT_SEARCH_TEXT, HEIGHT_ROW, \
     COLOR_BG_SELECT_ROW, COLOR_TEXT_TITLE
 from Work.Scripts.src.view.ui.main_window.move_out_panels import \
     ChangeHistoryPanel, ColumnFilterPanel, RowFilterPanel
@@ -23,7 +25,7 @@ from Work.Scripts.src.view.ui.reports_settings.settings_histogram import \
 from Work.Scripts.src.view.ui.reports_settings.settings_scatter_chart import \
     SettingsScatterChart
 
-main_table_interactor = MainTableInteractor()
+controller = MainTableController()
 
 
 class MainWindow:
@@ -80,7 +82,8 @@ class MainWindow:
         self.btn_save.grid_forget()
         self.btn_or_no.grid_forget()
 
-        self.main_frame = MainTableFrame(master, self, self.btn_save, self.btn_or_no,
+        self.main_frame = MainTableFrame(master, self, self.btn_save,
+                                         self.btn_or_no,
                                          bg="#f0f0f0")
         self.filtr_frame = RowFilterPanel(master)
         self.filtr_frame.content()
@@ -134,7 +137,8 @@ class MainWindow:
     def save_new_row(self):
         self.main_frame._bd_array.append([])
         for i in range(self.main_frame.col):
-            self.main_frame._bd_array[len(self.main_frame._bd_array)-1].append(
+            self.main_frame._bd_array[
+                len(self.main_frame._bd_array) - 1].append(
                 "{}".format(self.main_frame.list_new_col[i].get()))
         r = len(self.main_frame._bd_array) - 1
         self.main_frame.frame2.grid_rowconfigure(r, minsize=22)
@@ -175,15 +179,15 @@ class MainWindow:
         return tab
 
     def new_height(self, event):
-            if self.last_ch_bool:
-                self.main_frame.cont.config(
-                    height=self.master.winfo_height() - 99 -
-                           self.main_frame.titles.winfo_height() -
-                           self.last_ch_frame.canvas.winfo_height())
-            else:
-                self.main_frame.cont.config(
-                    height=self.master.winfo_height() - 75 -
-                           self.main_frame.titles.winfo_height())
+        if self.last_ch_bool:
+            self.main_frame.cont.config(
+                height=self.master.winfo_height() - 99 -
+                       self.main_frame.titles.winfo_height() -
+                       self.last_ch_frame.canvas.winfo_height())
+        else:
+            self.main_frame.cont.config(
+                height=self.master.winfo_height() - 75 -
+                       self.main_frame.titles.winfo_height())
 
     def left_key(self, event):
         """ asd"""
@@ -264,13 +268,14 @@ class MainWindow:
             self.master.grid_columnconfigure(2, minsize=WIDTH_FILR_FRAME)
         self.table_bool = not self.table_bool
 
+
 class MainTableFrame(Canvas):
     """ asd"""
-    _bd_array = main_table_interactor.get_data(None, None)
+    _bd_array = controller.get_data()
     _array_titles = _bd_array[0]
     _array_cell = []
-    for i in range(len(_bd_array)-1):
-        _array_cell.append(_bd_array[i+1])
+    for i in range(len(_bd_array) - 1):
+        _array_cell.append(_bd_array[i + 1])
     col = len(_bd_array[0])
     row = len(_bd_array)
     list_new_col = []
@@ -331,7 +336,7 @@ class MainTableFrame(Canvas):
                                     command=self.deselect)
         self.black_menu.add_command(label="Удалить строки",
                                     command=self.del_select)
-        #self.master.bind("<Escape>", self.deselect)
+        # self.master.bind("<Escape>", self.deselect)
 
     def del_select(self):
         for j in range(len(self.list_row)):
@@ -350,16 +355,16 @@ class MainTableFrame(Canvas):
             z = 0
         else:
             z = int(self.widget[54:-7]) - 1
-        self.frame2.grid_rowconfigure(z//self.col + 1, minsize=0)
+        self.frame2.grid_rowconfigure(z // self.col + 1, minsize=0)
         for i in range(self.col):
-            self.list_cell[(z//self.col)*self.col + i].grid_forget()
+            self.list_cell[(z // self.col) * self.col + i].grid_forget()
             self.list_frame[(z // self.col) * self.col + i].grid_forget()
         self.repaint()
 
     def repaint(self):
         j = -1
-        for i in range(len(self._bd_array)-1):
-            if self.frame2.rowconfigure(i+1)['minsize'] == HEIGHT_ROW:
+        for i in range(len(self._bd_array) - 1):
+            if self.frame2.rowconfigure(i + 1)['minsize'] == HEIGHT_ROW:
                 j += 1
                 if j % 2 == 0:
                     for z in range(len(self._bd_array[0])):
@@ -376,10 +381,10 @@ class MainTableFrame(Canvas):
 
     def new_row(self):
         for r in range(self.col):
-            new = Entry(self.titles, bd=0, width=self.list_max[r]+2)
+            new = Entry(self.titles, bd=0, width=self.list_max[r] + 2)
             self.list_new_col[r] = new
             new.bind("<Key>", self.change_new_row)
-            new.grid(row=1, column=1*r, sticky="w")
+            new.grid(row=1, column=1 * r, sticky="w")
 
     def change_new_row(self, event):
         self.btn1.grid(row=0, column=2)
@@ -413,12 +418,12 @@ class MainTableFrame(Canvas):
     def save_change(self, event=None):
         self.btn_on.destroy()
         self.btn_off.destroy()
-        self.list_titles[self.z%self.col].config(width=11)
+        self.list_titles[self.z % self.col].config(width=11)
         self.list_cell[self.z].config(state="normal")
         self._bd_array[1 + self.z // self.col][self.z % self.col] = \
-        self.list_cell[self.z].get()
+            self.list_cell[self.z].get()
         self.list_cell[self.z].config(state="disabled")
-        self.max_width(self._bd_array, self.list_max, self.z%self.col)
+        self.max_width(self._bd_array, self.list_max, self.z % self.col)
         self.set_max_width(len(self._bd_array), len(self._bd_array[0]),
                            self.list_max)
 
@@ -426,9 +431,10 @@ class MainTableFrame(Canvas):
         for r in range(num_row):
             for c in range(num_col):
                 if r == 0:
-                    self.list_titles[c].config(width=self.list_max[c]+2)
+                    self.list_titles[c].config(width=self.list_max[c] + 2)
                 else:
-                    self.list_cell[(r-1)*self.col + c].config(width=list[c]+2)
+                    self.list_cell[(r - 1) * self.col + c].config(
+                        width=list[c] + 2)
 
     def del_change(self, event=None):
         self.btn_on.destroy()
@@ -455,7 +461,7 @@ class MainTableFrame(Canvas):
             else:
                 self.z = int(self.widget[54:]) - 1
         for c in range(self.col):
-                self.list_titles[c].config(width=self.list_max[c] + 2)
+            self.list_titles[c].config(width=self.list_max[c] + 2)
         self.list_titles[self.z % self.col].config(
             width=self.list_max[self.z % self.col] + 9)
         self.list_cell[self.z].config(state="normal")
@@ -483,7 +489,7 @@ class MainTableFrame(Canvas):
             else:
                 z = int(self.widget[54:]) - 1
         if COLOR_BG_SELECT_ROW == "{}".format(
-            self.list_cell[z]["disabledbackground"]):
+                self.list_cell[z]["disabledbackground"]):
             self.black_menu.post(event.x_root, event.y_root)
         else:
             self.menu.post(event.x_root, event.y_root)
@@ -641,7 +647,7 @@ class MainTableFrame(Canvas):
                 self.new_frame.config(bg=COLOR_BG_ODD_ROW, pady=5)
                 self.new_frame.grid(row=r, column=c, sticky="nwes")
                 self.cell.grid(sticky="nwes")
-                self.cell.config(relief="flat", width=self.list_max[c]+2,
+                self.cell.config(relief="flat", width=self.list_max[c] + 2,
                                  state="disabled",
                                  bg="#fff",
                                  disabledbackground=COLOR_BG_ODD_ROW
@@ -656,13 +662,15 @@ class MainTableFrame(Canvas):
 
     def recontent(self, frame1, frame2, array):
         """ asd"""
-        for r in range(len(array)-1):
+        for r in range(len(array) - 1):
             for c in range(len(array[0])):
-                self.list_cell[r*len(array[0])+c].config(state="normal")
-                self.list_cell[r*len(array[0])+c].delete(0, "end")
-                self.list_cell[r*len(array[0])+c].insert(0, "{}".format(array[r+1][c]))
-                self.list_cell[r*len(array[0])+c].config(state="disabled")
+                self.list_cell[r * len(array[0]) + c].config(state="normal")
+                self.list_cell[r * len(array[0]) + c].delete(0, "end")
+                self.list_cell[r * len(array[0]) + c].insert(0, "{}".format(
+                    array[r + 1][c]))
+                self.list_cell[r * len(array[0]) + c].config(state="disabled")
             frame2.grid_rowconfigure(0, minsize=0)
+
 
 class OptionsMenu(Menu, MainMenuListener):
     """ asd"""

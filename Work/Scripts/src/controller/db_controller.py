@@ -22,7 +22,7 @@ class MainTableController:
         pass
 
     def get_data_frame(self):
-        return self.main_interactor.get_data_frame()
+        return self.main_interactor.get_data()
 
     def get_columns_by_table(self, table):
         pass
@@ -87,7 +87,7 @@ class MainTableController:
             self.main_interactor.delete(deleter)
 
     def get_data(self):
-        return self.main_interactor.get_data_frame()
+        return self.main_interactor.get_data()
 
 
 class ReportsController:

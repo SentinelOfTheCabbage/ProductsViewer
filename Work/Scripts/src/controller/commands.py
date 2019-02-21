@@ -60,8 +60,8 @@ class CommandSelect(ICommand, ConditionProvider):
 class CommandInsert(ICommand):
     _row = []
 
-    def add_row(self, row: dict):
-        self._row = row.values()
+    def add_row(self, row: list):
+        self._row = row
 
     def get_row(self):
         return self._row

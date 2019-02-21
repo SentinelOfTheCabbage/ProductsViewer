@@ -1,14 +1,12 @@
+import numpy as np
+import pandas as pd
+
 from Work.Scripts.src.controller.commands import CommandSelect, CommandInsert, \
     CommandUpdate, CommandDelete
-
-import pandas as pd
-import numpy as np
-
 from Work.Scripts.src.controller.data_validity import DataValidity
-from Work.Scripts.src.controller.factory import IDBFactory, TestDbFactory
+from Work.Scripts.src.controller.factory import TestDbFactory
 from Work.Scripts.src.model.interactor.interactors import MainTableInteractor, \
     ReportsInteractor
-import Work.Scripts.src.test.extractor as test
 
 data_validity = DataValidity()
 db_factory = TestDbFactory()
@@ -24,25 +22,72 @@ class MainTableController:
         pass
 
     def get_data_frame(self):
-        pass
+        return self.main_interactor.get_data_frame()
 
     def get_columns_by_table(self, table):
         pass
 
-    def select(self, command_select: CommandSelect = None):
-        pass
+    def select(self, column_choices: dict, expressions):
+        columns = []
 
-    def insert(self, command_insert: CommandInsert):
-        pass
+        for col, var in column_choices.items():
+            if var.get():
+                columns.append(col)
 
-    def update(self, command_update: CommandUpdate):
-        pass
+        if not columns:
+            print("Не выбраны колонки")
+        elif expressions is None:
+            print("Не заполнены условия")
+        else:
+            selector = CommandSelect()
+            selector.set_columns(columns)
+            selector.set_conditions(expressions)
+            return self.main_interactor.select(selector)
+        return None
 
-    def delete(self, command_delete: CommandDelete):
-        pass
+    def insert(self, col_to_values: dict):
+        is_full_row = True
+        row = []
+        for val in col_to_values.values():
+            if not val.get():
+                val.master['bg'] = 'yellow'
+                is_full_row = False
+            else:
+                val.master['bg'] = 'white'
+                row.append(val.get())
+        if is_full_row:
+            inserter = CommandInsert()
+            inserter.add_row(row)
+            self.main_interactor.insert(inserter)
+
+    def update(self, set_frames: list, expressions: list):
+        values = {}
+        updater = CommandUpdate()
+        for set_frame in set_frames:
+            values.update(set_frame.get_col_to_value())
+        if values:
+            updater.update_values(values)
+            self.main_interactor.update(updater)
+
+        if not values:
+            print("Не заполнены значения")
+        elif expressions is None:
+            print("Не заполнены условия")
+        else:
+            updater.update_values(values)
+            updater.set_conditions(expressions)
+            self.main_interactor.update(updater)
+
+    def delete(self, expressions):
+        if expressions is None:
+            print("Не заполнены условия")
+        else:
+            deleter = CommandDelete()
+            deleter.set_conditions(expressions)
+            self.main_interactor.delete(deleter)
 
     def get_data(self):
-        return self.main_interactor.get_data()
+        return self.main_interactor.get_data_frame()
 
 
 class ReportsController:

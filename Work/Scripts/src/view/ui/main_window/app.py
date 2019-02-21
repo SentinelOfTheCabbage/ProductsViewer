@@ -3,9 +3,8 @@ from tkinter import Frame, Canvas, Button, Tk, Scrollbar, Menu, NSEW, NE, W, \
     NW, NS, EW, Entry
 
 from Work.Scripts.res.values.menu import MainMenuFactory, MainMenuListener
-import Work.Scripts.src.test.extractor as test
+from Work.Scripts.src.controller.adapters import ListMainTableAdapter
 from Work.Scripts.src.controller.db_controller import MainTableController
-from Work.Scripts.src.model.interactor.interactors import MainTableInteractor
 from Work.Scripts.src.view.ui.db_editor.db_editor import DbEditorWindow
 from Work.Scripts.src.view.ui.main_window.config import WIN_W_START, \
     WIN_H_START, \
@@ -25,7 +24,7 @@ from Work.Scripts.src.view.ui.reports_settings.settings_histogram import \
 from Work.Scripts.src.view.ui.reports_settings.settings_scatter_chart import \
     SettingsScatterChart
 
-controller = MainTableController()
+controller = ListMainTableAdapter()
 
 
 class MainWindow:

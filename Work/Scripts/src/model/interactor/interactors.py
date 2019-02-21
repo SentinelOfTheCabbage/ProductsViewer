@@ -150,19 +150,22 @@ class MainTableInteractor:
             if series.array:
                 try:
                     float(series.array[0])
+                    float(value)
                     return float
                 except:
                     return str
             return None
 
-        field_val = df[field].astype(get_type_of(df[field]))
+        data_type = get_type_of(df[field])
+        value = data_type(value)
+        field_val = df[field].astype(data_type)
         return {
-            CompareOp.EQUAL: field_val == value,
-            CompareOp.NOT_EQUAL: field_val != value,
-            CompareOp.LESS: field_val < value,
-            CompareOp.LESS_OR_EQUAL: field_val <= value,
-            CompareOp.MORE: field_val > value,
-            CompareOp.MORE_OR_EQUAL: field_val >= value
+            CompareOp.EQUAL.value: field_val == value,
+            CompareOp.NOT_EQUAL.value: field_val != value,
+            CompareOp.LESS.value: field_val < value,
+            CompareOp.LESS_OR_EQUAL.value: field_val <= value,
+            CompareOp.MORE.value: field_val > value,
+            CompareOp.MORE_OR_EQUAL.value: field_val >= value
         }[compare_op]
 
     def insert(self, command_insert: CommandInsert):

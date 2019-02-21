@@ -1,17 +1,16 @@
 from abc import ABC, abstractmethod
 from tkinter import Frame, NSEW, W, StringVar, \
-    Checkbutton, BooleanVar, Entry, EW, Button
-from tkinter.ttk import Combobox, Style
+    BooleanVar, EW
+from tkinter.ttk import Style
 
-from Work.Scripts.src.controller.commands import CommandSelect, CommandInsert, \
-    CommandUpdate, CommandDelete
+from Work.Scripts.src.controller.adapters import ListMainTableAdapter
 from Work.Scripts.src.controller.key_words import CompareOp, Expression
-from Work.Scripts.src.model.interactor.interactors import MainTableInteractor
 from Work.Scripts.src.model.repository.UI_table_constants import ProductColumns
-from Work.Scripts.src.test.extractor import DataExtractor
 from Work.Scripts.src.view.ui.custom_widgets import VerticalScrolledFrame, \
     SubtitleLabel, PVAddButton, PVCancelButton, PVFrame, PVLabel, \
     PVCheckbutton, PVCombobox, PVEntry
+
+controller = ListMainTableAdapter()
 
 
 class IRemoveListener(ABC):
@@ -54,13 +53,17 @@ class ExpressionEditor(PVFrame):
 
     def get_expressions(self):
         expressions = []
+        has_error = False
         for expr_frame in self.expr_frames:
             expr = expr_frame.get_expr()
             if expr is None:
-                return None
+                has_error = True
             else:
                 expressions.append(expr)
-        return expressions
+        if has_error:
+            return None
+        else:
+            return expressions
 
 
 class ExpressionFrame(PVFrame):
@@ -84,10 +87,10 @@ class ExpressionFrame(PVFrame):
                         ProductColumns.PRODUCER_NAME.value,
                         ProductColumns.QUALITY.value]
 
-        self.field = StringVar()
+        self.field = StringVar(self)
         self.field_chooser = PVCombobox(self, width=20, height=20,
-                                      state="readonly",
-                                      textvariable=self.field)
+                                        state="readonly",
+                                        textvariable=self.field)
         self.field_chooser['values'] = self.columns
         self.field_chooser.current(0)
         self.compare_ops = [
@@ -101,14 +104,14 @@ class ExpressionFrame(PVFrame):
 
         self.compare_var = StringVar(self)
         self.compare_op_chooser = PVCombobox(self, width=3, height=20,
-                                           state="readonly",
-                                           textvariable=self.compare_var)
+                                             state="readonly",
+                                             textvariable=self.compare_var)
         self.compare_op_chooser['values'] = self.compare_ops
         self.compare_op_chooser.current(0)
 
         self.value_var = StringVar(self)
         self.value_entry = PVEntry(self, width=20, text="Text",
-                                 textvariable=self.value_var)
+                                   textvariable=self.value_var)
 
         btn_cancel = PVCancelButton(self, text="X")
         btn_cancel.bind("<Button-1>", self.click_cancel)
@@ -154,14 +157,14 @@ class ValueSetFrame(PVFrame):
                    ProductColumns.QUALITY.value]
 
         self.column_chooser = PVCombobox(self, width=20, height=20,
-                                       state="readonly")
+                                         state="readonly")
         self.column_chooser['values'] = columns
         self.column_chooser.current(0)
 
         assign_label = PVLabel(self, text='=')
 
         self.value_entry = PVEntry(self, width=20, text="Text",
-                                 textvariable=StringVar())
+                                   textvariable=StringVar())
 
         btn_cancel = PVCancelButton(self, text="X")
         btn_cancel.bind("<Button-1>", self.click_cancel)
@@ -174,14 +177,11 @@ class ValueSetFrame(PVFrame):
     def click_cancel(self, event):
         self.destroy()
 
-    def get_value(self):
+    def get_col_to_value(self):
         return {self.column_chooser.get(): self.value_entry.get()}
 
 
 class SelectFrame(ExpressionEditor, ICommandCreator):
-    command_select = CommandSelect()
-    check_vars = {}
-    main_table_inter = MainTableInteractor(DataExtractor())
 
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
@@ -201,41 +201,22 @@ class SelectFrame(ExpressionEditor, ICommandCreator):
                    ProductColumns.PRODUCER_NAME.value,
                    ProductColumns.QUALITY.value]
 
+        self.check_vars = {}
         for col in columns:
-            checking_var = BooleanVar()
+            checking_var = BooleanVar(self)
             self.check_vars[col] = checking_var
             check_btn = PVCheckbutton(columns_frame.interior, text=col,
-                                    variable=checking_var)
+                                      variable=checking_var)
             check_btn.pack(anchor=W)
 
         columns_label.grid(row=0, column=0, sticky=NSEW)
         columns_frame.grid(row=1, column=0, sticky=NSEW)
 
     def click_exec(self):
-        checked_cols = []
-
-        for col, var in self.check_vars.items():
-            if var.get():
-                checked_cols.append(col)
-
-        if checked_cols:
-            self.command_select.set_columns(checked_cols)
-            print(self.command_select.get_columns())
-
-        expressions = self.get_expressions()
-        if not checked_cols:
-            print("Не выбраны колонки")
-        elif expressions is None:
-            print("Не заполнены условия")
-        else:
-            self.command_select.set_columns(checked_cols)
-            self.command_select.set_conditions(expressions)
-            self.main_table_inter.select(self.command_select)
+        print(controller.select(self.check_vars, self.get_expressions()))
 
 
 class InsertFrame(PVFrame, ICommandCreator):
-    command_insert = CommandInsert()
-    main_table_inter = MainTableInteractor(DataExtractor())
     values = {}
 
     def __init__(self, master, **kw):
@@ -272,7 +253,7 @@ class InsertFrame(PVFrame, ICommandCreator):
             style = Style()
             style.configure("custom.TCombobox", fieldbackground="#000")
             value_entry = PVCombobox(col_and_val_frame, textvariable=value_var,
-                                   style="custom.TCombobox")
+                                     style="custom.TCombobox")
             value_entry['values'] = ['1', '2', '3']
             col_label.grid(row=0, column=0, sticky=W, padx=(24, 0))
             value_entry.grid(row=0, column=1, sticky=EW, padx=(0, 24))
@@ -289,22 +270,11 @@ class InsertFrame(PVFrame, ICommandCreator):
         separator.grid(row=2, column=0, columnspan=4, sticky=EW)
 
     def click_exec(self):
-        is_full_row = True
-        for val in self.values.values():
-            if not val.get():
-                val.master['bg'] = 'yellow'
-                is_full_row = False
-            else:
-                val.master['bg'] = 'white'
-        if is_full_row:
-            self.command_insert.add_row(self.values)
-            self.main_table_inter.insert(self.command_insert)
+        controller.insert(self.values)
 
 
 class UpdateFrame(ExpressionEditor, ICommandCreator):
     value_set_frames = []
-    command_update = CommandUpdate()
-    main_table_inter = MainTableInteractor(DataExtractor())
 
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
@@ -332,29 +302,11 @@ class UpdateFrame(ExpressionEditor, ICommandCreator):
         self.value_set_frames.append(value_set_frame)
 
     def click_exec(self):
-        values = {}
-        for set_frame in self.value_set_frames:
-            values.update(set_frame.get_value())
-        if values:
-            self.command_update.update_values(values)
-            self.main_table_inter.update(self.command_update)
-
-        expressions = self.get_expressions()
-        if not values:
-            print("Не заполнены значения")
-        elif expressions is None:
-            print("Не заполнены условия")
-        else:
-            self.command_update.update_values(values)
-            self.command_update.set_conditions(expressions)
-            self.main_table_inter.update(self.command_update)
+        controller.update(self.value_set_frames, self.get_expressions())
 
 
 class DeleteFrame(ExpressionEditor, ICommandCreator):
     expr_frames = []
-
-    command_delete = CommandDelete()
-    main_table_inter = MainTableInteractor(DataExtractor())
 
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
@@ -367,9 +319,4 @@ class DeleteFrame(ExpressionEditor, ICommandCreator):
         self.grid_rowconfigure(1, weight=1)
 
     def click_exec(self):
-        expressions = self.get_expressions()
-        if expressions is None:
-            print("Не заполнены условия")
-        else:
-            self.command_delete.set_conditions(expressions)
-            self.main_table_inter.delete(self.command_delete)
+        controller.delete(self.get_expressions())

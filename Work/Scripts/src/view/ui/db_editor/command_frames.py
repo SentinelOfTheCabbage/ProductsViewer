@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from tkinter import Frame, NSEW, W, StringVar, \
-    BooleanVar, EW
+    BooleanVar, EW, Tk
+from tkinter.messagebox import showinfo, showwarning
 from tkinter.ttk import Style
 
 from Work.Scripts.src.controller.adapters import ListMainTableAdapter
@@ -11,6 +12,7 @@ from Work.Scripts.src.view.ui.custom_widgets import VerticalScrolledFrame, \
     PVCheckbutton, PVCombobox, PVEntry
 
 controller = ListMainTableAdapter()
+ERROR_TITLE = "Внимание"
 
 
 class IRemoveListener(ABC):
@@ -34,7 +36,7 @@ class ExpressionEditor(PVFrame):
         super().__init__(master, **kw)
 
         where_label = SubtitleLabel(self, text="Где")
-        self.where_frame = VerticalScrolledFrame(self, bg='blue')
+        self.where_frame = VerticalScrolledFrame(self)
 
         where_label.grid(row=0, column=1, sticky=NSEW)
         self.where_frame.grid(row=1, column=1, sticky=NSEW)
@@ -43,6 +45,8 @@ class ExpressionEditor(PVFrame):
         btn_add_expr.bind("<Button-1>", self.click_add_expr)
         btn_add_expr.grid(row=2, column=1, padx=8, sticky=NSEW)
 
+        self.clear_expressions()
+
     def click_add_expr(self, event):
         expression_frame = ExpressionFrame(self.where_frame.interior, self)
         expression_frame.pack(expand=True, fill='x')
@@ -50,6 +54,9 @@ class ExpressionEditor(PVFrame):
 
     def remove_expr(self, expr_frame):
         self.expr_frames.remove(expr_frame)
+
+    def clear_expressions(self):
+        self.expr_frames = []
 
     def get_expressions(self):
         expressions = []
@@ -195,11 +202,7 @@ class SelectFrame(ExpressionEditor, ICommandCreator):
         columns_label = SubtitleLabel(self, text="Столбцы")
         columns_frame = VerticalScrolledFrame(self)
 
-        columns = [ProductColumns.NAME.value,
-                   ProductColumns.PRICE.value,
-                   ProductColumns.GROUP_NAME.value,
-                   ProductColumns.PRODUCER_NAME.value,
-                   ProductColumns.QUALITY.value]
+        columns = ProductColumns.get_empty_row().keys()
 
         self.check_vars = {}
         for col in columns:
@@ -207,13 +210,18 @@ class SelectFrame(ExpressionEditor, ICommandCreator):
             self.check_vars[col] = checking_var
             check_btn = PVCheckbutton(columns_frame.interior, text=col,
                                       variable=checking_var)
+            checking_var.set(True)
             check_btn.pack(anchor=W)
 
         columns_label.grid(row=0, column=0, sticky=NSEW)
         columns_frame.grid(row=1, column=0, sticky=NSEW)
 
     def click_exec(self):
-        print(controller.select(self.check_vars, self.get_expressions()))
+        event = controller.select(self.check_vars, self.get_expressions())
+        if event.error != 0:
+            showwarning(ERROR_TITLE, event.text, parent=self)
+        else:
+            print(event)
 
 
 class InsertFrame(PVFrame, ICommandCreator):
@@ -232,16 +240,9 @@ class InsertFrame(PVFrame, ICommandCreator):
 
         self.style = Style()
 
-        columns = [ProductColumns.NAME.value,
-                   ProductColumns.PRICE.value,
-                   ProductColumns.GROUP_NAME.value,
-                   ProductColumns.PRODUCER_NAME.value,
-                   ProductColumns.QUALITY.value]
+        columns = ProductColumns.get_empty_row().keys()
 
         col_and_vals = VerticalScrolledFrame(self)
-
-        # self.style.configure("custom.TCombobox", fg="white",
-        #                      bg="black")
 
         for col_name in columns:
             col_and_val_frame = PVFrame(col_and_vals.interior)
@@ -254,7 +255,7 @@ class InsertFrame(PVFrame, ICommandCreator):
             style.configure("custom.TCombobox", fieldbackground="#000")
             value_entry = PVCombobox(col_and_val_frame, textvariable=value_var,
                                      style="custom.TCombobox")
-            value_entry['values'] = ['1', '2', '3']
+            value_entry['values'] = controller.get_vals_by_col(col_name)
             col_label.grid(row=0, column=0, sticky=W, padx=(24, 0))
             value_entry.grid(row=0, column=1, sticky=EW, padx=(0, 24))
             self.values[col_label['text']] = value_entry
@@ -270,7 +271,11 @@ class InsertFrame(PVFrame, ICommandCreator):
         separator.grid(row=2, column=0, columnspan=4, sticky=EW)
 
     def click_exec(self):
-        controller.insert(self.values)
+        event = controller.insert(self.values)
+        if event.error != 0:
+            showwarning(ERROR_TITLE, event.text, parent=self)
+        else:
+            print(event)
 
 
 class UpdateFrame(ExpressionEditor, ICommandCreator):
@@ -302,7 +307,12 @@ class UpdateFrame(ExpressionEditor, ICommandCreator):
         self.value_set_frames.append(value_set_frame)
 
     def click_exec(self):
-        controller.update(self.value_set_frames, self.get_expressions())
+        event = controller.update(self.value_set_frames,
+                                  self.get_expressions())
+        if event.error != 0:
+            showwarning(ERROR_TITLE, event.text, parent=self)
+        else:
+            print(event)
 
 
 class DeleteFrame(ExpressionEditor, ICommandCreator):
@@ -319,4 +329,8 @@ class DeleteFrame(ExpressionEditor, ICommandCreator):
         self.grid_rowconfigure(1, weight=1)
 
     def click_exec(self):
-        controller.delete(self.get_expressions())
+        event = controller.delete(self.get_expressions())
+        if event.error != 0:
+            showwarning(ERROR_TITLE, event.text, parent=self)
+        else:
+            print(event)

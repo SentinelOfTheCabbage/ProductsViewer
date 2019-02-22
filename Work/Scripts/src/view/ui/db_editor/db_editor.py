@@ -1,5 +1,4 @@
-from tkinter import Tk, StringVar, NSEW, E, EW
-from tkinter.ttk import Combobox
+from tkinter import StringVar, NSEW, E, EW
 
 from Work.Scripts.src.view.ui.custom_widgets import PVStandardButton, PVFrame, \
     PVLabel, PVCombobox
@@ -10,6 +9,8 @@ from Work.Scripts.src.view.ui.main_window.config import MAIN_BACKGROUND
 EDIT_TYPE_TEXT = "Команда для редактироавния БД"
 TABLE_CHOICE_TEXT = "Выберите таблицу"
 BTN_EXEC_TEXT = "Изменить"
+WIDTH = 600
+HEIGHT = 500
 
 
 class DbEditorWindow:
@@ -20,6 +21,9 @@ class DbEditorWindow:
         self.master = master
         master['bg'] = MAIN_BACKGROUND
         master.title(title)
+        x = WIDTH - master.winfo_reqwidth() / 2
+        y = (HEIGHT - master.winfo_reqheight()) / 2
+        master.wm_geometry("%dx%d+%d+%d" % (WIDTH, HEIGHT, x, y))
 
         master.grid_columnconfigure(0, weight=1)
         master.grid_columnconfigure(1, weight=2)
@@ -32,7 +36,7 @@ class DbEditorWindow:
 
         edit_type_label = PVLabel(master, text=EDIT_TYPE_TEXT)
         self.edit_type_choice = PVCombobox(master, width=30, height=20,
-                                    state="readonly")
+                                           state="readonly")
         self.edit_type_choice['values'] = self.commands
         self.edit_type_choice.bind('<<ComboboxSelected>>', self.choose_command)
         self.edit_type_choice.current(0)
@@ -41,8 +45,8 @@ class DbEditorWindow:
 
         table_choice_label = PVLabel(master, text=TABLE_CHOICE_TEXT)
         table_choice = PVCombobox(master, width=30, height=20,
-                                state="readonly",
-                                textvariable=self.table_var)
+                                  state="readonly",
+                                  textvariable=self.table_var)
         table_choice['values'] = self.tables
         table_choice.current(0)
         table_choice.grid(row=1, column=1, sticky=EW, padx=10)
@@ -56,7 +60,7 @@ class DbEditorWindow:
         edit_type_label.grid(row=0, column=0, sticky=E)
 
         self.btn_exec = PVStandardButton(master)
-        self.btn_exec.bind("<Button-1>", self.click_exec)
+        self.btn_exec.bind("<ButtonRelease-1>", self.click_exec)
         self.btn_exec.grid(row=3, column=0, columnspan=3,
                            sticky=E, padx=8, pady=8)
 
@@ -80,6 +84,3 @@ class DbEditorWindow:
 
     def click_exec(self, event):
         self.content_frame.click_exec()
-
-
-# DbEditorWindow(Tk(), "Расширенное редактирование БД")

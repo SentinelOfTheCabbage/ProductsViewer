@@ -1,31 +1,23 @@
 import pandas as pd
-from pandas import DataFrame, np
+from pandas import np
 
+from Work.Scripts.src.model.repository.UI_table_constants import ProductColumns
 from Work.Scripts.src.model.repository.interf_extractor import IDataExtractor
 
 
 class DataExtractor(IDataExtractor):
-    # def get_data(self):
-    #     tables = {
-    #         'products': DataFrame(self.get_table_products()[1:],
-    #                               columns=self.get_table_products()[0]),
-    #         'producers': DataFrame(columns=['id', 'Наименование']),
-    #         'groups': DataFrame(columns=['id', 'Наименование']),
-    #         'discounts': DataFrame(columns=['id', 'Наименование']),
-    #         'checks': DataFrame(columns=['id', 'Наименование']),
-    #         'sales': DataFrame(columns=['id', 'Наименование']),
-    #     }
-    #     return tables
 
     def get_data(self):
         data = np.array([
-            ["Наименование", "Цена", "Группа", "Производитель", "Качество",
-             "Чек", "Дата"],
-            ["Молоко", 50, "Молочное", "Вимм-билль-данн", "ГОСТ", 14423,
-             "19.02.19"],
-            ["Хлеб", 40, "Бакалея", "Хлебушек", "ГОСТ", 14413,
-             "19.02.19"],
-            ["Кефир", 70, "Молочное", "Вимм-билль-данн", "ГОСТ", 12413,
-             "19.02.19"]
+            list(ProductColumns.get_empty_row().keys()),
+            ["Молоко", 50, "М", "Молочное", 0, "ГОСТ"],
+            ["Хлеб", 34, "Хлебное гнездо", "Бакалея", 0, "ГОСТ"],
+            ["Торт", 420, "От палыча", "Сладкое", 10, "СТО"],
+            ["Творог", 70, "Простоквашино", "Молочное", 0, "ГОСТ"],
+            ["Кефир", 60, "Простоквашино", "Молочное", 0, "ГОСТ"],
+            ["Сметана", 80, "Простоквашино", "Молочное", 0, "ГОСТ"],
+            ["Булочка", 20, "Хлопушка", "Бакалея", 5, "ТУ"],
+            ["Макароны", 70, "Такие с птичкино", "Бакалея", 0, "СТО"],
+            ["Рис", 60, "Китерс", "Бакалея", 0, "СТО"],
         ])
         return pd.DataFrame(data[1:], columns=data[0])

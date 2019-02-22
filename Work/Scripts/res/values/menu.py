@@ -46,7 +46,42 @@ class MainMenuListener(ABC):
 
     @staticmethod
     @abstractmethod
+    def open_db():
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def save():
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def save_as():
+        pass
+
+    @staticmethod
+    @abstractmethod
     def edit_db():
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def prev_step():
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def next_step():
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def about_app():
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def exit():
         pass
 
 
@@ -92,23 +127,23 @@ class MainMenuFactory(ABC):
         return [
             {
                 LABEL_KEY: "Открыть",
-                COMMAND_KEY: None
+                COMMAND_KEY: self.listener.open_db
             },
             {
                 LABEL_KEY: "Сохраниить",
-                COMMAND_KEY: None
+                COMMAND_KEY: self.listener.save
             },
             {
                 LABEL_KEY: "Сохранить как...",
-                COMMAND_KEY: None
+                COMMAND_KEY: self.listener.save_as
             },
             {
                 LABEL_KEY: "Назад",
-                COMMAND_KEY: None
+                COMMAND_KEY: self.listener.prev_step
             },
             {
                 LABEL_KEY: "Вперёд",
-                COMMAND_KEY: None
+                COMMAND_KEY: self.listener.next_step
             },
             {
                 LABEL_KEY: "Редактировать БД",
@@ -116,12 +151,12 @@ class MainMenuFactory(ABC):
             },
             {
                 LABEL_KEY: "О программе",
-                COMMAND_KEY: None
+                COMMAND_KEY: self.listener.about_app
             },
             None,
             {
                 LABEL_KEY: "Выйти",
-                COMMAND_KEY: None
+                COMMAND_KEY: self.listener.exit
             },
         ]
 

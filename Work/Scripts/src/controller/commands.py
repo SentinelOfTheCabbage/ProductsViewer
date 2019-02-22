@@ -1,13 +1,14 @@
 from abc import ABC, abstractmethod
 
 from Work.Scripts.src.controller.key_words import Expression
-from Work.Scripts.src.model.repository.DB_constants import TableName
+from Work.Scripts.src.model.repository.UI_table_constants import \
+    ProductColumns, TableNameUI
 
 
 class ICommand(ABC):
-    _table_name: TableName = None
+    _table_name: str = None
 
-    def set_table_name(self, table_name: TableName):
+    def set_table_name(self, table_name: str):
         self._table_name = table_name
 
     def get_table_name(self):
@@ -39,7 +40,13 @@ class ConditionProvider:
 
 
 class CommandSelect(ICommand, ConditionProvider):
-    _columns = []
+
+    def __init__(self, table):
+        if table == TableNameUI.PRODUCTS.value:
+            self._columns = list(ProductColumns.get_empty_row().keys())
+            self.set_conditions([])
+        else:
+            self._columns = []
 
     def add_column(self, column: str):
         self._columns.append(column)
@@ -60,8 +67,8 @@ class CommandSelect(ICommand, ConditionProvider):
 class CommandInsert(ICommand):
     _row = []
 
-    def add_row(self, row: list):
-        self._row = row
+    def add_row(self, titled_row: dict):
+        self._row = titled_row
 
     def get_row(self):
         return self._row

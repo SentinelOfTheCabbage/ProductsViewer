@@ -4,7 +4,6 @@ from tkinter import Frame, Canvas, Button, Tk, Scrollbar, Menu, NSEW, NE, W, \
 
 from Work.Scripts.res.values.menu import MainMenuFactory, MainMenuListener
 from Work.Scripts.src.controller.adapters import ListMainTableAdapter
-from Work.Scripts.src.controller.db_controller import MainTableController
 from Work.Scripts.src.view.ui.db_editor.db_editor import DbEditorWindow
 from Work.Scripts.src.view.ui.main_window.config import WIN_W_START, \
     WIN_H_START, \
@@ -24,7 +23,7 @@ from Work.Scripts.src.view.ui.reports_settings.settings_histogram import \
 from Work.Scripts.src.view.ui.reports_settings.settings_scatter_chart import \
     SettingsScatterChart
 
-controller = ListMainTableAdapter()
+controller = ListMainTableAdapter(True)
 
 
 class MainWindow:
@@ -692,6 +691,7 @@ class OptionsMenu(Menu, MainMenuListener):
 
         self.master.config(menu=main_menu)
 
+
     @staticmethod
     def create_simple_report():
         pass
@@ -721,5 +721,33 @@ class OptionsMenu(Menu, MainMenuListener):
         SettingsHistogram(Tk())
 
     @staticmethod
+    def open_db():
+        pass
+
+    @staticmethod
+    def save():
+        pass
+
+    @staticmethod
+    def save_as():
+        pass
+
+    @staticmethod
     def edit_db():
         DbEditorWindow(Tk(), "Расширенное редактирование БД")
+
+    @staticmethod
+    def prev_step():
+        print(controller.prev_state())
+
+    @staticmethod
+    def next_step():
+        print(controller.next_state())
+
+    @staticmethod
+    def about_app():
+        pass
+
+    @staticmethod
+    def exit():
+        pass

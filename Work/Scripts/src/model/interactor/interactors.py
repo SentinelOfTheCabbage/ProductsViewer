@@ -1,3 +1,5 @@
+import copy
+
 import pandas as pd
 import numpy as np
 
@@ -11,6 +13,7 @@ from Work.Scripts.src.controller.key_words import CompareOp, Expression
 # продуктов и выбранному качеству
 import random
 
+from Work.Scripts.src.model.repository.DB_constants import TableName
 from Work.Scripts.src.model.repository.interf_extractor import IDataExtractor
 
 
@@ -78,16 +81,19 @@ def get_columns_by_table(table):
 
 
 class MainTableInteractor:
-    selector = CommandSelect()
     df = pd.DataFrame()
     select_df = pd.DataFrame()
 
     def __init__(self, extractor: IDataExtractor):
         self.extractor = extractor
         self.df = self.get_data()
+        self.selector = CommandSelect(TableName.PRODUCTS.value)
 
     def get_data(self):
         return self.extractor.get_data()
+
+    def set_data(self, data: pd.DataFrame):
+        self.df = data
 
     def select(self, command_select: CommandSelect = None):
         if not(command_select is None):
@@ -101,7 +107,8 @@ class MainTableInteractor:
         return self.select_df
 
     @staticmethod
-    def _filter(df: pd.DataFrame, field, compare_op: str, value):
+    def _filter(df: pd.DataFrame, field, compare_op: str,
+                value, reverse=False):
         def get_type_of(series: pd.Series):
             if series.array:
                 try:
@@ -112,22 +119,34 @@ class MainTableInteractor:
                     return str
             return None
 
+        def reverse_op(op):
+            return {
+                CompareOp.EQUAL.value: CompareOp.NOT_EQUAL.value,
+                CompareOp.NOT_EQUAL.value: CompareOp.EQUAL.value,
+                CompareOp.LESS.value: CompareOp.MORE_OR_EQUAL.value,
+                CompareOp.LESS_OR_EQUAL.value: CompareOp.MORE.value,
+                CompareOp.MORE.value: CompareOp.LESS_OR_EQUAL.value,
+                CompareOp.MORE_OR_EQUAL.value: CompareOp.LESS.value
+            }[op]
+
         data_type = get_type_of(df[field])
         value = data_type(value)
         field_val = df[field].astype(data_type)
+        if reverse:
+            compare_op = reverse_op(compare_op)
         return {
-            CompareOp.EQUAL.value: field_val == value,
-            CompareOp.NOT_EQUAL.value: field_val != value,
-            CompareOp.LESS.value: field_val < value,
-            CompareOp.LESS_OR_EQUAL.value: field_val <= value,
-            CompareOp.MORE.value: field_val > value,
-            CompareOp.MORE_OR_EQUAL.value: field_val >= value
-        }[compare_op]
+                CompareOp.EQUAL.value: field_val == value,
+                CompareOp.NOT_EQUAL.value: field_val != value,
+                CompareOp.LESS.value: field_val < value,
+                CompareOp.LESS_OR_EQUAL.value: field_val <= value,
+                CompareOp.MORE.value: field_val > value,
+                CompareOp.MORE_OR_EQUAL.value: field_val >= value
+            }[compare_op]
 
     def insert(self, command_insert: CommandInsert):
-        index = self.df.index[-1] + 1
-        self.df.loc[index] = command_insert.get_row()
-        return self.select()
+        row = command_insert.get_row()
+        self.df = self.df.append(row, ignore_index=True)
+        return row.values()
 
     def update(self, command_update: CommandUpdate):
         command_update.get_values()
@@ -136,29 +155,17 @@ class MainTableInteractor:
                 self.df.loc[self._filter(
                     self.df, col, op, val
                 ), field] = set_val
+        return self.select(self.selector)
 
     def delete(self, command_delete: CommandDelete):
         for col, op, val in command_delete.items():
-            pass
-            # self.df = self.df.drop(np.where(self._filter(
-            #         self.df, col, op, val
-            #     ), op, val))[0])
-        return self.select()
+            self.df = self.df[self._filter(self.df, col, op, val, True)]
+        return self.select(self.selector)
 
-#
-# inter = MainTableInteractor()
-# selector = CommandSelect()
-# exprs = [
-#     # Expression('Наименование', CompareOp.EQUAL, "Молоко"),
-#     # Expression('Цена', CompareOp.MORE, 60),
-# ]
-# selector.set_conditions(exprs)
-# selector.set_columns(['Наименование', 'Цена', 'Качество'])
-# inter.select(selector)
-# command_delete = CommandDelete()
-#
-# exprs_delete = [
-#     Expression('Цена', CompareOp.MORE, 60)
-# ]
-# command_delete.set_conditions(exprs_delete)
-# print(inter.delete(command_delete))
+    def get_vals_by_col(self, column: str):
+        vals = list(set(self.df[column].tolist()))
+        vals.sort()
+        return vals
+
+    def get_db_copy(self):
+        return copy.deepcopy(self.df)

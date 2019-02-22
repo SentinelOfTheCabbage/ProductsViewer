@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class TableName(Enum):
+class TableNameUI(Enum):
     PRODUCTS = "Продукты"
     VOUCHERS = "Чеки"
 
@@ -26,11 +26,11 @@ class ProductColumns(IColumnsName):
     @staticmethod
     def get_empty_row():
         return {
-            ProductColumns.NAME: None,
-            ProductColumns.PRICE: None,
-            ProductColumns.PRODUCER_NAME: None,
-            ProductColumns.GROUP_NAME: None,
-            ProductColumns.DISCOUNT_NAME: None,
-            ProductColumns.QUALITY: None
+            ProductColumns.NAME.value: None,
+            ProductColumns.PRICE.value: None,
+            ProductColumns.PRODUCER_NAME.value: None,
+            ProductColumns.GROUP_NAME.value: None,
+            ProductColumns.DISCOUNT_NAME.value: None,
+            ProductColumns.QUALITY.value: None
         }
 

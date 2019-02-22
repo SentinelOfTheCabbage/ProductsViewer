@@ -11,7 +11,8 @@ from Work.Scripts.src.view.ui.main_window.config import WIN_W_START, \
     COLOR_BG_TITLE_TABLE, FILTER_TAB_TEXT, TABLES_TAB_TEXT, \
     LAST_CHANGES_CLOSED_TAB, LAST_CHANGES_OPENED_TAB, MENU_FILE_TEXT, \
     MENU_CHANGE_TEXT, MENU_REPORT_TEXT, DEFAULT_SEARCH_TEXT, HEIGHT_ROW, \
-    COLOR_BG_SELECT_ROW, COLOR_TEXT_TITLE
+    COLOR_BG_SELECT_ROW, COLOR_TEXT_TITLE, COLOR_BG_BOTTOM_BTN, \
+    COLOR_FG_BOTTOM_BTN
 from Work.Scripts.src.view.ui.main_window.move_out_panels import \
     ChangeHistoryPanel, ColumnFilterPanel, RowFilterPanel
 from Work.Scripts.src.view.ui.reports_settings.settings_bar_chart import \
@@ -88,8 +89,9 @@ class MainWindow:
         self.table_frame.content()
         self.last_ch_frame = ChangeHistoryPanel(self.master)
 
-        self.bottom_btn = Button(master, bg="red", anchor=W,
-                                 text=LAST_CHANGES_CLOSED_TAB)
+        self.bottom_btn = Button(master, bg=COLOR_BG_BOTTOM_BTN, anchor=W,
+                                 text=LAST_CHANGES_CLOSED_TAB, relief="flat",
+                                 fg=COLOR_FG_BOTTOM_BTN)
         self.bottom_btn.bind("<ButtonRelease-1>", self.click_extend_menu)
 
         self.right_menu = Frame(master)
@@ -133,28 +135,48 @@ class MainWindow:
 
     def save_new_row(self):
         self.main_frame._bd_array.append([])
-        for i in range(self.main_frame.col):
+        for i in range(len(self.main_frame._bd_array[0])):
             self.main_frame._bd_array[len(self.main_frame._bd_array)-1].append(
                 "{}".format(self.main_frame.list_new_col[i].get()))
         r = len(self.main_frame._bd_array) - 1
-        self.main_frame.frame2.grid_rowconfigure(r, minsize=22)
-        self.main_frame.list_row[r] = 0
-        for c in range(self.main_frame.col):
+        self.main_frame.frame2.grid_rowconfigure(r, minsize=HEIGHT_ROW)
+        #self.main_frame.list_row[r] = 0
+        for c in range((len(self.main_frame._bd_array[0]))):
             self.new_frame = Frame(self.main_frame.frame2)
-            self.cell = Entry(self.new_frame)
-            self.main_frame.list_frame.append(self.new_frame)
-            self.main_frame.list_cell.append(self.cell)
+            self.cell = Entry(self.new_frame,
+                              disabledforeground=COLOR_TEXT_TABLE,
+                              fg=COLOR_TEXT_TABLE)
             self.cell.bind("<Button-1>", self.main_frame.click_cell)
             self.cell.bind("<Double-1>", self.main_frame.double_click_cell)
             self.cell.bind("<Button-3>", self.main_frame.context_menu)
+            self.new_frame.bind("<Button-1>", self.main_frame.click_cell)
+            self.new_frame.bind("<Double-1>", self.main_frame.double_click_cell)
+            self.new_frame.bind("<Button-3>", self.main_frame.context_menu)
+            self.main_frame._characteristic.update({
+                self.cell: [self.new_frame, "entry", r, c,
+                            r * len(self.main_frame._bd_array[0]) + c,
+                            False, True]})
+            self.main_frame._characteristic.update({
+                self.new_frame: [self.cell, "frame", r, c,
+                                 r * len(self.main_frame._bd_array[0]) + c,
+                                 False, True]})
+
+            # self.new_frame = Frame(self.main_frame.frame2)
+            # self.cell = Entry(self.new_frame)
+            # self.main_frame.list_frame.append(self.new_frame)
+            # self.main_frame.list_cell.append(self.cell)
+            # self.cell.bind("<Button-1>", self.main_frame.click_cell)
+            # self.cell.bind("<Double-1>", self.main_frame.double_click_cell)
+            # self.cell.bind("<Button-3>", self.main_frame.context_menu)
 
             self.cell.insert(0, "{}".format(self.main_frame._bd_array[r][c]))
+            self.new_frame.config(bg=COLOR_BG_ODD_ROW, pady=5)
             self.new_frame.grid(row=r, column=c, sticky="nwes")
-            self.cell.grid()
-            self.cell.config(relief="flat", width=11,
+            self.cell.grid(sticky="nwes")
+            self.cell.config(relief="flat", width=self.main_frame.list_max[c] + 2,
                              state="disabled",
-                             fg=COLOR_TEXT_TABLE,
                              bg="#fff",
+                             disabledbackground=COLOR_BG_ODD_ROW
                              )
         self.main_frame.repaint()
 
@@ -267,19 +289,15 @@ class MainWindow:
 class MainTableFrame(Canvas):
     """ asd"""
     _bd_array = main_table_interactor.get_data(None, None)
-    _array_titles = _bd_array[0]
-    _array_cell = []
-    for i in range(len(_bd_array)-1):
-        _array_cell.append(_bd_array[i+1])
-    col = len(_bd_array[0])
-    row = len(_bd_array)
+    # entry или frame : [frame или entry, this_type, строка, столбец, номер, select, grid]
+    _characteristic = {}
     list_new_col = []
     list_max = {}
-    for i in range(col):
+    for i in range(len(_bd_array[0])):
         list_new_col.append(1)
     widget = ""
+    widget2 = 0
     start_value = ""
-    z = 0
     list_row = {}
     list_cell = []
     list_titles = []
@@ -302,7 +320,7 @@ class MainTableFrame(Canvas):
         self.titles = Canvas(self.frame, bg=COLOR_BG_TITLE_TABLE)
         self.cont = Canvas(self.frame, height=350)
         self.titles.grid(row=0, column=0, sticky=NSEW)
-        self.frame2 = Frame(self.cont, background="blue")
+        self.frame2 = Frame(self.cont, background="#f0f0f0")
         self.cont.create_window((0, 0), window=self.frame2, anchor=NW)
         self.cont.grid(row=1, column=0, sticky=NSEW)
 
@@ -319,7 +337,10 @@ class MainTableFrame(Canvas):
         self.frame2.bind("<Configure>", lambda event, canvas=self.cont:
         self.on_frame_configure(self.cont))
         self.add_arrow(self._bd_array[0])
-        self.content(self.titles, self.frame2, self._bd_array)
+        self.content(self._bd_array)
+
+        self.btn_on = Button(self.frame2, text="on")
+        self.btn_off = Button(self.frame2, text="off")
 
         self.menu = Menu(self.master, tearoff=0, postcommand=self.new_xy_menu)
         self.menu.add_command(label="Изменить", command=self.before_change)
@@ -334,77 +355,66 @@ class MainTableFrame(Canvas):
         #self.master.bind("<Escape>", self.deselect)
 
     def del_select(self):
-        for j in range(len(self.list_row)):
-            if self.list_row[j] == 1:
-                self.list_row[j] = 0
-                self.frame2.grid_rowconfigure(j + 1, minsize=0)
-                for i in range(self.col):
-                    self.list_cell[
-                        j * self.col + i].grid_forget()
-                    self.list_frame[
-                        j * self.col + i].grid_forget()
+        for key in self._characteristic.keys():
+            if self._characteristic[key][-2] == True:
+                self._characteristic[key][-2] = False
+                self._characteristic[key][-1] = False
+                key.grid_forget()
+                if self._characteristic[key][4] == self._characteristic[key][2] * len(self._bd_array[0]) and self._characteristic[key][4] != 0 and self._characteristic[key][1] == "entry":
+                    self.frame2.grid_rowconfigure(self._characteristic[key][2], minsize=0)
+
         self.repaint()
 
     def delete_row(self):
-        if self.widget[54:-7] == "":
-            z = 0
-        else:
-            z = int(self.widget[54:-7]) - 1
-        self.frame2.grid_rowconfigure(z//self.col + 1, minsize=0)
-        for i in range(self.col):
-            self.list_cell[(z//self.col)*self.col + i].grid_forget()
-            self.list_frame[(z // self.col) * self.col + i].grid_forget()
+        self.frame2.grid_rowconfigure(self._characteristic[self.widget][2],
+                                      minsize=0)
+        for key in self._characteristic.keys():
+            if self._characteristic[key][2] == self._characteristic[self.widget][2]:
+                key.grid_forget()
+                self._characteristic[key][-1] = False
+
         self.repaint()
 
     def repaint(self):
         j = -1
-        for i in range(len(self._bd_array)-1):
-            if self.frame2.rowconfigure(i+1)['minsize'] == HEIGHT_ROW:
-                j += 1
-                if j % 2 == 0:
-                    for z in range(len(self._bd_array[0])):
-                        self.list_frame[i * len(self._bd_array[0]) + z].config(
-                            bg=COLOR_BG_ODD_ROW)
-                        self.list_cell[i * len(self._bd_array[0]) + z].config(
-                            disabledbackground=COLOR_BG_ODD_ROW)
-                else:
-                    for y in range(len(self._bd_array[0])):
-                        self.list_frame[i * len(self._bd_array[0]) + y].config(
-                            bg=COLOR_BG_EVENT_ROW)
-                        self.list_cell[i * len(self._bd_array[0]) + y].config(
-                            disabledbackground=COLOR_BG_EVENT_ROW)
+        col = len(self._bd_array[0])
+
+        for key in self._characteristic.keys():
+            self._characteristic[key][-2] = False
+            if self._characteristic[key][4] == self._characteristic[key][2] * col and self._characteristic[key][4]!=0 and self._characteristic[key][1] == "entry":
+                if self._characteristic[key][-1] == True:
+                    j += 1
+                    if j % 2 == 0:
+                        for key2 in self._characteristic.keys():
+                            if self._characteristic[key2][2] == self._characteristic[key][2]:
+                                if self._characteristic[key2][1] == "entry":
+                                    key2.config(disabledbackground=COLOR_BG_ODD_ROW)
+                                else:
+                                    key2.config(bg=COLOR_BG_ODD_ROW)
+                    else:
+                        for key2 in self._characteristic.keys():
+                            if self._characteristic[key2][2] == self._characteristic[key][2]:
+                                if self._characteristic[key2][1] == "entry":
+                                    key2.config(disabledbackground=COLOR_BG_EVENT_ROW)
+                                else:
+                                    key2.config(bg=COLOR_BG_EVENT_ROW)
 
     def new_row(self):
-        for r in range(self.col):
-            new = Entry(self.titles, bd=0, width=self.list_max[r]+2)
-            self.list_new_col[r] = new
+        for col in range(len(self._bd_array[0])):
+            new = Entry(self.titles, bd=0, width=self.list_max[col]+2)
+            self.list_new_col[col] = new
             new.bind("<Key>", self.change_new_row)
-            new.grid(row=1, column=1*r, sticky="w")
+            new.grid(row=1, column=1*col, sticky="w")
 
     def change_new_row(self, event):
         self.btn1.grid(row=0, column=2)
         self.btn2.grid(row=0, column=3)
 
     def del_new_row(self):
-        for z in range(self.col):
+        for z in range(len(self._bd_array[0])):
             self.list_new_col[z].destroy()
 
     def deselect(self):
-        # for j in range(len(self.list_row)):
-        #     if self.list_row[j] == 1:
-        #         self.list_row[j] = 0
-        #         if j % 2 == 0:
-        #             for i in range(self.col):
-        #                 self.list_cell[self.col * j + i].config(
-        #                     disabledbackground=COLOR_BG_ODD_ROW)
-        #                 self.list_frame[self.col * j + i].config(
-        #                     bg=COLOR_BG_ODD_ROW)
-        #         else:
-        #             for i in range(self.col):
-        #                 self.list_cell[self.col * j + i].config(
-        #                     disabledbackground=COLOR_BG_EVENT_ROW)
-        #                 self.list_frame[self.col * j + i].config(
-        #                     bg=COLOR_BG_EVENT_ROW)
         self.repaint()
 
     def new_xy_menu(self):
@@ -413,77 +423,87 @@ class MainTableFrame(Canvas):
     def save_change(self, event=None):
         self.btn_on.destroy()
         self.btn_off.destroy()
-        self.list_titles[self.z%self.col].config(width=11)
-        self.list_cell[self.z].config(state="normal")
-        self._bd_array[1 + self.z // self.col][self.z % self.col] = \
-        self.list_cell[self.z].get()
-        self.list_cell[self.z].config(state="disabled")
-        self.max_width(self._bd_array, self.list_max, self.z%self.col)
-        self.set_max_width(len(self._bd_array), len(self._bd_array[0]),
-                           self.list_max)
+        if self._characteristic[self.widget][1] == "entry":
+            value = self.widget.get()
+            self.widget.config(state="disabled")
+        else:
+            value = self._characteristic[self.widget][0].get()
+            self._characteristic[self.widget][0].config(state="disabled")
+        self._bd_array[self._characteristic[self.widget][2]][self._characteristic[self.widget][3]] = value
 
-    def set_max_width(self, num_row, num_col, list):
-        for r in range(num_row):
-            for c in range(num_col):
-                if r == 0:
-                    self.list_titles[c].config(width=self.list_max[c]+2)
-                else:
-                    self.list_cell[(r-1)*self.col + c].config(width=list[c]+2)
+        # self.list_titles[self.z%len(self._bd_array[0])].config(width=11)
+        # self.list_cell[self.z].config(state="normal")
+        # self._bd_array[1 + self.z // len(self._bd_array[0])][self.z % len(self._bd_array[0])] = \
+        # self.list_cell[self.z].get()
+        # self.list_cell[self.z].config(state="disabled")
+        # self.max_width(self._bd_array, self.list_max, self.z%len(self._bd_array[0]))
+        self.max_width(self._bd_array, self.list_max, self._characteristic[self.widget][3])
+        self.set_max_width()
+
+    def set_max_width(self):
+        for key in self._characteristic.keys():
+            if self._characteristic[key][1] == "entry":
+                key.config(width=self.list_max[self._characteristic[key][3]]+2)
 
     def del_change(self, event=None):
         self.btn_on.destroy()
         self.btn_off.destroy()
-        self.list_titles[self.z % self.col].config(
-            width=self.list_max[self.z % self.col] + 2)
-        self.list_cell[self.z].delete(0, "end")
-        self.list_cell[self.z].insert(0, self.start_value)
-        self.list_cell[self.z].config(state="disabled")
+        for key in self._characteristic.keys():
+            if self._characteristic[key][2] == 0 and self._characteristic[key][1] == "entry" and self._characteristic[key][3] == self._characteristic[self.widget2][3]:
+                key.config(width=self.list_max[self._characteristic[key][3]] + 2)
+        if self._characteristic[self.widget2][1] == "entry":
+            self.widget2.delete(0, "end")
+            self.widget2.insert(0, self.start_value)
+            self.widget2.config(state="disabled")
+        else:
+            self._characteristic[self.widget2][0].delete(0, "end")
+            self._characteristic[self.widget2][0].insert(0, self.start_value)
+            self._characteristic[self.widget2][0].config(state="disabled")
 
     def before_change(self):
-        self.del_change(23)
+        if self.widget2 != 0:
+            self.del_change()
         self.change()
 
     def change(self):
-        if "entry" in self.widget:
-            if self.widget[54:-7] == "":
-                self.z = 0
-            else:
-                self.z = int(self.widget[54:-7]) - 1
+        if self._characteristic[self.widget][1] == "entry":
+            self.widget.config(state="normal")
+            self.start_value = self.widget.get()
+            self.btn_on = Button(self._characteristic[self.widget][0],
+                                 text="on", bd=0,
+                                 command=self.save_change)
+            self.btn_off = Button(self._characteristic[self.widget][0],
+                                  text="off", bd=0,
+                                  command=self.del_change)
+            self.widget.bind('<Return>', self.save_change)
+            self.widget.bind('<Escape>', self.del_change)
+            self.widget.bind('<Double-1>', self.click_cell)
         else:
-            if self.widget[54:] == "":
-                self.z = 0
-            else:
-                self.z = int(self.widget[54:]) - 1
-        for c in range(self.col):
-                self.list_titles[c].config(width=self.list_max[c] + 2)
-        self.list_titles[self.z % self.col].config(
-            width=self.list_max[self.z % self.col] + 9)
-        self.list_cell[self.z].config(state="normal")
-        self.btn_on = Button(self.list_frame[self.z], text="on", bd=0,
-                             command=self.save_change)
-        self.btn_off = Button(self.list_frame[self.z], text="off", bd=0,
-                              command=self.del_change)
+            self._characteristic[self.widget][0].config(state="normal")
+            self.start_value = self._characteristic[self.widget][0].get()
+            self.btn_on = Button(self.widget,
+                                 text="on", bd=0,
+                                 command=self.save_change)
+            self.btn_off = Button(self.widget,
+                                  text="off", bd=0,
+                                  command=self.del_change)
+            self._characteristic[self.widget][0].bind('<Return>', self.save_change)
+            self._characteristic[self.widget][0].bind('<Escape>', self.del_change)
+            self._characteristic[self.widget][0].bind('<Double-1>', self.click_cell)
+
+        for key in self._characteristic.keys():
+            if self._characteristic[key][2] == 0 and self._characteristic[key][1] == "entry":
+                key.config(width=self.list_max[self._characteristic[key][3]] + 2)
+                if self._characteristic[key][3] == self._characteristic[self.widget][3]:
+                    key.config(width=self.list_max[self._characteristic[key][3]] + 9)
+
         self.btn_on.grid(row=0, column=1)
         self.btn_off.grid(row=0, column=2)
-        self.start_value = self.list_cell[self.z].get()
-        self.list_cell[self.z].bind('<Return>', self.save_change)
-        self.list_cell[self.z].bind('<Escape>', self.del_change)
-        self.list_cell[self.z].bind('<Double-1>', self.click_cell)
+        self.widget2 = self.widget
 
     def context_menu(self, event):
         self.new_xy_menu()
-        if "entry" in self.widget:
-            if self.widget[54:-7] == "":
-                z = 0
-            else:
-                z = int(self.widget[54:-7]) - 1
-        else:
-            if self.widget[54:] == "":
-                z = 0
-            else:
-                z = int(self.widget[54:]) - 1
-        if COLOR_BG_SELECT_ROW == "{}".format(
-            self.list_cell[z]["disabledbackground"]):
+        if self._characteristic[self.widget][-2] == True:
             self.black_menu.post(event.x_root, event.y_root)
         else:
             self.menu.post(event.x_root, event.y_root)
@@ -492,76 +512,134 @@ class MainTableFrame(Canvas):
         """ asd"""
         x, y = self.master.winfo_pointerxy()
         widget = self.master.winfo_containing(x, y)
-        widget = "{}".format(widget)
         return widget
 
     def click_title(self, event):
         widget = self.widget_pointer()
-        if "entry" in widget:
-            if widget[46:-7] == "":
-                num = 0
-            else:
-                num = int(widget[46:-7]) - 1
-        else:
-            if widget[46:] == "":
-                num = 0
-            else:
-                num = int(widget[46:]) - 1
+        num = self._characteristic[widget][3]
 
         def sort_col(i):
             return i[num]
 
-        self._array_cell.sort(key=sort_col)
-        array = []
-        for i in range(len(self._array_cell)):
-            array.append(self._array_cell[i])
-        array.insert(0, self._array_titles)
+        for key in self._characteristic.keys():
+            if not self._characteristic[key][-1] and self._characteristic[key][4] == self._characteristic[key][2] * len(self._bd_array[0]):
+                self._bd_array[self._characteristic[key][2]] = 0
+        i = 0
+        while i < len(self._bd_array):
+            if self._bd_array[i] == 0:
+                del self._bd_array[i]
+            else:
+                i += 1
 
-        self.recontent(self.titles, self.frame2, array)
+        array_titles = self._bd_array[0]
+        array_cell = []
+        for i in range(len(self._bd_array) - 1):
+            array_cell.append(self._bd_array[i + 1])
+        array_cell.sort(key=sort_col)
+        array = []
+        for i in range(len(array_cell)):
+            array.append(array_cell[i])
+        array.insert(0, array_titles)
+
+        self.content(array)
 
     def click_cell(self, event):
         widget = self.widget_pointer()
-        print(widget)
-        if "entry" in widget:
-            if widget[54:-7] == "":
-                num = 0
-            else:
-                num = int(widget[54:-7]) - 1
-        else:
-            if widget[54:] == "":
-                num = 0
-            else:
-                num = int(widget[54:]) - 1
-        self.list_row[num // self.col] = not self.list_row[num // self.col]
-        if "disabled" in "{}".format(
-                self.list_cell[num]["state"]):
-            if COLOR_BG_SELECT_ROW in "{}".format(
-                    self.list_cell[num]["disabledbackground"]):
-                if (num // self.col) % 2 == 0:
-                    for i in range(self.col):
-                        self.list_cell[
-                            self.col * (num // self.col) + i].config(
-                            disabledbackground=COLOR_BG_ODD_ROW)
-                        self.list_frame[
-                            self.col * (num // self.col) + i].config(
-                            bg=COLOR_BG_ODD_ROW)
+        if self._characteristic[widget][1] == "entry":
+            if "{}".format(widget["state"]) == "disabled":
+                if self._characteristic[widget][-2] == False:
+                    for key in self._characteristic.keys():
+                        if self._characteristic[key][2] == self._characteristic[widget][2]:
+                            self._characteristic[key][-2] = not self._characteristic[key][-2]
+                            if self._characteristic[key][1] == "frame":
+                                key.config(bg=COLOR_BG_SELECT_ROW)
+                            else:
+                                key.config(
+                                    disabledbackground=COLOR_BG_SELECT_ROW)
                 else:
-                    for i in range(self.col):
-                        self.list_cell[
-                            self.col * (num // self.col) + i].config(
-                            disabledbackground=COLOR_BG_EVENT_ROW)
-                        self.list_frame[
-                            self.col * (num // self.col) + i].config(
-                            bg=COLOR_BG_EVENT_ROW)
+                    for key in self._characteristic.keys():
+                        if self._characteristic[key][2] == self._characteristic[widget][2]:
+                            self._characteristic[key][-2] = not self._characteristic[key][-2]
+                            if self._characteristic[key][2] % 2 == 0:
+                                if self._characteristic[key][1] == "frame":
+                                    key.config(bg=COLOR_BG_EVENT_ROW)
+                                else:
+                                    key.config(disabledbackground=COLOR_BG_EVENT_ROW)
+                            else:
+                                if self._characteristic[key][1] == "frame":
+                                    key.config(bg=COLOR_BG_ODD_ROW)
+                                else:
+                                    key.config(disabledbackground=COLOR_BG_ODD_ROW)
+        else:
+            if self._characteristic[widget][-2] == False:
+                for key in self._characteristic.keys():
+                    if self._characteristic[key][2] == \
+                            self._characteristic[widget][2]:
+                        self._characteristic[key][-2] = not \
+                        self._characteristic[key][-2]
+                        if self._characteristic[key][1] == "frame":
+                            key.config(bg=COLOR_BG_SELECT_ROW)
+                        else:
+                            key.config(
+                                disabledbackground=COLOR_BG_SELECT_ROW)
             else:
-                for i in range(self.col):
-                    self.list_cell[self.col * (num // self.col) + i].config(
-                        disabledbackground=COLOR_BG_SELECT_ROW)
-                    self.list_frame[self.col * (num // self.col) + i].config(
-                        bg=COLOR_BG_SELECT_ROW)
+                for key in self._characteristic.keys():
+                    if self._characteristic[key][2] == \
+                            self._characteristic[widget][2]:
+                        self._characteristic[key][-2] = not \
+                        self._characteristic[key][-2]
+                        if self._characteristic[key][2] % 2 == 0:
+                            if self._characteristic[key][1] == "frame":
+                                key.config(bg=COLOR_BG_EVENT_ROW)
+                            else:
+                                key.config(
+                                    disabledbackground=COLOR_BG_EVENT_ROW)
+                        else:
+                            if self._characteristic[key][1] == "frame":
+                                key.config(bg=COLOR_BG_ODD_ROW)
+                            else:
+                                key.config(disabledbackground=COLOR_BG_ODD_ROW)
+        # if "entry" in widget:
+        #     if widget[54:-7] == "":
+        #         num = 0
+        #     else:
+        #         num = int(widget[54:-7]) - 1
+        # else:
+        #     if widget[54:] == "":
+        #         num = 0
+        #     else:
+        #         num = int(widget[54:]) - 1
+        # self.list_row[num // len(self._bd_array[0])] = not self.list_row[num // len(self._bd_array[0])]
+        # if "disabled" in "{}".format(
+        #         self.list_cell[num]["state"]):
+        #     if COLOR_BG_SELECT_ROW in "{}".format(
+        #             self.list_cell[num]["disabledbackground"]):
+        #         if (num // len(self._bd_array[0])) % 2 == 0:
+        #             for i in range(len(self._bd_array[0])):
+        #                 self.list_cell[
+        #                     len(self._bd_array[0]) * (num // len(self._bd_array[0])) + i].config(
+        #                     disabledbackground=COLOR_BG_ODD_ROW)
+        #                 self.list_frame[
+        #                     len(self._bd_array[0]) * (num // len(self._bd_array[0])) + i].config(
+        #                     bg=COLOR_BG_ODD_ROW)
+        #         else:
+        #             for i in range(len(self._bd_array[0])):
+        #                 self.list_cell[
+        #                     len(self._bd_array[0]) * (num // len(self._bd_array[0])) + i].config(
+        #                     disabledbackground=COLOR_BG_EVENT_ROW)
+        #                 self.list_frame[
+        #                     len(self._bd_array[0]) * (num // len(self._bd_array[0])) + i].config(
+        #                     bg=COLOR_BG_EVENT_ROW)
+        #     else:
+        #         for i in range(len(self._bd_array[0])):
+        #             self.list_cell[len(self._bd_array[0]) * (num // len(self._bd_array[0])) + i].config(
+        #                 disabledbackground=COLOR_BG_SELECT_ROW)
+        #             self.list_frame[len(self._bd_array[0]) * (num // len(self._bd_array[0])) + i].config(
+        #                 bg=COLOR_BG_SELECT_ROW)
 
     def double_click_cell(self, event):
-        self.del_change(event)
+        if self.widget2 != 0:
+            self.del_change()
         self.click_cell(event)
         self.new_xy_menu()
         self.change()
@@ -589,54 +667,68 @@ class MainTableFrame(Canvas):
         for i in range(len(list)):
             list[i] += " ▲▼"
 
-    def content(self, frame1, frame2, array):
+    def content(self, array):
         """ asd"""
-        for child in frame1.winfo_children():
-            for child2 in child.winfo_children():
-                child2.destroy()
-            child.destroy()
-        for child in frame2.winfo_children():
-            for child2 in child.winfo_children():
-                child2.destroy()
-            child.destroy()
+        self._bd_array = array
         self.max_width(array, self.list_max)
-        # for c in range(self.col):
+        for child in self.titles.winfo_children():
+            for child2 in child.winfo_children():
+                child2.destroy()
+            child.destroy()
+
+        for child in self.frame2.winfo_children():
+            for child2 in child.winfo_children():
+                child2.destroy()
+            child.destroy()
+
+        # for c in range(len(self._bd_array[0])):
         #     max = len(self._bd_array[0][c])
-        #     for r in range(self.row):
+        #     for r in range(len(self._bd_array)):
         #         if max < len(self._bd_array[r][c]):
         #             max = len(self._bd_array[r][c])
         #     self.list_max[c] = max
 
-        self.btn_on = Button(frame2, text="on")
-        self.btn_off = Button(frame2, text="off")
-        self.list_row = {}
-        self.list_cell = []
-        self.list_titles = []
-        self.list_frame = []
+        # self.list_row = {}
+        # self.list_cell = []
+        # self.list_titles = []
+        # self.list_frame = []
+        self._characteristic = {}
         for r in range(len(array)):
-            self.list_row[r] = 0
-            frame2.grid_rowconfigure(r, minsize=HEIGHT_ROW)
+            self.frame2.grid_rowconfigure(r, minsize=HEIGHT_ROW)
             for c in range(len(array[0])):
                 if r == 0:
-                    self.new_frame = Frame(frame1)
+                    self.new_frame = Frame(self.titles)
                     self.cell = Entry(self.new_frame,
                                       disabledforeground=COLOR_TEXT_TITLE,
                                       fg=COLOR_TEXT_TITLE)
                     self.cell.bind("<Button-1>", self.click_title)
-                    self.list_titles.append(self.cell)
+                    self._characteristic.update({
+                        self.cell: [self.new_frame, "entry", r, c,
+                                    r * len(array[0]) + c,
+                                    False, True]})
+                    self._characteristic.update({
+                        self.new_frame: [self.cell, "frame", r, c,
+                                    r * len(array[0]) + c,
+                                    False, True]})
                 else:
-                    self.new_frame = Frame(frame2)
+                    self.new_frame = Frame(self.frame2)
                     self.cell = Entry(self.new_frame,
                                       disabledforeground=COLOR_TEXT_TABLE,
                                       fg=COLOR_TEXT_TABLE)
-                    self.list_frame.append(self.new_frame)
-                    self.list_cell.append(self.cell)
                     self.cell.bind("<Button-1>", self.click_cell)
                     self.cell.bind("<Double-1>", self.double_click_cell)
                     self.cell.bind("<Button-3>", self.context_menu)
                     self.new_frame.bind("<Button-1>", self.click_cell)
                     self.new_frame.bind("<Double-1>", self.double_click_cell)
                     self.new_frame.bind("<Button-3>", self.context_menu)
+                    self._characteristic.update({
+                        self.cell: [self.new_frame, "entry", r, c,
+                                    r * len(array[0]) + c,
+                                    False, True]})
+                    self._characteristic.update({
+                        self.new_frame: [self.cell, "frame", r, c,
+                                         r * len(array[0]) + c,
+                                         False, True]})
                 self.cell.insert(0, "{}".format(array[r][c]))
                 self.new_frame.config(bg=COLOR_BG_ODD_ROW, pady=5)
                 self.new_frame.grid(row=r, column=c, sticky="nwes")
@@ -652,17 +744,18 @@ class MainTableFrame(Canvas):
                 if r == 0:
                     self.new_frame.config(bg=COLOR_BG_TITLE_TABLE)
                     self.cell.config(disabledbackground=COLOR_BG_TITLE_TABLE)
-            frame2.grid_rowconfigure(0, minsize=0)
+        self.frame2.grid_rowconfigure(0, minsize=0)
 
-    def recontent(self, frame1, frame2, array):
+    def recontent(self, array):
         """ asd"""
+        self.max_width(array, self.list_max)
         for r in range(len(array)-1):
             for c in range(len(array[0])):
                 self.list_cell[r*len(array[0])+c].config(state="normal")
                 self.list_cell[r*len(array[0])+c].delete(0, "end")
                 self.list_cell[r*len(array[0])+c].insert(0, "{}".format(array[r+1][c]))
                 self.list_cell[r*len(array[0])+c].config(state="disabled")
-            frame2.grid_rowconfigure(0, minsize=0)
+            self.frame2.grid_rowconfigure(0, minsize=0)
 
 class OptionsMenu(Menu, MainMenuListener):
     """ asd"""

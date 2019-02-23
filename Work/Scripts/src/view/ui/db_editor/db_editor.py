@@ -5,6 +5,7 @@ from Work.Scripts.src.view.ui.custom_widgets import PVStandardButton, PVFrame, \
 from Work.Scripts.src.view.ui.db_editor.command_frames import InsertFrame, \
     SelectFrame, UpdateFrame, DeleteFrame
 from Work.Scripts.src.view.ui.main_window.config import MAIN_BACKGROUND
+from Work.Scripts.src.view.ui.main_window.event_listener import IEventListener
 
 EDIT_TYPE_TEXT = "Команда для редактироавния БД"
 TABLE_CHOICE_TEXT = "Выберите таблицу"
@@ -17,7 +18,8 @@ class DbEditorWindow:
     commands = ['Вывести', 'Вставить', 'Заменить', 'Удалить']
     tables = ['Продукты', 'Чеки']
 
-    def __init__(self, master, title):
+    def __init__(self, master, listener: IEventListener, title):
+        self.listener = listener
         self.master = master
         master['bg'] = MAIN_BACKGROUND
         master.title(title)
@@ -83,4 +85,4 @@ class DbEditorWindow:
         self.set_command_frame(self.edit_type_choice.get())
 
     def click_exec(self, event):
-        self.content_frame.click_exec()
+        self.content_frame.click_exec(self.listener)

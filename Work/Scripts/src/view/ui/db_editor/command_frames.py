@@ -10,6 +10,7 @@ from Work.Scripts.src.model.repository.UI_table_constants import ProductColumns
 from Work.Scripts.src.view.ui.custom_widgets import VerticalScrolledFrame, \
     SubtitleLabel, PVAddButton, PVCancelButton, PVFrame, PVLabel, \
     PVCheckbutton, PVCombobox, PVEntry
+from Work.Scripts.src.view.ui.main_window.event_listener import IEventListener
 
 controller = ListMainTableAdapter()
 ERROR_TITLE = "Внимание"
@@ -25,7 +26,7 @@ class IRemoveListener(ABC):
 class ICommandCreator(ABC):
 
     @abstractmethod
-    def click_exec(self):
+    def click_exec(self, event_listener: IEventListener):
         pass
 
 
@@ -216,12 +217,12 @@ class SelectFrame(ExpressionEditor, ICommandCreator):
         columns_label.grid(row=0, column=0, sticky=NSEW)
         columns_frame.grid(row=1, column=0, sticky=NSEW)
 
-    def click_exec(self):
+    def click_exec(self, event_listener: IEventListener):
         event = controller.select(self.check_vars, self.get_expressions())
         if event.error != 0:
             showwarning(ERROR_TITLE, event.text, parent=self)
         else:
-            print(event)
+            event_listener.notify(event)
 
 
 class InsertFrame(PVFrame, ICommandCreator):
@@ -270,12 +271,12 @@ class InsertFrame(PVFrame, ICommandCreator):
         separator = Frame(self, height=1, bg='grey')
         separator.grid(row=2, column=0, columnspan=4, sticky=EW)
 
-    def click_exec(self):
+    def click_exec(self, event_listener: IEventListener):
         event = controller.insert(self.values)
         if event.error != 0:
             showwarning(ERROR_TITLE, event.text, parent=self)
         else:
-            print(event)
+            event_listener.notify(event)
 
 
 class UpdateFrame(ExpressionEditor, ICommandCreator):
@@ -306,13 +307,13 @@ class UpdateFrame(ExpressionEditor, ICommandCreator):
         value_set_frame.pack(expand=True, fill='x')
         self.value_set_frames.append(value_set_frame)
 
-    def click_exec(self):
+    def click_exec(self, event_listener: IEventListener):
         event = controller.update(self.value_set_frames,
                                   self.get_expressions())
         if event.error != 0:
             showwarning(ERROR_TITLE, event.text, parent=self)
         else:
-            print(event)
+            event_listener.notify(event)
 
 
 class DeleteFrame(ExpressionEditor, ICommandCreator):
@@ -328,9 +329,9 @@ class DeleteFrame(ExpressionEditor, ICommandCreator):
         self.grid_rowconfigure(0, weight=0, minsize=10)
         self.grid_rowconfigure(1, weight=1)
 
-    def click_exec(self):
+    def click_exec(self, event_listener: IEventListener):
         event = controller.delete(self.get_expressions())
         if event.error != 0:
             showwarning(ERROR_TITLE, event.text, parent=self)
         else:
-            print(event)
+            event_listener.notify(event)

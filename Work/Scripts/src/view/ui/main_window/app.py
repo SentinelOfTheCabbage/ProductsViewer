@@ -446,6 +446,7 @@ class MainTableFrame(Canvas):
     # entry или frame :
     # [frame или entry, this_type, строка, столбец, номер, select, grid]
     _characteristic = {}
+    list_sort = []
     list_new_col = []
     list_max = {}
     for ind in range(len(_bd_array[0])):
@@ -493,7 +494,7 @@ class MainTableFrame(Canvas):
         self.on_frame_configure(self.canvas))
         self.frame2.bind("<Configure>", lambda event, canvas=self.cont:
         self.on_frame_configure(self.cont))
-        self.content(self._bd_array)
+        self.before_content()
 
         self.btn_on = Button(self.frame2, text="on")
         self.btn_off = Button(self.frame2, text="off")
@@ -516,14 +517,13 @@ class MainTableFrame(Canvas):
         Автор: Озирный Максим
         """
         for key in self._characteristic.keys():
-            if self._characteristic[key][-2] == True:
+            if self._characteristic[key][-2]:
                 self._characteristic[key][-2] = False
                 self._characteristic[key][-1] = False
                 key.grid_forget()
-                if self._characteristic[key][4] == \
-                        self._characteristic[key][2] * len(self._bd_array[0]) \
-                        and self._characteristic[key][4] != 0 \
-                        and self._characteristic[key][1] == "entry":
+                if self._characteristic[key][3] == 0 \
+                    and self._characteristic[key][2] != 0 \
+                    and self._characteristic[key][1] == "entry":
                     self.frame2.grid_rowconfigure(self._characteristic[key][2],
                                                   minsize=0)
 
@@ -541,9 +541,6 @@ class MainTableFrame(Canvas):
                     self._characteristic[self.widget][2]:
                 key.grid_forget()
                 self._characteristic[key][-1] = False
-            # if self._characteristic[key][2] > \
-            #         self._characteristic[self.widget][2]:
-            #     self._characteristic[key][2] = self._characteristic[key][2] - 1
 
         self.repaint()
 
@@ -556,9 +553,8 @@ class MainTableFrame(Canvas):
         col = len(self._bd_array[0])
 
         for key in self._characteristic.keys():
-            if self._characteristic[key][4] == \
-                    self._characteristic[key][2] * col \
-                    and self._characteristic[key][4] != 0 \
+            if self._characteristic[key][3] == 0 \
+                    and self._characteristic[key][2] != 0 \
                     and self._characteristic[key][1] == "entry":
                 if self._characteristic[key][-1]:
                     j += 1
@@ -769,8 +765,7 @@ class MainTableFrame(Canvas):
 
         for key in self._characteristic.keys():
             if not self._characteristic[key][-1] and \
-                    self._characteristic[key][4] == \
-                    self._characteristic[key][2] * len(self._bd_array[0]):
+                    self._characteristic[key][3] == 0:
                 self._bd_array[self._characteristic[key][2]] = 0
         i = 0
         while i < len(self._bd_array):
@@ -783,7 +778,15 @@ class MainTableFrame(Canvas):
         array_cell = []
         for ind in range(len(self._bd_array) - 1):
             array_cell.append(self._bd_array[ind + 1])
-        array_cell.sort(key=lambda x: x[num])
+        if self.list_sort[num]:
+            array_cell.sort(key=lambda x: x[num], reverse=True)
+            for ind in range(len(self.list_sort)):
+                self.list_sort[ind] = False
+        else:
+            array_cell.sort(key=lambda x: x[num])
+            for ind in range(len(self.list_sort)):
+                self.list_sort[ind] = False
+            self.list_sort[num] = True
         array = []
         for ind in range(len(array_cell)):
             array.append(array_cell[ind])
@@ -924,6 +927,13 @@ class MainTableFrame(Canvas):
         for ind in range(len(list)):
             list[ind] += " ▲▼"
 
+    def before_content(self):
+        self.add_arrow(self._bd_array[0])
+        self.list_sort = []
+        for ind in range(len(self._bd_array[0])):
+            self.list_sort.append(False)
+        self.content(self._bd_array)
+
     def content(self, array):
         """
         Функция заполняет таблицу данными
@@ -944,7 +954,6 @@ class MainTableFrame(Canvas):
                 child2.destroy()
             child.destroy()
 
-        self.add_arrow(array[0])
         self._characteristic = {}
         for row in range(len(array)):
             self.frame2.grid_rowconfigure(row, minsize=HEIGHT_ROW)
@@ -957,12 +966,10 @@ class MainTableFrame(Canvas):
                     self.cell.bind("<Button-1>", self.click_title)
                     self._characteristic.update({
                         self.cell: [self.new_frame, "entry", row, col,
-                                    row * len(array[0]) + col,
-                                    False, True]})
+                                    False, False, True]})
                     self._characteristic.update({
                         self.new_frame: [self.cell, "frame", row, col,
-                                         row * len(array[0]) + col,
-                                         False, True]})
+                                         False, False, True]})
                 else:
                     self.new_frame = Frame(self.frame2)
                     self.cell = Entry(self.new_frame,
@@ -976,12 +983,10 @@ class MainTableFrame(Canvas):
                     self.new_frame.bind("<Button-3>", self.context_menu)
                     self._characteristic.update({
                         self.cell: [self.new_frame, "entry", row, col,
-                                    row * len(array[0]) + col,
-                                    False, True]})
+                                    False, False, True]})
                     self._characteristic.update({
                         self.new_frame: [self.cell, "frame", row, col,
-                                         row * len(array[0]) + col,
-                                         False, True]})
+                                         False, False, True]})
                 self.cell.insert(0, "{}".format(array[row][col]))
                 self.new_frame.config(bg=COLOR_BG_ODD_ROW, pady=5)
                 self.new_frame.grid(row=row, column=col, sticky="nwes")

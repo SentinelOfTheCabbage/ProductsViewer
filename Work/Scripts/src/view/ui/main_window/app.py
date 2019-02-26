@@ -493,7 +493,6 @@ class MainTableFrame(Canvas):
         self.on_frame_configure(self.canvas))
         self.frame2.bind("<Configure>", lambda event, canvas=self.cont:
         self.on_frame_configure(self.cont))
-        self.add_arrow(self._bd_array[0])
         self.content(self._bd_array)
 
         self.btn_on = Button(self.frame2, text="on")
@@ -548,7 +547,7 @@ class MainTableFrame(Canvas):
 
         self.repaint()
 
-    def repaint(self, event=None):
+    def repaint(self, num=-1, event=None):
         """
         Функция перекрашивает строки таблицы
         Автор: Озирный Максим
@@ -557,7 +556,6 @@ class MainTableFrame(Canvas):
         col = len(self._bd_array[0])
 
         for key in self._characteristic.keys():
-            self._characteristic[key][-2] = False
             if self._characteristic[key][4] == \
                     self._characteristic[key][2] * col \
                     and self._characteristic[key][4] != 0 \
@@ -567,7 +565,11 @@ class MainTableFrame(Canvas):
                     if j % 2 == 0:
                         for key2 in self._characteristic.keys():
                             if self._characteristic[key2][2] == \
-                                    self._characteristic[key][2]:
+                                    self._characteristic[key][2] and \
+                                    num == -1 or \
+                                    self._characteristic[key2][2] == num and \
+                                    self._characteristic[key][2] == num:
+                                self._characteristic[key2][-2] = False
                                 if self._characteristic[key2][1] == "entry":
                                     key2.config(
                                         disabledbackground=COLOR_BG_ODD_ROW)
@@ -576,7 +578,11 @@ class MainTableFrame(Canvas):
                     else:
                         for key2 in self._characteristic.keys():
                             if self._characteristic[key2][2] == \
-                                    self._characteristic[key][2]:
+                                    self._characteristic[key][2]and \
+                                    num == -1 or \
+                                    self._characteristic[key2][2] == num and \
+                                    self._characteristic[key][2] == num:
+                                self._characteristic[key2][-2] = False
                                 if self._characteristic[key2][1] == "entry":
                                     key2.config(
                                         disabledbackground=COLOR_BG_EVENT_ROW)
@@ -811,25 +817,26 @@ class MainTableFrame(Canvas):
                                 key.config(
                                     disabledbackground=COLOR_BG_SELECT_ROW)
                 else:
-                    for key in self._characteristic.keys():
-                        # если строка совпадает
-                        if self._characteristic[key][2] == \
-                                self._characteristic[widget][2]:
-                            # меняем флаг, отвечающий за выбранность строки
-                            self._characteristic[key][-2] = not \
-                                self._characteristic[key][-2]
-                            if self._characteristic[key][2] % 2 == 0:
-                                if self._characteristic[key][1] == "frame":
-                                    key.config(bg=COLOR_BG_EVENT_ROW)
-                                else:
-                                    key.config(
-                                        disabledbackground=COLOR_BG_EVENT_ROW)
-                            else:
-                                if self._characteristic[key][1] == "frame":
-                                    key.config(bg=COLOR_BG_ODD_ROW)
-                                else:
-                                    key.config(
-                                        disabledbackground=COLOR_BG_ODD_ROW)
+                    self.repaint(self._characteristic[widget][2])
+                    # for key in self._characteristic.keys():
+                    #     # если строка совпадает
+                    #     if self._characteristic[key][2] == \
+                    #             self._characteristic[widget][2]:
+                    #         # меняем флаг, отвечающий за выбранность строки
+                    #         self._characteristic[key][-2] = not \
+                    #             self._characteristic[key][-2]
+                    #         if self._characteristic[key][2] % 2 == 0:
+                    #             if self._characteristic[key][1] == "frame":
+                    #                 key.config(bg=COLOR_BG_EVENT_ROW)
+                    #             else:
+                    #                 key.config(
+                    #                     disabledbackground=COLOR_BG_EVENT_ROW)
+                    #         else:
+                    #             if self._characteristic[key][1] == "frame":
+                    #                 key.config(bg=COLOR_BG_ODD_ROW)
+                    #             else:
+                    #                 key.config(
+                    #                     disabledbackground=COLOR_BG_ODD_ROW)
         else:
             if not self._characteristic[widget][-2]:
                 for key in self._characteristic.keys():
@@ -843,22 +850,23 @@ class MainTableFrame(Canvas):
                             key.config(
                                 disabledbackground=COLOR_BG_SELECT_ROW)
             else:
-                for key in self._characteristic.keys():
-                    if self._characteristic[key][2] == \
-                            self._characteristic[widget][2]:
-                        self._characteristic[key][-2] = not \
-                        self._characteristic[key][-2]
-                        if self._characteristic[key][2] % 2 == 0:
-                            if self._characteristic[key][1] == "frame":
-                                key.config(bg=COLOR_BG_EVENT_ROW)
-                            else:
-                                key.config(
-                                    disabledbackground=COLOR_BG_EVENT_ROW)
-                        else:
-                            if self._characteristic[key][1] == "frame":
-                                key.config(bg=COLOR_BG_ODD_ROW)
-                            else:
-                                key.config(disabledbackground=COLOR_BG_ODD_ROW)
+                self.repaint(self._characteristic[widget][2])
+                # for key in self._characteristic.keys():
+                #     if self._characteristic[key][2] == \
+                #             self._characteristic[widget][2]:
+                #         self._characteristic[key][-2] = not \
+                #         self._characteristic[key][-2]
+                #         if self._characteristic[key][2] % 2 == 0:
+                #             if self._characteristic[key][1] == "frame":
+                #                 key.config(bg=COLOR_BG_EVENT_ROW)
+                #             else:
+                #                 key.config(
+                #                     disabledbackground=COLOR_BG_EVENT_ROW)
+                #         else:
+                #             if self._characteristic[key][1] == "frame":
+                #                 key.config(bg=COLOR_BG_ODD_ROW)
+                #             else:
+                #                 key.config(disabledbackground=COLOR_BG_ODD_ROW)
 
     def double_click_cell(self, event=None):
         """
@@ -889,17 +897,21 @@ class MainTableFrame(Canvas):
         колонку в которой нужно проверить результат
         """
         if only != -1:
-            max = len(self._bd_array[0][only])
+            max = len(array[0][only])
             for row in range(len(array)):
-                if max < len(self._bd_array[row][only]):
-                    max = len(self._bd_array[row][only])
+                if max < len(array[row][only]):
+                    max = len(array[row][only])
+                if max < len(array[0][only]) + 3:
+                    max = len(array[0][only]) + 3
             list[only] = max
         else:
             for col in range(len(array[0])):
-                max = len(self._bd_array[0][col])
+                max = len(array[0][col])
                 for row in range(len(array)):
-                    if max < len(self._bd_array[row][col]):
-                        max = len(self._bd_array[row][col])
+                    if max < len(array[row][col]):
+                        max = len(array[row][col])
+                    if max < len(array[0][col]) + 3:
+                        max = len(array[0][col]) + 3
                 list[col] = max
 
     def add_arrow(self, list):
@@ -932,6 +944,7 @@ class MainTableFrame(Canvas):
                 child2.destroy()
             child.destroy()
 
+        self.add_arrow(array[0])
         self._characteristic = {}
         for row in range(len(array)):
             self.frame2.grid_rowconfigure(row, minsize=HEIGHT_ROW)
@@ -948,8 +961,8 @@ class MainTableFrame(Canvas):
                                     False, True]})
                     self._characteristic.update({
                         self.new_frame: [self.cell, "frame", row, col,
-                                    row * len(array[0]) + col,
-                                    False, True]})
+                                         row * len(array[0]) + col,
+                                         False, True]})
                 else:
                     self.new_frame = Frame(self.frame2)
                     self.cell = Entry(self.new_frame,

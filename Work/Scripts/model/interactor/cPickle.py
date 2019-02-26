@@ -1,7 +1,8 @@
-import pickle
 import os
+import pickle
+
+import pandas
 os.chdir('C:/Users/ирбисик/Documents/PYTHON/ProductsViewer/Work/Data')
 
-T=[]
-with open('db.pickle','rb') as database:
-	T=pickle.load(database)
+with open('db.pickle',"rb") as F:
+	T=pickle.load(F)

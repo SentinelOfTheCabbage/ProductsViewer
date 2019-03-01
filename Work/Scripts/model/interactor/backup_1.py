@@ -81,7 +81,7 @@ class ReportsInteractor:
         })
         return main_table
 
-    def get_prices_by_group_and_quality(self, groups: list, qualities: list):
+    def get_prices_by_group_and_quality(self, groups: list, quality: list):
         """Author: Suleymanov Nail
         output: result,qualities
         result={
@@ -91,10 +91,74 @@ class ReportsInteractor:
         qualities=['q1','q2',...]
 
         """
-        products_table = self._db_products
-        result = products_table[(products_table.group_name.isin(groups)) & (
-            products_table.quality.isin(qualities))].groupby(
-                ['group_name', 'quality'])['price'].mean()
+
+        def arithmetic_mean_series(groups: list, quality: list):
+            products_list = self._db_products
+            sorted_series_table = products_list.groupby(['group_name', 'quality'])[
+                'price'].mean()
+            changes = True
+            table_group_keys_list = list(
+                sorted_series_table.index.levels[0])
+            while changes is True:
+                changes = False
+
+                for i in table_group_keys_list:
+                    if i not in groups:
+                        sorted_series_table = sorted_series_table.drop(
+                            labels=i, level=0)
+                        table_group_keys_list.remove(i)
+                        changes = True
+                        break
+
+            del table_group_keys_list
+            table_quality_keys_list = list(
+                sorted_series_table.index.levels[1])
+            changes = True
+            while changes is True:
+                changes = False
+
+                for i in table_quality_keys_list:
+                    if i not in quality:
+                        sorted_series_table = sorted_series_table.drop(
+                            labels=i, level=1)
+                        table_quality_keys_list.remove(i)
+                        changes = True
+                        break
+            return sorted_series_table
+
+        sorted_series_table = arithmetic_mean_series(
+            groups, quality)  # Получение DataFrame
+        result = dict.fromkeys(groups)  # Создание будущего dict of list
+        for i in groups:
+            result[i] = [0] * len(quality)
+
+        # Вспомогательная функция для быстрого определения позиций в листах
+        def group_pos(groups, needle: str):
+            for i in groups:
+                if i == needle:
+                    return i
+            return None
+
+        def table_pos(table, needle: str):
+            for i, item in enumerate(table):
+                if item == needle:
+                    return i
+            return None
+
+        for i in range(len(sorted_series_table.index.codes[0])):
+            #  взять key продукта и соотнести с позицией в groups
+            groups_position = group_pos(groups, sorted_series_table.index.levels[
+                0][sorted_series_table.index.codes[0][i]])
+
+            #  взять key качества и соотнести с позицией в quality
+            quality_position = table_pos(quality, sorted_series_table.index.levels[
+                1][sorted_series_table.index.codes[1][i]])
+
+            # записать в нужную ячейку инфомрацию
+            if (groups_position is not None) and (quality_position is not None):
+                result[groups_position][
+                    quality_position] = sorted_series_table[i]
+
         return result
 
     def get_prices_by_group(self, product_group: str, products: list):
@@ -108,9 +172,11 @@ class ReportsInteractor:
 
         """
         result = {}
-        table = self._db_products
-        result = table[(table.group_name == product_group)
-                       & (table.name.isin(products))]
+        for i in range(len(self._db_products.index)):
+            if self._db_products.iloc[i]['group_name'] == product_group:
+                if self._db_products.iloc[i]['name'] in products:
+                    result.update({self._db_products.iloc[i]['name']: int(
+                        self._db_products.iloc[i]['price'])})
         return result
 
     def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):
@@ -157,21 +223,42 @@ class ReportsInteractor:
         ]
 
         """
-        vouchers = self._db_vouchers[self._db_vouchers.date == date]
-        sales = self._db_sales[self._db_sales.check_id.isin(vouchers.id)]
+        vouchers = self._db_vouchers
+        sales = self._db_sales
+        products = self._db_products
+        first_sale = None
+        last_sale = None
+        result = []
+        for i in vouchers.index:
+            if vouchers.iloc[i]['date'] == date:
+                if first_sale is None:
+                    first_sale = i
+                if first_sale is not None:
+                    last_sale = i
+            elif last_sale is not None:
+                break
 
-        result = sales.groupby(['products_id'])['amount'].sum()
+        def current_position(source: list, needle: str):
+            for i in len(source):
+                if source[i] == needle:
+                    return i
+            return None
 
-        # оставить только элементы подходящего типа продукции
-        for i in result.keys().tolist():
-            if list(self._db_products[self._db_products.id == i].group_name)[0] != product_group:
-                result = result.drop(i)
-            else:
-                # result[i] *= int(
-                #     self._db_products[self._db_products.id == i].price)
-                result = result.rename({
-                    i: list(self._db_products[self._db_products.id == i]['price'])[0]
-                    })
+        for i in sales.index:
+            save_product_list = []
+            result = []
+            if first_sale is not None:
+                if (first_sale <= int(sales.iloc[i]['check_id']) <= last_sale) and (
+                        products.iloc[sales.iloc[i]['products_id']]['group_name'] == product_group):
+                    if products.iloc[sales.iloc[i]['products_id']]['name'] not in save_product_list:
+                        save_product_list.append(
+                            products.iloc[sales.iloc[i]['products_id']]['name'])
+                        result.append({'price': products.iloc[sales.iloc[i][
+                            'products_id']]['price'], 'amount': sales.iloc[i]['amount']})
+                    else:
+                        pos = current_position(save_product_list, products.iloc[
+                            sales.iloc[i]['products_id']]['name'])
+                        result[pos]['amount'] += sales.iloc[i]['amount']
         return result
 
     def get_groups_list(self):

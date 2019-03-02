@@ -2,7 +2,7 @@
 В файле расположены классы отвечающие за визуальную часть
 главного окна и таблицы в нем
 """
-from tkinter import Frame, Canvas, Button, PhotoImage, \
+from tkinter import Frame, Canvas, Button, \
     Tk, Scrollbar, Menu, NSEW, NE, W, NW, NS, EW, Entry, messagebox
 from abc import ABC, abstractmethod
 from PIL import ImageTk, Image
@@ -17,7 +17,7 @@ from Work.Scripts.src.view.ui.main_window.config import WIN_W_START, \
     LAST_CHANGES_CLOSED_TAB, LAST_CHANGES_OPENED_TAB, MENU_FILE_TEXT, \
     MENU_REPORT_TEXT, DEFAULT_SEARCH_TEXT, HEIGHT_ROW, \
     COLOR_BG_SELECT_ROW, COLOR_TEXT_TITLE, COLOR_BG_BOTTOM_BTN, \
-    COLOR_FG_BOTTOM_BTN, COLOR_BG_BTN_FILTR, COLOR_BG_BTN_TABLE
+    COLOR_FG_BOTTOM_BTN, COLOR_BG_BTN_FILTR_TABLE
 from Work.Scripts.src.view.ui.main_window.move_out_panels import \
     ChangeHistoryPanel, ColumnFilterPanel, RowFilterPanel
 from Work.Scripts.src.view.ui.reports_settings.settings_bar_chart import \
@@ -123,9 +123,7 @@ class MainWindow(IWindowListener):
                                          bg="#f0f0f0")
         # Создаются и заполняются правые поля (фильтр строк и столбцов)
         self.filtr_frame = RowFilterPanel(master)
-        self.filtr_frame.content()
         self.table_frame = ColumnFilterPanel(master)
-        self.table_frame.content()
         # Создается нижнее поле (последние изменения)
         self.last_ch_frame = ChangeHistoryPanel(self.master)
 
@@ -153,8 +151,8 @@ class MainWindow(IWindowListener):
         # Происхожит позиционирование объектов в главном классе
         self.search_frame.grid(row=0, column=0, columnspan=4, sticky=NSEW)
         self.main_frame.grid(row=1, column=0, sticky=NSEW)
-        self.filtr_frame.grid(row=1, column=1, sticky=NSEW)
-        self.table_frame.grid(row=1, column=2, sticky=NSEW)
+        # self.filtr_frame.grid(row=1, column=1, sticky=NSEW)
+        # self.table_frame.grid(row=1, column=2, sticky=NSEW)
         self.right_menu.grid(row=1, column=3, sticky=NSEW)
         self.bottom_btn.grid(row=3, column=0, columnspan=4, sticky=NSEW)
 
@@ -338,6 +336,14 @@ class MainWindow(IWindowListener):
             if self.last_ch_frame.canvas.winfo_height() < \
                     self.last_ch_frame.frame.winfo_height():
                 self.last_ch_frame.canvas.yview_scroll(-1, "units")
+        elif "rowfilterpanel" in widget and "canvas" in widget:
+            if self.filtr_frame.canvas.winfo_height() < \
+                    self.filtr_frame.frame.winfo_height():
+                self.filtr_frame.canvas.yview_scroll(-1, "units")
+        elif "columnfilterpanel" in widget and "canvas" in widget:
+            if self.table_frame.canvas.winfo_height() < \
+                    self.table_frame.frame.winfo_height():
+                self.table_frame.canvas.yview_scroll(-1, "units")
 
     def bottom_key(self, event=None): # pylint: disable=W0613
         """
@@ -347,9 +353,21 @@ class MainWindow(IWindowListener):
         """
         widget = self.widget_pointer()
         if "maintableframe" in widget and "canvas" in widget:
-            self.main_frame.cont.yview_scroll(1, "units")
+            if self.main_frame.cont.winfo_height() < \
+                    self.main_frame.frame2.winfo_height():
+                self.main_frame.cont.yview_scroll(1, "units")
         elif "changehistorypanel" in widget and "canvas" in widget:
-            self.last_ch_frame.canvas.yview_scroll(1, "units")
+            if self.last_ch_frame.canvas.winfo_height() < \
+                    self.last_ch_frame.frame.winfo_height():
+                self.last_ch_frame.canvas.yview_scroll(1, "units")
+        elif "rowfilterpanel" in widget and "canvas" in widget:
+            if self.filtr_frame.canvas.winfo_height() < \
+                    self.filtr_frame.frame.winfo_height():
+                self.filtr_frame.canvas.yview_scroll(1, "units")
+        elif "columnfilterpanel" in widget and "canvas" in widget:
+            if self.table_frame.canvas.winfo_height() < \
+                    self.table_frame.frame.winfo_height():
+                self.table_frame.canvas.yview_scroll(1, "units")
 
     def on_mousewheel(self, event=None): # pylint: disable=W0613
         """
@@ -367,6 +385,14 @@ class MainWindow(IWindowListener):
             if self.last_ch_frame.canvas.winfo_height() < \
                     self.last_ch_frame.frame.winfo_height():
                 self.last_ch_frame.canvas.yview_scroll(sgn, "units")
+        elif "rowfilterpanel" in widget and "canvas" in widget:
+            if self.filtr_frame.canvas.winfo_height() < \
+                    self.filtr_frame.frame.winfo_height():
+                self.filtr_frame.canvas.yview_scroll(sgn, "units")
+        elif "columnfilterpanel" in widget and "canvas" in widget:
+            if self.table_frame.canvas.winfo_height() < \
+                    self.table_frame.frame.winfo_height():
+                self.table_frame.canvas.yview_scroll(sgn, "units")
 
     def new_xy_menu(self, event=None): # pylint: disable=W0613
         """
@@ -424,15 +450,16 @@ class MainWindow(IWindowListener):
         # если на кнопку нажали и на ней же отпустили кнопку мыши
         if self.widget1 == self.widget:
             if self.table_bool:
-                self.master.grid_columnconfigure(2, minsize=0)
+                self.table_frame.close()
                 self.table_btn.config(bg="#f0f0f0")
                 self.table_bool = not self.table_bool
             if self.filter_bool:
-                self.master.grid_columnconfigure(1, minsize=0)
+                self.filtr_frame.close()
                 self.filter_btn.config(bg="#f0f0f0")
             else:
-                self.filter_btn.config(bg=COLOR_BG_BTN_FILTR)
-                self.master.grid_columnconfigure(1, minsize=WIDTH_FILR_FRAME)
+                self.filtr_frame = RowFilterPanel(self.master)
+                self.filtr_frame.open()
+                self.filter_btn.config(bg=COLOR_BG_BTN_FILTR_TABLE)
             self.filter_bool = not self.filter_bool
 
     def click_table(self, event=None): # pylint: disable=W0613
@@ -445,15 +472,16 @@ class MainWindow(IWindowListener):
         # если на кнопку нажали и на ней же отпустили кнопку мыши
         if self.widget1 == self.widget:
             if self.filter_bool:
-                self.master.grid_columnconfigure(1, minsize=0)
+                self.filtr_frame.close()
                 self.filter_btn.config(bg="#f0f0f0")
                 self.filter_bool = not self.filter_bool
             if self.table_bool:
-                self.master.grid_columnconfigure(2, minsize=0)
+                self.table_frame.close()
                 self.table_btn.config(bg="#f0f0f0")
             else:
-                self.table_btn.config(bg=COLOR_BG_BTN_TABLE)
-                self.master.grid_columnconfigure(2, minsize=WIDTH_FILR_FRAME)
+                self.table_frame = ColumnFilterPanel(self.master)
+                self.table_frame.open()
+                self.table_btn.config(bg=COLOR_BG_BTN_FILTR_TABLE)
             self.table_bool = not self.table_bool
 
 

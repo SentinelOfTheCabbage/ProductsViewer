@@ -10,7 +10,7 @@ from Work.Scripts.src.test.change_viewer import ChangeViewer
 from Work.Scripts.src.view.ui.main_window.config import COLOR_BG_FRAME_TABLE, \
     COLOR_FG_FRAME_TABLE, COLOR_BG_FRAME_FILTR, COLOR_FG_FRAME_FILTR, \
     COLOR_BG_TITLE_LAST_CH, COLOR_BG_LAST_CH, HEIGHT_INFO_FRAME, \
-    FONT_TITLE_FILTR, CURSOR_CHANGE_HEIGHT
+    FONT_TITLE_FILTR, CURSOR_CHANGE_HEIGHT, MIN_SIZE_TABLE
 
 import Work.Scripts.src.view.ui.main_window.config as conf
 
@@ -127,6 +127,7 @@ class ChangeHistoryPanel(Canvas):
     height_2 = height
     def __init__(self, master, **kw):
         super().__init__(master, {}, **kw)
+        self.master = master
         self.canvas = Canvas(self, bg=COLOR_BG_LAST_CH,
                              height=HEIGHT_INFO_FRAME)
         self.change_viewer = ChangeViewer()
@@ -159,13 +160,13 @@ class ChangeHistoryPanel(Canvas):
 
         # создается полоса прокрутки и поле которые связываются с canvas
         scroll = Scrollbar(self, orient="vertical", command=self.canvas.yview)
-        frame = Frame(self.canvas, bg=COLOR_BG_LAST_CH)
-        self.canvas.create_window((0, 0), window=frame, anchor="n")
+        self.frame = Frame(self.canvas, bg=COLOR_BG_LAST_CH)
+        self.canvas.create_window((0, 0), window=self.frame, anchor="n")
         self.canvas.configure(yscrollcommand=scroll.set,
                               height=HEIGHT_INFO_FRAME)
         # для корректной прокрутки canvas прописываем событие изменяющее
         # положение содержимого при прокрутке
-        frame.bind("<Configure>", lambda event, canvas=self.canvas:
+        self.frame.bind("<Configure>", lambda event, canvas=self.canvas:
                    self.on_frame_configure(self.canvas))
         # позиционируются объекты
         top_lab.grid(row=0, column=0, columnspan=2, sticky="nwes")
@@ -174,7 +175,7 @@ class ChangeHistoryPanel(Canvas):
         # в цикле создаются и позиционируются текстовые поля с текстом,
         # соответствующим содержимому списка
         for ind in range(len(self.list_last_ch)):
-            message = Label(frame, bg=COLOR_BG_LAST_CH, padx=10, bd=2,
+            message = Label(self.frame, bg=COLOR_BG_LAST_CH, padx=10, bd=2,
                             fg="{}".format(self.list_last_ch[ind][0]),
                             text="{}".format(self.list_last_ch[ind][1]))
             message.grid()
@@ -197,7 +198,7 @@ class ChangeHistoryPanel(Canvas):
         Автор: Озирный Максим
         """
         self.y = None
-        self.height_2 = self.height
+        self.height_2 = self.canvas.winfo_height()
         conf.HEIGHT_INFO_FRAME = self.height_2
         self.top_lab.config(cursor='arrow')
 
@@ -210,8 +211,9 @@ class ChangeHistoryPanel(Canvas):
         if self.y:
             deltay = self.y - event.y_root
             self.height = self.height_2
-            self.height += deltay
-            self.canvas.config(height=self.height)
+            if self.height + deltay < self.master.winfo_height() - MIN_SIZE_TABLE - 80:
+                self.height += deltay
+                self.canvas.config(height=self.height)
 
     def close(self):
         """

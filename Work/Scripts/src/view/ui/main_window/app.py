@@ -29,7 +29,7 @@ from Work.Scripts.src.view.ui.reports_settings.settings_histogram import \
 from Work.Scripts.src.view.ui.reports_settings.settings_scatter_chart import \
     SettingsScatterChart
 
-main_table_interactor = MainTableInteractor()
+MAIN_TABLE_INTERACTOR = MainTableInteractor()
 
 
 class IWindowListener(ABC):
@@ -178,7 +178,7 @@ class MainWindow(IWindowListener):
         """
         ask = messagebox.askyesnocancel("Выход",
                                         "Сохранить последние изменения?")
-        if ask != None:
+        if ask is not None:
             if ask:
                 print("сохранить")
             else:
@@ -215,14 +215,14 @@ class MainWindow(IWindowListener):
         # Условие необходимо для того, чтоб действия в фукции выполнялись,
         # если на кнопку нажали и на ней же отпустили кнопку мыши
         if self.btn_save.widget1 == self.widget:
-            self.main_frame._bd_array.append([])
-            for ind in range(len(self.main_frame._bd_array[0])):
-                self.main_frame._bd_array[
-                    len(self.main_frame._bd_array) - 1].append(
+            self.main_frame.bd_array.append([])
+            for ind in range(len(self.main_frame.bd_array[0])):
+                self.main_frame.bd_array[
+                    len(self.main_frame.bd_array) - 1].append(
                         "{}".format(self.main_frame.list_new_col[ind].get()))
-            row = len(self.main_frame._bd_array) - 1
+            row = len(self.main_frame.bd_array) - 1
             self.main_frame.frame2.grid_rowconfigure(row, minsize=HEIGHT_ROW)
-            for col in range((len(self.main_frame._bd_array[0]))):
+            for col in range((len(self.main_frame.bd_array[0]))):
                 self.new_frame = Frame(self.main_frame.frame2)
                 self.cell = Entry(self.new_frame,
                                   disabledforeground=COLOR_TEXT_TABLE,
@@ -234,18 +234,18 @@ class MainWindow(IWindowListener):
                 self.new_frame.bind("<Double-1>",
                                     self.main_frame.double_click_cell)
                 self.new_frame.bind("<Button-3>", self.main_frame.context_menu)
-                self.main_frame._characteristic.update({
+                self.main_frame.characteristic.update({
                     self.cell: [self.new_frame, "entry", row, col,
-                                row * len(self.main_frame._bd_array[0]) + col,
+                                row * len(self.main_frame.bd_array[0]) + col,
                                 False, True]})
-                self.main_frame._characteristic.update({
+                self.main_frame.characteristic.update({
                     self.new_frame: [self.cell, "frame", row, col,
                                      row * len(
-                                         self.main_frame._bd_array[0]) + col,
+                                         self.main_frame.bd_array[0]) + col,
                                      False, True]})
                 self.cell.insert(0,
                                  "{}".format(
-                                     self.main_frame._bd_array[row][col]))
+                                     self.main_frame.bd_array[row][col]))
                 self.new_frame.config(bg=COLOR_BG_ODD_ROW, pady=5)
                 self.new_frame.grid(row=row, column=col, sticky="nwes")
                 self.cell.grid(sticky="nwes")
@@ -494,15 +494,15 @@ class MainTableFrame(Canvas):
     Автор: Озирный Максим
     """
     # Переменная хранящая список строк из базы данных
-    _bd_array = main_table_interactor.get_data(None, None)
+    bd_array = MAIN_TABLE_INTERACTOR.get_data(None, None)
     # словарь с информацией об объектах в таблице
     # entry или frame :
     # [frame или entry, this_type, строка, столбец, номер, select, grid]
-    _characteristic = {}
+    characteristic = {}
     list_sort = []
     list_new_col = []
     list_max = {}
-    for ind in range(len(_bd_array[0])):
+    for ind in range(len(bd_array[0])):
         list_new_col.append(ind)
     widget = ""
     widget2 = 0
@@ -511,7 +511,7 @@ class MainTableFrame(Canvas):
     list_cell = []
     list_titles = []
     list_frame = []
-    x = 0
+    x_cursor = 0
     width = 13
     width_2 = width
 
@@ -580,11 +580,11 @@ class MainTableFrame(Canvas):
         """
         # Проверка местоположения курсора для доступа к изменению высоты поля
         self.new_xy_menu()
-        self.x = 0
-        self.width = self.list_max[self._characteristic[self.widget][3]]
+        self.x_cursor = 0
+        self.width = self.list_max[self.characteristic[self.widget][3]]
         self.width_2 = self.width
-        if event.x > self.list_max[self._characteristic[self.widget][3]]*6 - 1:
-            self.x = event.x_root
+        if event.x > self.list_max[self.characteristic[self.widget][3]]*6 - 1:
+            self.x_cursor = event.x_root
             self.titles.config(cursor=CURSOR_CHANGE_HEIGHT)
 
     def stop_move(self, event=None):
@@ -593,8 +593,8 @@ class MainTableFrame(Canvas):
         для дальнейшего корректного изменения параметра этого поля
         Автор: Озирный Максим
         """
-        self.x = None
-        self.width_2 = self.list_max[self._characteristic[self.widget][3]]
+        self.x_cursor = None
+        self.width_2 = self.list_max[self.characteristic[self.widget][3]]
         self.titles.config(cursor='arrow')
 
     def on_motion(self, event):
@@ -603,27 +603,27 @@ class MainTableFrame(Canvas):
         Автор: Озирный Максим
         """
         # Проверка на допустимость изменения высоты поля
-        if self.x:
-            deltay = event.x_root - self.x
+        if self.x_cursor:
+            deltay = event.x_root - self.x_cursor
             self.width = self.width_2
             self.width += deltay//6
-            self.list_max[self._characteristic[self.widget][3]] = self.width
-            self.set_max_width(self._characteristic[self.widget][3])
+            self.list_max[self.characteristic[self.widget][3]] = self.width
+            self.set_max_width(self.characteristic[self.widget][3])
 
     def del_select(self, event=None): # pylint: disable=W0613
         """
         Функция удаляет выбранные строки
         Автор: Озирный Максим
         """
-        for key in self._characteristic.keys():
-            if self._characteristic[key][-2]:
-                self._characteristic[key][-2] = False
-                self._characteristic[key][-1] = False
+        for key in self.characteristic.keys():
+            if self.characteristic[key][-2]:
+                self.characteristic[key][-2] = False
+                self.characteristic[key][-1] = False
                 key.grid_forget()
-                if self._characteristic[key][3] == 0 \
-                    and self._characteristic[key][2] != 0 \
-                    and self._characteristic[key][1] == "entry":
-                    self.frame2.grid_rowconfigure(self._characteristic[key][2],
+                if self.characteristic[key][3] == 0 \
+                    and self.characteristic[key][2] != 0 \
+                    and self.characteristic[key][1] == "entry":
+                    self.frame2.grid_rowconfigure(self.characteristic[key][2],
                                                   minsize=0)
 
         self.repaint()
@@ -633,13 +633,13 @@ class MainTableFrame(Canvas):
         Функция удаляет выбранную строку
         Автор: Озирный Максим
         """
-        self.frame2.grid_rowconfigure(self._characteristic[self.widget][2],
+        self.frame2.grid_rowconfigure(self.characteristic[self.widget][2],
                                       minsize=0)
-        for key in self._characteristic.keys():
-            if self._characteristic[key][2] == \
-                    self._characteristic[self.widget][2]:
+        for key in self.characteristic.keys():
+            if self.characteristic[key][2] == \
+                    self.characteristic[self.widget][2]:
                 key.grid_forget()
-                self._characteristic[key][-1] = False
+                self.characteristic[key][-1] = False
 
         self.repaint()
 
@@ -650,34 +650,34 @@ class MainTableFrame(Canvas):
         """
         j = -1
 
-        for key in self._characteristic.keys():
-            if self._characteristic[key][3] == 0 \
-                    and self._characteristic[key][2] != 0 \
-                    and self._characteristic[key][1] == "entry":
-                if self._characteristic[key][-1]:
+        for key in self.characteristic.keys():
+            if self.characteristic[key][3] == 0 \
+                    and self.characteristic[key][2] != 0 \
+                    and self.characteristic[key][1] == "entry":
+                if self.characteristic[key][-1]:
                     j += 1
                     if j % 2 == 0:
-                        for key2 in self._characteristic.keys():
-                            if self._characteristic[key2][2] == \
-                                    self._characteristic[key][2] and \
+                        for key2 in self.characteristic.keys():
+                            if self.characteristic[key2][2] == \
+                                    self.characteristic[key][2] and \
                                     num == -1 or \
-                                    self._characteristic[key2][2] == num and \
-                                    self._characteristic[key][2] == num:
-                                self._characteristic[key2][-2] = False
-                                if self._characteristic[key2][1] == "entry":
+                                    self.characteristic[key2][2] == num and \
+                                    self.characteristic[key][2] == num:
+                                self.characteristic[key2][-2] = False
+                                if self.characteristic[key2][1] == "entry":
                                     key2.config(
                                         disabledbackground=COLOR_BG_ODD_ROW)
                                 else:
                                     key2.config(bg=COLOR_BG_ODD_ROW)
                     else:
-                        for key2 in self._characteristic.keys():
-                            if self._characteristic[key2][2] == \
-                                    self._characteristic[key][2]and \
+                        for key2 in self.characteristic.keys():
+                            if self.characteristic[key2][2] == \
+                                    self.characteristic[key][2]and \
                                     num == -1 or \
-                                    self._characteristic[key2][2] == num and \
-                                    self._characteristic[key][2] == num:
-                                self._characteristic[key2][-2] = False
-                                if self._characteristic[key2][1] == "entry":
+                                    self.characteristic[key2][2] == num and \
+                                    self.characteristic[key][2] == num:
+                                self.characteristic[key2][-2] = False
+                                if self.characteristic[key2][1] == "entry":
                                     key2.config(
                                         disabledbackground=COLOR_BG_EVENT_ROW)
                                 else:
@@ -688,7 +688,7 @@ class MainTableFrame(Canvas):
         Функция создаёт елементы в которые вносятся данные новой строки
         Автор: Озирный Максим
         """
-        for col in range(len(self._bd_array[0])):
+        for col in range(len(self.bd_array[0])):
             new = Entry(self.titles, bd=0, width=self.list_max[col]+2)
             self.list_new_col[col] = new
             new.bind("<Key>", self.change_new_row)
@@ -708,7 +708,7 @@ class MainTableFrame(Canvas):
         Функция удаляет елементы в которые вносятся данные новой строки
         Автор: Озирный Максим
         """
-        for ind in range(len(self._bd_array[0])):
+        for ind in range(len(self.bd_array[0])):
             self.list_new_col[ind].destroy()
 
     def new_xy_menu(self, event=None): # pylint: disable=W0613
@@ -726,24 +726,24 @@ class MainTableFrame(Canvas):
         """
         self.btn_on.destroy()
         self.btn_off.destroy()
-        if self._characteristic[self.widget2][1] == "entry":
+        if self.characteristic[self.widget2][1] == "entry":
             value = self.widget2.get()
             self.widget2.delete(0, "end")
             self.widget2.insert(0, value)
             self.widget2.config(state="disabled")
             self.widget2.bind("<Double-1>", self.double_click_cell)
         else:
-            value = self._characteristic[self.widget2][0].get()
-            self._characteristic[self.widget2][0].delete(0, "end")
-            self._characteristic[self.widget2][0].insert(0, value)
-            self._characteristic[self.widget2][0].config(state="disabled")
-            self._characteristic[self.widget2][0].bind("<Double-1>",
-                                                       self.double_click_cell)
-        self._bd_array[self._characteristic[self.widget2][2]][
-            self._characteristic[self.widget2][3]] = value
+            value = self.characteristic[self.widget2][0].get()
+            self.characteristic[self.widget2][0].delete(0, "end")
+            self.characteristic[self.widget2][0].insert(0, value)
+            self.characteristic[self.widget2][0].config(state="disabled")
+            self.characteristic[self.widget2][0].bind("<Double-1>",
+                                                      self.double_click_cell)
+        self.bd_array[self.characteristic[self.widget2][2]][
+            self.characteristic[self.widget2][3]] = value
 
-        self.max_width(self._bd_array, self.list_max,
-                       self._characteristic[self.widget2][3])
+        self.max_width(self.bd_array, self.list_max,
+                       self.characteristic[self.widget2][3])
         self.set_max_width()
 
     def set_max_width(self, only=-1, event=None): # pylint: disable=W0613
@@ -752,11 +752,11 @@ class MainTableFrame(Canvas):
         от максимальной ширины в столбце
         Автор: Озирный Максим
         """
-        for key in self._characteristic.keys():
-            if self._characteristic[key][1] == "entry" and only == -1 or \
-                    self._characteristic[key][1] == "entry" and \
-                    self._characteristic[key][3] == only:
-                key.config(width=self.list_max[self._characteristic[key][3]]+2)
+        for key in self.characteristic.keys():
+            if self.characteristic[key][1] == "entry" and only == -1 or \
+                    self.characteristic[key][1] == "entry" and \
+                    self.characteristic[key][3] == only:
+                key.config(width=self.list_max[self.characteristic[key][3]] + 2)
 
     def del_change(self, event=None): # pylint: disable=W0613
         """
@@ -765,23 +765,23 @@ class MainTableFrame(Canvas):
         """
         self.btn_on.destroy()
         self.btn_off.destroy()
-        for key in self._characteristic.keys():
-            if self._characteristic[key][2] == 0 and \
-                    self._characteristic[key][1] == "entry" and \
-                    self._characteristic[key][3] == \
-                    self._characteristic[self.widget2][3]:
+        for key in self.characteristic.keys():
+            if self.characteristic[key][2] == 0 and \
+                    self.characteristic[key][1] == "entry" and \
+                    self.characteristic[key][3] == \
+                    self.characteristic[self.widget2][3]:
                 key.config(
-                    width=self.list_max[self._characteristic[key][3]] + 2)
-        if self._characteristic[self.widget2][1] == "entry":
+                    width=self.list_max[self.characteristic[key][3]] + 2)
+        if self.characteristic[self.widget2][1] == "entry":
             self.widget2.delete(0, "end")
             self.widget2.insert(0, self.start_value)
             self.widget2.config(state="disabled")
             self.widget2.bind("<Double-1>", self.double_click_cell)
         else:
-            self._characteristic[self.widget2][0].delete(0, "end")
-            self._characteristic[self.widget2][0].insert(0, self.start_value)
-            self._characteristic[self.widget2][0].config(justify="left",
-                                                         state="disabled")
+            self.characteristic[self.widget2][0].delete(0, "end")
+            self.characteristic[self.widget2][0].insert(0, self.start_value)
+            self.characteristic[self.widget2][0].config(justify="left",
+                                                        state="disabled")
 
     def before_change(self, event=None): # pylint: disable=W0613
         """
@@ -798,24 +798,24 @@ class MainTableFrame(Canvas):
         Функция изменяет состояние ячейки чтоб ее можно было изменять
         Автор: Озирный Максим
         """
-        if self._characteristic[self.widget][1] == "entry":
+        if self.characteristic[self.widget][1] == "entry":
             self.widget.config(state="normal")
             self.start_value = self.widget.get()
-            self.btn_on = Button(self._characteristic[self.widget][0],
+            self.btn_on = Button(self.characteristic[self.widget][0],
                                  bd=0, image=self.img_g,
-                                 bg=self._characteristic[self.widget][0]["bg"],
+                                 bg=self.characteristic[self.widget][0]["bg"],
                                  command=self.save_change)
-            self.btn_off = Button(self._characteristic[self.widget][0],
+            self.btn_off = Button(self.characteristic[self.widget][0],
                                   bd=0, image=self.img_k,
-                                  bg=self._characteristic[
+                                  bg=self.characteristic[
                                       self.widget][0]["bg"],
                                   command=self.del_change)
             self.widget.bind('<Return>', self.save_change)
             self.widget.bind('<Escape>', self.del_change)
             self.widget.bind('<Double-1>', self.click_cell)
         else:
-            self._characteristic[self.widget][0].config(state="normal")
-            self.start_value = self._characteristic[self.widget][0].get()
+            self.characteristic[self.widget][0].config(state="normal")
+            self.start_value = self.characteristic[self.widget][0].get()
             self.btn_on = Button(self.widget,
                                  bd=0, image=self.img_g,
                                  bg=self.widget["bg"],
@@ -824,22 +824,22 @@ class MainTableFrame(Canvas):
                                   bd=0, image=self.img_k,
                                   bg=self.widget["bg"],
                                   command=self.del_change)
-            self._characteristic[self.widget][0].bind('<Return>',
-                                                      self.save_change)
-            self._characteristic[self.widget][0].bind('<Escape>',
-                                                      self.del_change)
-            self._characteristic[self.widget][0].bind('<Double-1>',
-                                                      self.click_cell)
+            self.characteristic[self.widget][0].bind('<Return>',
+                                                     self.save_change)
+            self.characteristic[self.widget][0].bind('<Escape>',
+                                                     self.del_change)
+            self.characteristic[self.widget][0].bind('<Double-1>',
+                                                     self.click_cell)
 
-        for key in self._characteristic.keys():
-            if self._characteristic[key][2] == 0 and \
-                    self._characteristic[key][1] == "entry":
+        for key in self.characteristic.keys():
+            if self.characteristic[key][2] == 0 and \
+                    self.characteristic[key][1] == "entry":
                 key.config(
-                    width=self.list_max[self._characteristic[key][3]] + 2)
-                if self._characteristic[key][3] == \
-                        self._characteristic[self.widget][3]:
+                    width=self.list_max[self.characteristic[key][3]] + 2)
+                if self.characteristic[key][3] == \
+                        self.characteristic[self.widget][3]:
                     key.config(
-                        width=self.list_max[self._characteristic[key][3]] + 9)
+                        width=self.list_max[self.characteristic[key][3]] + 9)
 
         self.btn_on.grid(row=0, column=1)
         self.btn_off.grid(row=0, column=2)
@@ -852,7 +852,7 @@ class MainTableFrame(Canvas):
         Автор: Озирный Максим
         """
         self.new_xy_menu()
-        if self._characteristic[self.widget][-2]:
+        if self.characteristic[self.widget][-2]:
             self.black_menu.post(event.x_root, event.y_root)
         else:
             self.menu.post(event.x_root, event.y_root)
@@ -874,23 +874,23 @@ class MainTableFrame(Canvas):
         Автор: Озирный Максим
         """
         widget = self.widget_pointer()
-        num = self._characteristic[widget][3]
+        num = self.characteristic[widget][3]
 
-        for key in self._characteristic.keys():
-            if not self._characteristic[key][-1] and \
-                    self._characteristic[key][3] == 0:
-                self._bd_array[self._characteristic[key][2]] = 0
+        for key in self.characteristic.keys():
+            if not self.characteristic[key][-1] and \
+                    self.characteristic[key][3] == 0:
+                self.bd_array[self.characteristic[key][2]] = 0
         i = 0
-        while i < len(self._bd_array):
-            if self._bd_array[i] == 0:
-                del self._bd_array[i]
+        while i < len(self.bd_array):
+            if self.bd_array[i] == 0:
+                del self.bd_array[i]
             else:
                 i += 1
 
-        array_titles = self._bd_array[0]
+        array_titles = self.bd_array[0]
         array_cell = []
-        for ind in range(len(self._bd_array) - 1):
-            array_cell.append(self._bd_array[ind + 1])
+        for ind in range(len(self.bd_array) - 1):
+            array_cell.append(self.bd_array[ind + 1])
         if self.list_sort[num]:
             array_cell.sort(key=lambda x: x[num], reverse=True)
             for ind in range(len(self.list_sort)):
@@ -914,40 +914,40 @@ class MainTableFrame(Canvas):
         """
         widget = self.widget_pointer()
         # если нажали на entry
-        if self._characteristic[widget][1] == "entry":
+        if self.characteristic[widget][1] == "entry":
             # если ячейка была заблокирована
             if "{}".format(widget["state"]) == "disabled":
                 # если ячейка не была выбрана
-                if not self._characteristic[widget][-2]:
-                    for key in self._characteristic.keys():
+                if not self.characteristic[widget][-2]:
+                    for key in self.characteristic.keys():
                         # если строка совпадает
-                        if self._characteristic[key][2] == \
-                                self._characteristic[widget][2]:
+                        if self.characteristic[key][2] == \
+                                self.characteristic[widget][2]:
                             # меняем флаг, отвечающий за выбранность строки
-                            self._characteristic[key][-2] = not \
-                                self._characteristic[key][-2]
+                            self.characteristic[key][-2] = not \
+                                self.characteristic[key][-2]
                             # если это фрейм
-                            if self._characteristic[key][1] == "frame":
+                            if self.characteristic[key][1] == "frame":
                                 key.config(bg=COLOR_BG_SELECT_ROW)
                             else:
                                 key.config(
                                     disabledbackground=COLOR_BG_SELECT_ROW)
                 else:
-                    self.repaint(self._characteristic[widget][2])
+                    self.repaint(self.characteristic[widget][2])
         else:
-            if not self._characteristic[widget][-2]:
-                for key in self._characteristic.keys():
-                    if self._characteristic[key][2] == \
-                            self._characteristic[widget][2]:
-                        self._characteristic[key][-2] = not \
-                        self._characteristic[key][-2]
-                        if self._characteristic[key][1] == "frame":
+            if not self.characteristic[widget][-2]:
+                for key in self.characteristic.keys():
+                    if self.characteristic[key][2] == \
+                            self.characteristic[widget][2]:
+                        self.characteristic[key][-2] = not \
+                        self.characteristic[key][-2]
+                        if self.characteristic[key][1] == "frame":
                             key.config(bg=COLOR_BG_SELECT_ROW)
                         else:
                             key.config(
                                 disabledbackground=COLOR_BG_SELECT_ROW)
             else:
-                self.repaint(self._characteristic[widget][2])
+                self.repaint(self.characteristic[widget][2])
 
     def double_click_cell(self, event=None): # pylint: disable=W0613
         """
@@ -1015,12 +1015,12 @@ class MainTableFrame(Canvas):
         Функция вносит изменения перед выводом контента на экран
         Автор: Озирный Максим
         """
-        self.add_arrow(self._bd_array[0])
+        self.add_arrow(self.bd_array[0])
         self.list_sort = []
-        for ind in range(len(self._bd_array[0])):
+        for ind in range(len(self.bd_array[0])):
             self.list_sort.append(False)
-        self.max_width(self._bd_array, self.list_max)
-        self.content(self._bd_array)
+        self.max_width(self.bd_array, self.list_max)
+        self.content(self.bd_array)
 
     def content(self, array): # pylint: disable=W0613
         """
@@ -1029,7 +1029,7 @@ class MainTableFrame(Canvas):
 
         принимает двумерный массив (список списков)
         """
-        self._bd_array = array
+        self.bd_array = array
         self.widget2 = 0
         for child in self.titles.winfo_children():
             for child2 in child.winfo_children():
@@ -1041,7 +1041,7 @@ class MainTableFrame(Canvas):
                 child2.destroy()
             child.destroy()
 
-        self._characteristic = {}
+        self.characteristic = {}
         for row in range(len(array)):
             self.frame2.grid_rowconfigure(row, minsize=HEIGHT_ROW)
             for col in range(len(array[0])):
@@ -1051,10 +1051,10 @@ class MainTableFrame(Canvas):
                                       disabledforeground=COLOR_TEXT_TITLE,
                                       fg=COLOR_TEXT_TITLE)
                     self.cell.bind("<Button-1>", self.click_title)
-                    self._characteristic.update({
+                    self.characteristic.update({
                         self.cell: [self.new_frame, "entry", row, col,
                                     False, False, True]})
-                    self._characteristic.update({
+                    self.characteristic.update({
                         self.new_frame: [self.cell, "frame", row, col,
                                          False, False, True]})
                     # отслеживаем события для изменения ширины поля
@@ -1072,10 +1072,10 @@ class MainTableFrame(Canvas):
                     self.new_frame.bind("<Button-1>", self.click_cell)
                     self.new_frame.bind("<Double-1>", self.double_click_cell)
                     self.new_frame.bind("<Button-3>", self.context_menu)
-                    self._characteristic.update({
+                    self.characteristic.update({
                         self.cell: [self.new_frame, "entry", row, col,
                                     False, False, True]})
-                    self._characteristic.update({
+                    self.characteristic.update({
                         self.new_frame: [self.cell, "frame", row, col,
                                          False, False, True]})
                 self.cell.insert(0, "{}".format(array[row][col]))

@@ -59,10 +59,12 @@ class RowFilterPanel(Frame):
         # Заголовок поля
         title_1 = Label(self.frame, text="Продукты", bg=COLOR_BG_FRAME_FILTR,
                         fg=COLOR_FG_FRAME_FILTR, font=FONT_TITLE_FILTR)
-        title_1.grid(row=0, column=0, sticky="we", padx=10, ipadx=10, columnspan=2)
+        title_1.grid(row=0, column=0, sticky="we", padx=10, ipadx=10,
+                     columnspan=2)
         # Черта под заголовком
         frame5 = Frame(self.frame, height=1, bg="#000")
-        frame5.grid(row=1, column=0, sticky="we", padx=10, ipadx=10, columnspan=2)
+        frame5.grid(row=1, column=0, sticky="we", padx=10, ipadx=10,
+                    columnspan=2)
         ind = 0
         # в цикле создаются и позиционируются подзаголовки и соответствующие
         # им объекты (Scale или Combobox) в зависимости от содержимого списка
@@ -74,20 +76,26 @@ class RowFilterPanel(Frame):
             if self._list_filtr[ind][0] == "Цена" or \
                     self._list_filtr[ind][0] == "Скидка":
                 slider = IntVar()
-                scale = Scale(self.frame, orient="horizontal", length=95, from_=0,
+                scale = Scale(self.frame, orient="horizontal", length=95,
+                              from_=0,
                               to=self._list_filtr[ind][1], variable=slider)
-                scale.grid(row=2 + 2*ind+1, column=0, sticky="w", padx=20, pady=2)
-                label = Label(self.frame, textvariable=slider, width=2,anchor="w", justify="left")
+                scale.grid(row=2 + 2*ind+1, column=0, sticky="w", padx=20,
+                           pady=2)
+                label = Label(self.frame, textvariable=slider, width=2,
+                              anchor="w", justify="left")
                 label.grid(row=2 + 2*ind+1, column=1, sticky="w", pady=2)
             else:
-                box = Combobox(self.frame, width=13, values=self._list_filtr[ind][1])
-                box.grid(row=2 + 2*ind+1, column=0, sticky="w", padx=20, pady=2)
+                box = Combobox(self.frame, width=13,
+                               values=self._list_filtr[ind][1])
+                box.grid(row=2 + 2*ind+1, column=0, sticky="w", padx=20,
+                         pady=2)
 
         # Кнопка вызывающая функцию отвечающюю за фильтрацию строк
         btn = Button(self.frame, text="Сохранить")
-        btn.grid(row=3 + 2*ind+1, column=0, sticky="we", padx=10, pady=2, columnspan=2)
+        btn.grid(row=3 + 2*ind+1, column=0, sticky="we", padx=10, pady=2,
+                 columnspan=2)
 
-        # отслеживаем события для изменения высоты поля
+        # отслеживаем события для изменения ширины поля
         self.frame.bind("<ButtonPress-1>", self.start_move)
         self.frame.bind("<ButtonRelease-1>", self.stop_move)
         self.frame.bind("<B1-Motion>", self.on_motion)
@@ -123,7 +131,7 @@ class RowFilterPanel(Frame):
         при этом изменяя переменную этого класса и изменяя внешний вид курсора
         Автор: Озирный Максим
         """
-        # Проверка местоположения курсора для доступа к изменению высоты поля
+        # Проверка местоположения курсора для доступа к изменению ширины поля
         if event.x < 4:
             self.x = event.x_root
             self.frame.config(cursor=CURSOR_CHANGE_HEIGHT)
@@ -144,11 +152,13 @@ class RowFilterPanel(Frame):
         Функция высчитывает и устанавливает новую высоту поля
         Автор: Озирный Максим
         """
-        # Проверка на допустимость изменения высоты поля
+        # Проверка на допустимость изменения ширины поля
         if self.x:
             deltay = self.x - event.x_root
             self.width = self.width_2
-            if self.width + deltay < self.master.winfo_width() - MIN_WIDTH_TABLE - 60 and self.width + deltay > MIN_WIDTH_FILR_FRAME:
+            if self.width + deltay < \
+                    self.master.winfo_width() - MIN_WIDTH_TABLE - 60 \
+                    and self.width + deltay > MIN_WIDTH_FILR_FRAME:
                 self.width += deltay
                 self.canvas.config(width=self.width)
 
@@ -216,7 +226,7 @@ class ColumnFilterPanel(Frame):
         btn = Button(self.frame, text="Сохранить")
         btn.grid(row=4 + ind, column=0, sticky="we", padx=10, pady=2)
 
-        # отслеживаем события для изменения высоты поля
+        # отслеживаем события для изменения ширины поля
         self.frame.bind("<ButtonPress-1>", self.start_move)
         self.frame.bind("<ButtonRelease-1>", self.stop_move)
         self.frame.bind("<B1-Motion>", self.on_motion)
@@ -277,7 +287,9 @@ class ColumnFilterPanel(Frame):
         if self.x:
             deltay = self.x - event.x_root
             self.width = self.width_2
-            if self.width + deltay < self.master.winfo_width() - MIN_WIDTH_TABLE - 60 and self.width + deltay > MIN_WIDTH_FILR_FRAME:
+            if self.width + deltay < \
+                    self.master.winfo_width() - MIN_WIDTH_TABLE - 60 \
+                    and self.width + deltay > MIN_WIDTH_FILR_FRAME:
                 self.width += deltay
                 self.canvas.config(width=self.width)
 
@@ -379,7 +391,8 @@ class ChangeHistoryPanel(Canvas):
         if self.y:
             deltay = self.y - event.y_root
             self.height = self.height_2
-            if self.height + deltay < self.master.winfo_height() - MIN_SIZE_TABLE - 75:
+            if self.height + deltay < \
+                    self.master.winfo_height() - MIN_SIZE_TABLE - 75:
                 self.height += deltay
                 self.canvas.config(height=self.height)
 

@@ -11,8 +11,8 @@ from Work.Scripts.res.values.menu import MainMenuFactory, MainMenuListener
 from Work.Scripts.src.test.main_table_interactor import MainTableInteractor
 from Work.Scripts.src.view.ui.db_editor.db_editor import DbEditorWindow
 from Work.Scripts.src.view.ui.main_window.config import WIN_W_START, \
-    WIN_H_START, MIN_SIZE_TABLE, \
-    WIDTH_FILR_FRAME, COLOR_TEXT_TABLE, COLOR_BG_ODD_ROW, COLOR_BG_EVENT_ROW, \
+    WIN_H_START, MIN_SIZE_TABLE, CURSOR_CHANGE_HEIGHT, \
+    COLOR_TEXT_TABLE, COLOR_BG_ODD_ROW, COLOR_BG_EVENT_ROW, \
     COLOR_BG_TITLE_TABLE, FILTER_TAB_TEXT, TABLES_TAB_TEXT, \
     LAST_CHANGES_CLOSED_TAB, LAST_CHANGES_OPENED_TAB, MENU_FILE_TEXT, \
     MENU_REPORT_TEXT, DEFAULT_SEARCH_TEXT, HEIGHT_ROW, \
@@ -82,9 +82,12 @@ class MainWindow(IWindowListener):
         master.grid_columnconfigure(2, minsize=0)
         master.grid_columnconfigure(3, minsize=24)
 
-        self.img_g = ImageTk.PhotoImage(Image.open("D:\\main\\projects\\python\\ProductsViewer\\Work\\Scripts\\res\\drawable\\galka2.png"))
-        self.img_k = ImageTk.PhotoImage(Image.open("D:\\main\\projects\\python\\ProductsViewer\\Work\\Scripts\\res\\drawable\\krest.png"))
-        self.img_p = ImageTk.PhotoImage(Image.open("D:\\main\\projects\\python\\ProductsViewer\\Work\\Scripts\\res\\drawable\\plus.png"))
+        self.img_g = ImageTk.PhotoImage(Image.open(
+            "D:\\main\\projects\\python\\ProductsViewer\\Work\\Scripts\\res\\drawable\\galka2.png"))
+        self.img_k = ImageTk.PhotoImage(Image.open(
+            "D:\\main\\projects\\python\\ProductsViewer\\Work\\Scripts\\res\\drawable\\krest.png"))
+        self.img_p = ImageTk.PhotoImage(Image.open(
+            "D:\\main\\projects\\python\\ProductsViewer\\Work\\Scripts\\res\\drawable\\plus.png"))
 
         # Создается верхнее меню
         footbar = OptionsMenu(master, self)
@@ -508,6 +511,9 @@ class MainTableFrame(Canvas):
     list_cell = []
     list_titles = []
     list_frame = []
+    x = 0
+    width = 13
+    width_2 = width
 
     def __init__(self, master, main, btn1, btn2, **kw):
         super().__init__(master, {}, **kw)
@@ -565,7 +571,44 @@ class MainTableFrame(Canvas):
                                     command=self.repaint)
         self.black_menu.add_command(label="Удалить строки",
                                     command=self.del_select)
-        #self.master.bind("<Escape>", self.deselect)
+
+    def start_move(self, event=None):
+        """
+        Функция отслеживает при помощи условия возможность увеличения поля
+        при этом изменяя переменную этого класса и изменяя внешний вид курсора
+        Автор: Озирный Максим
+        """
+        # Проверка местоположения курсора для доступа к изменению высоты поля
+        self.new_xy_menu()
+        self.x = 0
+        self.width = self.list_max[self._characteristic[self.widget][3]]
+        self.width_2 = self.width
+        if event.x > self.list_max[self._characteristic[self.widget][3]]*6 - 1:
+            self.x = event.x_root
+            self.titles.config(cursor=CURSOR_CHANGE_HEIGHT)
+
+    def stop_move(self, event=None):
+        """
+        Функция изменяет переменную, отвечающую за высоту поля,
+        для дальнейшего корректного изменения параметра этого поля
+        Автор: Озирный Максим
+        """
+        self.x = None
+        self.width_2 = self.list_max[self._characteristic[self.widget][3]]
+        self.titles.config(cursor='arrow')
+
+    def on_motion(self, event):
+        """
+        Функция высчитывает и устанавливает новую высоту поля
+        Автор: Озирный Максим
+        """
+        # Проверка на допустимость изменения высоты поля
+        if self.x:
+            deltay = event.x_root - self.x
+            self.width = self.width_2
+            self.width += deltay//6
+            self.list_max[self._characteristic[self.widget][3]] = self.width
+            self.set_max_width(self._characteristic[self.widget][3])
 
     def del_select(self, event=None): # pylint: disable=W0613
         """
@@ -685,11 +728,17 @@ class MainTableFrame(Canvas):
         self.btn_off.destroy()
         if self._characteristic[self.widget2][1] == "entry":
             value = self.widget2.get()
-            self.widget2.config(justify="left", state="disabled")
+            self.widget2.delete(0, "end")
+            self.widget2.insert(0, value)
+            self.widget2.config(state="disabled")
+            self.widget2.bind("<Double-1>", self.double_click_cell)
         else:
             value = self._characteristic[self.widget2][0].get()
-            self._characteristic[self.widget2][0].config(justify="left",
-                                                        state="disabled")
+            self._characteristic[self.widget2][0].delete(0, "end")
+            self._characteristic[self.widget2][0].insert(0, value)
+            self._characteristic[self.widget2][0].config(state="disabled")
+            self._characteristic[self.widget2][0].bind("<Double-1>",
+                                                       self.double_click_cell)
         self._bd_array[self._characteristic[self.widget2][2]][
             self._characteristic[self.widget2][3]] = value
 
@@ -697,14 +746,16 @@ class MainTableFrame(Canvas):
                        self._characteristic[self.widget2][3])
         self.set_max_width()
 
-    def set_max_width(self, event=None): # pylint: disable=W0613
+    def set_max_width(self, only=-1, event=None): # pylint: disable=W0613
         """
         Функция устанавливает ширину каждой ячейки таблицы в зависимости
         от максимальной ширины в столбце
         Автор: Озирный Максим
         """
         for key in self._characteristic.keys():
-            if self._characteristic[key][1] == "entry":
+            if self._characteristic[key][1] == "entry" and only == -1 or \
+                    self._characteristic[key][1] == "entry" and \
+                    self._characteristic[key][3] == only:
                 key.config(width=self.list_max[self._characteristic[key][3]]+2)
 
     def del_change(self, event=None): # pylint: disable=W0613
@@ -756,7 +807,8 @@ class MainTableFrame(Canvas):
                                  command=self.save_change)
             self.btn_off = Button(self._characteristic[self.widget][0],
                                   bd=0, image=self.img_k,
-                                  bg=self._characteristic[self.widget][0]["bg"],
+                                  bg=self._characteristic[
+                                      self.widget][0]["bg"],
                                   command=self.del_change)
             self.widget.bind('<Return>', self.save_change)
             self.widget.bind('<Escape>', self.del_change)
@@ -967,6 +1019,7 @@ class MainTableFrame(Canvas):
         self.list_sort = []
         for ind in range(len(self._bd_array[0])):
             self.list_sort.append(False)
+        self.max_width(self._bd_array, self.list_max)
         self.content(self._bd_array)
 
     def content(self, array): # pylint: disable=W0613
@@ -978,7 +1031,6 @@ class MainTableFrame(Canvas):
         """
         self._bd_array = array
         self.widget2 = 0
-        self.max_width(array, self.list_max)
         for child in self.titles.winfo_children():
             for child2 in child.winfo_children():
                 child2.destroy()
@@ -1005,6 +1057,10 @@ class MainTableFrame(Canvas):
                     self._characteristic.update({
                         self.new_frame: [self.cell, "frame", row, col,
                                          False, False, True]})
+                    # отслеживаем события для изменения ширины поля
+                    self.new_frame.bind("<ButtonPress-1>", self.start_move)
+                    self.new_frame.bind("<ButtonRelease-1>", self.stop_move)
+                    self.new_frame.bind("<B1-Motion>", self.on_motion)
                 else:
                     self.new_frame = Frame(self.frame2)
                     self.cell = Entry(self.new_frame,
@@ -1024,7 +1080,8 @@ class MainTableFrame(Canvas):
                                          False, False, True]})
                 self.cell.insert(0, "{}".format(array[row][col]))
                 self.new_frame.config(bg=COLOR_BG_ODD_ROW, pady=5)
-                self.new_frame.grid(row=row, column=col, sticky="nwes")
+                self.new_frame.grid(row=row, column=col, sticky="nwes",
+                                    ipadx=5)
                 self.cell.grid(sticky="nwes")
                 self.cell.config(relief="flat", width=self.list_max[col]+2,
                                  state="disabled",

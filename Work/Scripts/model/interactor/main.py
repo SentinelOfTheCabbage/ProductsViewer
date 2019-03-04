@@ -22,7 +22,7 @@ import datetime
 import time
 
 import pandas
-os.chdir('C:/Users/ирбисик/Documents/PYTHON/ProductsViewer/Work/Data')
+os.chdir('C:/Users/Tom/Documents/Python_projects/ProductsViewer/Work/Data')
 
 
 class ReportsInteractor:
@@ -50,26 +50,25 @@ class ReportsInteractor:
         """
         # result = [] * 1
         # result.append(list(self._db_products.columns))
-        main_table = self._db_products
+        main_table = self._db_products.copy()
 
-        def is_discount_works(self, discount_id: int):
+        def is_discount_works(discount_id: int):
             now = time.mktime(datetime.datetime.now().timetuple())
             date_begin = time.mktime(datetime.datetime.strptime(
                 self._db_discounts['date_begin'].iloc[discount_id], "%d.%m.%Y").timetuple())
             date_end = time.mktime(datetime.datetime.strptime(self._db_discounts['date_end'].iloc[
                 discount_id], "%d.%m.%Y").timetuple())
-
             return date_begin <= now <= date_end
 
-        for i in range(len(main_table)):
-            if is_discount_works(self, main_table['discount_id'].iloc[i]):
-                main_table['discount_id'].iloc[i] = self._db_discounts.iloc[
-                    main_table['discount_id'].iloc[i]]['amount']
-                main_table['price'].iloc[i] = int(main_table['price'].iloc[
-                    i]) * (1 - int(main_table['discount_id'].iloc[
-                        i]) / 100.0)
+        discount_list = self._db_discounts.id.copy()
+        for i in range(len(discount_list)):
+            if is_discount_works(discount_list.iloc[i]):
+                main_table.discount_id[main_table.discount_id == discount_list.iloc[
+                    i]] = self._db_discounts.amount.iloc[i]
             else:
-                main_table['discount_id'].iloc[i] = 0
+                main_table.discount_id[
+                    main_table.discount_id == discount_list.iloc[i]] = 0
+        main_table.price *= round((1 - main_table.discount_id / 100.0), 2)
         main_table = main_table.rename(columns={
             'id': 'Id',
             'name': 'Product name',
@@ -171,7 +170,7 @@ class ReportsInteractor:
                 #     self._db_products[self._db_products.id == i].price)
                 result = result.rename({
                     i: list(self._db_products[self._db_products.id == i]['price'])[0]
-                    })
+                })
         return result
 
     def get_groups_list(self):

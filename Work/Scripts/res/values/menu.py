@@ -9,6 +9,11 @@ COMMAND_KEY = 'command'
 
 
 class MainMenuListener(ABC):
+
+    @abstractmethod
+    def exit(self):
+        pass
+
     @staticmethod
     @abstractmethod
     def create_simple_report():

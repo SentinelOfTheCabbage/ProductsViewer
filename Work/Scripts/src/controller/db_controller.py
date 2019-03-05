@@ -4,7 +4,7 @@ from Work.Scripts.src.controller.commands import CommandSelect, CommandInsert, \
     CommandUpdate, CommandDelete
 from Work.Scripts.src.controller.db_event import Event
 from Work.Scripts.src.controller.errors import EditDbError
-from Work.Scripts.src.controller.factory import TestDbFactory
+from Work.Scripts.src.controller.factory import TestDbFactory, ProdDbFactory
 from Work.Scripts.src.model.interactor.interactors import MainTableInteractor, \
     ReportsInteractor
 from Work.Scripts.src.model.repository.UI_table_constants import \

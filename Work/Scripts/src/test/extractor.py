@@ -7,6 +7,21 @@ from Work.Scripts.src.model.repository.interf_extractor import IDataExtractor
 
 class DataExtractor(IDataExtractor):
 
+    def get_db_products(self):
+        self.get_data()
+
+    def get_db_discounts(self):
+        pass
+
+    def get_db_vouchers(self):
+        pass
+
+    def get_db_sales(self):
+        pass
+
+    def get_db_groups(self):
+        pass
+
     def get_data(self):
         data = np.array([
             list(ProductColumns.get_empty_row().keys()),

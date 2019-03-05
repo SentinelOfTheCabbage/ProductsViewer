@@ -308,6 +308,7 @@ class MainTableFrame(Canvas, IEventListener):
 
     def __init__(self, master, main, btn1, btn2, **kw):
         super().__init__(master, {}, **kw)
+        _bd_array = controller.get_data()
         self.btn1 = btn1
         self.btn2 = btn2
         self.grid_rowconfigure(0, weight=1)
@@ -662,8 +663,8 @@ class MainTableFrame(Canvas, IEventListener):
             for col in range(len(array[0])):
                 max = len(self._bd_array[0][col])
                 for row in range(len(array)):
-                    if max < len(self._bd_array[row][col]):
-                        max = len(self._bd_array[row][col])
+                    if max < len(str(self._bd_array[row][col])):
+                        max = len(str(self._bd_array[row][col]))
                 list[col] = max
 
     def add_arrow(self, list):

@@ -67,7 +67,7 @@ class ReportsInteractor:
                 main_table.loc[main_table.discount_id == discount_list.iloc[
                     i], 'discount_id'] = self._db_discounts.amount.iloc[i]
             else:
-                main_table.discount_id[
+                main_table.discount_id.loc[
                     main_table.discount_id == discount_list.iloc[i]] = 0
 
         main_table.price *= round((1 - main_table.discount_id / 100.0), 2)

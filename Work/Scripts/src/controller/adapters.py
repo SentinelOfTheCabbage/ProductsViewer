@@ -1,6 +1,7 @@
-from pandas import DataFrame
+from pandas import DataFrame, Series
 
-from Work.Scripts.src.controller.db_controller import MainTableController
+from Work.Scripts.src.controller.db_controller import MainTableController, \
+    ReportsController
 
 
 class ListMainTableAdapter(MainTableController):
@@ -42,4 +43,18 @@ class ListMainTableAdapter(MainTableController):
         return event
 
     def get_data(self):
-        return self.tolist(super().get_data_frame())
+        return self.tolist(super().get_data_frame())[:100]
+
+
+class ListReportsAdapter(ReportsController):
+
+    def __init__(self):
+        super().__init__()
+
+    def tolist(self, series: Series):
+        if (series is not None) and (isinstance(series, Series)):
+            return series.tolist()
+
+    def get_products_groups(self):
+        return self.tolist(super().get_products_groups())
+

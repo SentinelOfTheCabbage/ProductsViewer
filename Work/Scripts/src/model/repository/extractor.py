@@ -1,27 +1,22 @@
+import os
 import pickle
 
 from Work.Scripts.src.model.repository.interf_extractor import IDataExtractor
 
 
 class DataExtractor(IDataExtractor):
-
-    _database = {}
-
     def __init__(self):
-        with open(r'D:\PycharmProjects\ProductsViewer\Work\Data\db.pickle', "rb") as open_data_base:
-            self._data_base = pickle.load(open_data_base)
+        os.chdir(r'D:\PycharmProjects\ProductsViewer\Work\Data')
+        with open('db.pickle', "rb") as open_data_base:
+            data_base = pickle.load(open_data_base)
 
-    def get_db_products(self):
-        return self._data_base['_db_products']
+        self._db_products = data_base['_db_products']
+        self._db_discounts = data_base['_db_discounts']
+        self._db_vouchers = data_base['_db_vouchers']
+        self._db_sales = data_base['_db_sales']
+        self._db_groups = data_base['_db_groups']
 
-    def get_db_discounts(self):
-        return self._data_base['_db_discounts']
+        file_name = 'database.txt'
 
-    def get_db_vouchers(self):
-        return self._data_base['_db_vouchers']
-
-    def get_db_sales(self):
-        return self._data_base['_db_sales']
-
-    def get_db_groups(self):
-        return self._data_base['_db_groups']
+    def get_data(self):
+        pass

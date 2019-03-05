@@ -61,13 +61,15 @@ class ReportsInteractor:
             return date_begin <= now <= date_end
 
         discount_list = self._db_discounts.id.copy()
+
         for i in range(len(discount_list)):
             if is_discount_works(discount_list.iloc[i]):
-                main_table.discount_id[main_table.discount_id == discount_list.iloc[
-                    i]] = self._db_discounts.amount.iloc[i]
+                main_table.loc[main_table.discount_id == discount_list.iloc[
+                    i], 'discount_id'] = self._db_discounts.amount.iloc[i]
             else:
                 main_table.discount_id[
                     main_table.discount_id == discount_list.iloc[i]] = 0
+
         main_table.price *= round((1 - main_table.discount_id / 100.0), 2)
         main_table = main_table.rename(columns={
             'id': 'Id',

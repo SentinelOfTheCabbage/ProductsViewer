@@ -1,5 +1,6 @@
 import os
 import pandas
+
 os.chdir('C:/Users/ирбисик/Documents/PYTHON/ProductsViewer/Work/Data')
 
 
@@ -17,13 +18,15 @@ class DB_Redactor():
         setattr(self, database_name, pandas.read_csv(self.DB_List[i], sep=';'))
         exec('self.%s=self.%s.drop(%d)' %
              (database_name, database_name, target))
-        exec('self.%s.to_csv("%s.csv",index=True,sep=";")' % (database_name, source))
+        exec('self.%s.to_csv("%s.csv",index=True,sep=";")' % (
+            database_name, source))
         # exec('del(self.%s)' % (database_name))
 
     def edit_element(self, source: str, target: int, point: int, new_value):
-        i, database_name = find_corrent_db(source)
+        i, database_name = self.find_corrent_db(source)
         pass
 
+    @staticmethod
     def create_element():
         pass
 
@@ -35,7 +38,7 @@ class DB_Redactor():
             if current_db_name == database_name:
                 flag = True
                 break
-        if flag == True:
+        if flag:
             return i, database_name
         else:
             return False

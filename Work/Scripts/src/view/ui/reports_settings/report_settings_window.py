@@ -6,6 +6,7 @@ from tkinter import Frame, NSEW, Label, RIGHT, Button, E
 
 from Work.Scripts.res.values.colors import SUCCESS_INFO_COLOR, SEPARATOR_COLOR
 from Work.Scripts.res.values.styles import SUBTITLE_TEXT_FONT
+from Work.Scripts.src.controller.adapters import ListReportsAdapter
 from Work.Scripts.src.controller.db_controller import ReportsController
 from Work.Scripts.src.view.ui.reports_settings.choice_frames import \
     OnEventInfoListener, ChoiceFrameListener
@@ -39,7 +40,7 @@ class SettingsWindow(OnEventInfoListener, ABC):
 
     left_choice_is_done = True
     right_choice_is_done = True
-    controller = ReportsController()
+    controller = ListReportsAdapter()
     frame_1: ChoiceFrameListener = None
     frame_2: ChoiceFrameListener = None
 

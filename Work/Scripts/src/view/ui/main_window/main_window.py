@@ -662,8 +662,8 @@ class MainTableFrame(Canvas, IEventListener):
             for col in range(len(array[0])):
                 max = len(self._bd_array[0][col])
                 for row in range(len(array)):
-                    if max < len(self._bd_array[row][col]):
-                        max = len(self._bd_array[row][col])
+                    if max < len(str(self._bd_array[row][col])):
+                        max = len(str(self._bd_array[row][col]))
                 list[col] = max
 
     def add_arrow(self, list):

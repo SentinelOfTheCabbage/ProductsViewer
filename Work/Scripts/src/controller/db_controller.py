@@ -1,17 +1,18 @@
 import copy
 
+
 from Work.Scripts.src.controller.commands import CommandSelect, CommandInsert, \
     CommandUpdate, CommandDelete
 from Work.Scripts.src.controller.db_event import Event
 from Work.Scripts.src.controller.errors import EditDbError
-from Work.Scripts.src.controller.factory import TestDbFactory
-from Work.Scripts.src.model.interactor.interactors import MainTableInteractor, \
-    ReportsInteractor
+from Work.Scripts.src.controller.factory import TestDbFactory, ProdDbFactory
+from Work.Scripts.src.model.interactor.interactors import ReportsInteractor, \
+    MainTableInteractor
 from Work.Scripts.src.model.repository.UI_table_constants import \
     ProductColumns, TableNameUI
 from Work.Scripts.src.view.app import App
 
-db_factory = TestDbFactory()
+db_factory = ProdDbFactory()
 
 EMPTY_EXPRS = "Не заполнены условия"
 EMPTY_COLS = "Не выбраны колонки"
@@ -29,7 +30,7 @@ class MainTableController:
             self._save_state()
 
     def get_data_frame(self):
-        return self.main_interactor.get_data()
+        return self.main_interactor.get_main_table()
 
     def get_columns_by_table(self, table):
         pass
@@ -146,9 +147,6 @@ class MainTableController:
             self._save_state()
             return Event(0, get_text(), data)
 
-    def get_data(self):
-        return self.main_interactor.get_data()
-
     def get_vals_by_col(self, column):
         return self.main_interactor.get_vals_by_col(column)
 
@@ -196,14 +194,8 @@ class ReportsController:
         return self.reports_interactor.get_prices_by_group_and_quality(
             groups, quality)
 
-    def get_products_groups(self):
-        return self.reports_interactor.get_products_groups()
-
     def get_products_by_group(self, group: str):
         return self.reports_interactor.get_products_by_group(group)
-
-    def get_quality_categories(self):
-        return self.reports_interactor.get_quality_categories()
 
     def get_box_and_whisker_prices(self, product_group: str, qualities: list,
                                    products: list):
@@ -211,6 +203,7 @@ class ReportsController:
             product_group, qualities, products)
 
     def get_prices_by_group(self, product_group: str, products: list):
+
         return self.reports_interactor.get_prices_by_group(product_group,
                                                            products)
 

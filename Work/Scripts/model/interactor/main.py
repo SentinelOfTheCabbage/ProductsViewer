@@ -111,7 +111,7 @@ class ReportsInteractor:
         result = {}
         table = self._db_products
         result = table[(table.group_name == product_group)
-                       & (table.name.isin(products))]
+                       & (table.name.isin(products))].copy()[['name', 'price']]
         return result
 
     def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):

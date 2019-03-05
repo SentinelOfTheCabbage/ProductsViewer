@@ -65,7 +65,7 @@ class MainWindow(IWindowListener):
         # минимальный размер, параметры сетки
         master.title(title)
         master.iconbitmap(
-            r'D:\main\projects\python\ProductsViewer\Work\Scripts\res\drawable\img.ico')
+            r'D:\PycharmProjects\ProductsViewer\Work\Scripts\res\drawable\img.ico')
         master.geometry("{winw}x{winh}+{centerw}+{centerh}".format(
             winw=WIN_W_START,
             winh=WIN_H_START,
@@ -83,11 +83,11 @@ class MainWindow(IWindowListener):
         master.grid_columnconfigure(3, minsize=24)
 
         self.img_g = ImageTk.PhotoImage(Image.open(
-            "D:\\main\\projects\\python\\ProductsViewer\\Work\\Scripts\\res\\drawable\\galka2.png"))
+            "D:\\PycharmProjects\\ProductsViewer\\Work\\Scripts\\res\\drawable\\galka2.png"))
         self.img_k = ImageTk.PhotoImage(Image.open(
-            "D:\\main\\projects\\python\\ProductsViewer\\Work\\Scripts\\res\\drawable\\krest.png"))
+            "D:\\PycharmProjects\\ProductsViewer\\Work\\Scripts\\res\\drawable\\krest.png"))
         self.img_p = ImageTk.PhotoImage(Image.open(
-            "D:\\main\\projects\\python\\ProductsViewer\\Work\\Scripts\\res\\drawable\\plus.png"))
+            "D:\\PycharmProjects\\ProductsViewer\\Work\\Scripts\\res\\drawable\\plus.png"))
 
         # Создается верхнее меню
         footbar = OptionsMenu(master, self)
@@ -520,9 +520,9 @@ class MainTableFrame(Canvas):
         self.master = master
 
         self.img_g = ImageTk.PhotoImage(Image.open(
-            "D:\\main\\projects\\python\\ProductsViewer\\Work\\Scripts\\res\\drawable\\galka2.png"))
+            "D:\\PycharmProjects\\ProductsViewer\\Work\\Scripts\\res\\drawable\\galka2.png"))
         self.img_k = ImageTk.PhotoImage(Image.open(
-            "D:\\main\\projects\\python\\ProductsViewer\\Work\\Scripts\\res\\drawable\\krest.png"))
+            "D:\\PycharmProjects\\ProductsViewer\\Work\\Scripts\\res\\drawable\\krest.png"))
         # устанавливаем сылку на переданные объекты
         self.btn1 = btn1
         self.btn2 = btn2

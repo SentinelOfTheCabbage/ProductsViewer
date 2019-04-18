@@ -12,7 +12,7 @@ FONT_STYLE = "Times New Roman"
 FONT_SIZE_BTN_TEXT = 14
 CALENDAR_TEXT_FONT = (FONT_STYLE, 12)
 CHOSEN_DATE_LABEL = (FONT_STYLE, 11)
-DATE_FORMAT = "%d-%m-%Y"
+DATE_FORMAT = "%d.%m.%Y"
 BTN_TEXT_APPLY = "Подтвердить"
 
 
@@ -197,7 +197,7 @@ class SingleChoiceFrame(Frame, ChoiceFrameListener):
         """
         super().__init__(master, kw)
 
-        self.checked_flag = StringVar()
+        self.checked_flag = StringVar(self)
         items = list(set(values))
         items.sort()
         self.values = items

@@ -26,11 +26,11 @@ class SettingsScatterChart(SettingsWindow):
             'Диаграмма рассеивания' """
     def __init__(self, main):
         """Создаёт окно конфигурации графика"""
-        frame_1 = SingleChoiceFrame(main, self.controller
+        self.frame_1: SingleChoiceFrame = SingleChoiceFrame(main, self.controller
                                          .get_products_groups())
 
-        frame_2 = CalendarFrame(main)
-        super().__init__(main, WINDOW_TITLE_GRAPH, frame_1, frame_2)
+        self.frame_2: CalendarFrame = CalendarFrame(main)
+        super().__init__(main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
         self.left_choice_is_done = True
 
         self.set_left_title(SUBTITLE_LEFT)

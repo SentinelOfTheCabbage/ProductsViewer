@@ -4,9 +4,9 @@
 import datetime
 from abc import ABC, abstractmethod
 from tkinter import Frame, Checkbutton, BooleanVar, StringVar, Radiobutton, W, \
-    X, BOTH, Button, Label, EW, NSEW
+    X, BOTH, Button, Label, EW, NSEW, Scrollbar, RIGHT, Y, BOTTOM
 from tkcalendar import Calendar
-from Work.Scripts.src.view.ui.custom_widgets import VerticalScrolledFrame
+from Work.Scripts.src.view.ui.custom_widgets import VerticalScrolledFrame, HorizontalScrolledFrame
 
 FONT_STYLE = "Times New Roman"
 FONT_SIZE_BTN_TEXT = 14
@@ -84,6 +84,9 @@ class MultiChoiceFrame(Frame, ChoiceFrameListener):
         self.scrolled_frame = None
         self.listener = listener
 
+        self.fill_frame_by_list(values, is_scrolled)
+
+    def fill_frame_by_list(self, values: list, is_scrolled: bool):
         items = list(set(values))
         items.sort()
         self.values = items
@@ -185,7 +188,7 @@ class SingleChoiceFrame(Frame, ChoiceFrameListener):
     buttons = {}
     values = []
 
-    def __init__(self, master, values: list, **kw):
+    def __init__(self, master, values: list, rb_listener=None, **kw):
         """
         Создаёт фрейм для одиночного выбора данных
         :param master: корневой виджет
@@ -204,7 +207,8 @@ class SingleChoiceFrame(Frame, ChoiceFrameListener):
             choice_btn = Radiobutton(self, text=item,
                                      variable=self.checked_flag,
                                      value=item,
-                                     font=(FONT_STYLE, FONT_SIZE_BTN_TEXT))
+                                     font=(FONT_STYLE, FONT_SIZE_BTN_TEXT),
+                                     command=rb_listener)
             self.buttons[item] = choice_btn
             if i == 0:
                 choice_btn.select()

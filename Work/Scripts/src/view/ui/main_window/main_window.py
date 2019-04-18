@@ -1,4 +1,3 @@
-
 """
 В файле расположены классы отвечающие за визуальную часть
 главного окна и таблицы в нем
@@ -8,6 +7,7 @@ from tkinter import Frame, Canvas, Button, \
 from abc import ABC, abstractmethod
 from PIL import ImageTk, Image
 
+from Work.Scripts.conf import ROOT_DIR
 from Work.Scripts.res.values.menu import MainMenuFactory, MainMenuListener
 from Work.Scripts.src.controller.adapters import ListMainTableAdapter
 from Work.Scripts.src.controller.db_event import Event
@@ -34,8 +34,10 @@ from Work.Scripts.src.view.ui.reports_settings.settings_scatter_chart import \
 
 controller = ListMainTableAdapter(True)
 
+
 class IWindowListener(ABC):
     """asd"""
+
     @abstractmethod
     def close(self):
         """asd"""
@@ -66,8 +68,7 @@ class MainWindow(IWindowListener):
         # заголовок, иконку заголовка, параметры размера и появления на экране
         # минимальный размер, параметры сетки
         master.title(title)
-        master.iconbitmap(
-            r'D:\PycharmProjects\ProductsViewer\Work\Scripts\res\drawable\img.ico')
+        master.iconbitmap(ROOT_DIR + r'\Scripts\res\drawable\img.ico')
         master.geometry("{winw}x{winh}+{centerw}+{centerh}".format(
             winw=WIN_W_START,
             winh=WIN_H_START,
@@ -84,12 +85,9 @@ class MainWindow(IWindowListener):
         master.grid_columnconfigure(2, minsize=0)
         master.grid_columnconfigure(3, minsize=24)
 
-        self.img_g = ImageTk.PhotoImage(Image.open(
-            "D:\\PycharmProjects\\ProductsViewer\\Work\\Scripts\\res\\drawable\\galka2.png"))
-        self.img_k = ImageTk.PhotoImage(Image.open(
-            "D:\\PycharmProjects\\ProductsViewer\\Work\\Scripts\\res\\drawable\\krest.png"))
-        self.img_p = ImageTk.PhotoImage(Image.open(
-            "D:\\PycharmProjects\\ProductsViewer\\Work\\Scripts\\res\\drawable\\plus.png"))
+        self.img_g = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Scripts\res\drawable\galka2.png"))
+        self.img_k = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Scripts\res\drawable\krest.png"))
+        self.img_p = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Scripts\res\drawable\plus.png"))
 
         # Создается верхнее меню
         footbar = OptionsMenu(master, self)
@@ -172,7 +170,7 @@ class MainWindow(IWindowListener):
 
         master.mainloop()
 
-    def close(self, event=None): # pylint: disable=W0613
+    def close(self, event=None):  # pylint: disable=W0613
         """
         Функция вызывающая диалоговое окно для дальнейшего
         сохранения или не сохранения последних изменений в базе данных
@@ -187,7 +185,7 @@ class MainWindow(IWindowListener):
                 print("не сохраняй")
             self.master.destroy()
 
-    def plus(self, event=None): # pylint: disable=W0613
+    def plus(self, event=None):  # pylint: disable=W0613
         """
         Функция отвечает за создание или удаление элементов,
         необходимых для добавления новой строки в таблицу
@@ -208,7 +206,7 @@ class MainWindow(IWindowListener):
                 self.main_frame.new_row()
             self.plus_bool = not self.plus_bool
 
-    def save_new_row(self, event=None): # pylint: disable=W0613
+    def save_new_row(self, event=None):  # pylint: disable=W0613
         """
         Функция добавляет новую строку, если введены корректные данные
         Автор: Озирный Максим
@@ -221,7 +219,7 @@ class MainWindow(IWindowListener):
             for ind in range(len(self.main_frame.bd_array[0])):
                 self.main_frame.bd_array[
                     len(self.main_frame.bd_array) - 1].append(
-                        "{}".format(self.main_frame.list_new_col[ind].get()))
+                    "{}".format(self.main_frame.list_new_col[ind].get()))
             row = len(self.main_frame.bd_array) - 1
             self.main_frame.frame2.grid_rowconfigure(row, minsize=HEIGHT_ROW)
             for col in range((len(self.main_frame.bd_array[0]))):
@@ -257,7 +255,7 @@ class MainWindow(IWindowListener):
                                  )
             self.main_frame.repaint()
 
-    def click_search(self, event=None): # pylint: disable=W0613
+    def click_search(self, event=None):  # pylint: disable=W0613
         """
         Функция, реагируя на нажатие в поле поиска, которое не было заполнено
         пользователем, удаляет из него дефолтную надпись и изменяет цвет текста
@@ -267,7 +265,7 @@ class MainWindow(IWindowListener):
             self.search.delete(0, "end")
             self.search.config(fg="#000")
 
-    def del_focus(self, event=None): # pylint: disable=W0613
+    def del_focus(self, event=None):  # pylint: disable=W0613
         """
         Функция в случае если пользователь оставил поле поиска пустым
         заполняет его дефолтной надписью конкретного цвета
@@ -288,10 +286,10 @@ class MainWindow(IWindowListener):
         """
         tab = Canvas(self.right_menu, height=height, width=20, bd=0,
                      bg="#f0f0f0")
-        tab.create_text((20, height-5), angle="-90", anchor=NE, text=text)
+        tab.create_text((20, height - 5), angle="-90", anchor=NE, text=text)
         return tab
 
-    def new_height(self, event=None): # pylint: disable=W0613
+    def new_height(self, event=None):  # pylint: disable=W0613
         """
         Функция изменяет высоту главного поля (таблицы) при нажатии на кнопку
         'последние изменения'
@@ -299,14 +297,14 @@ class MainWindow(IWindowListener):
         if self.last_ch_bool:
             self.main_frame.cont.config(
                 height=self.master.winfo_height() - 99 -
-                self.main_frame.titles.winfo_height() -
-                self.last_ch_frame.canvas.winfo_height())
+                       self.main_frame.titles.winfo_height() -
+                       self.last_ch_frame.canvas.winfo_height())
         else:
             self.main_frame.cont.config(
                 height=self.master.winfo_height() - 75 -
-                self.main_frame.titles.winfo_height())
+                       self.main_frame.titles.winfo_height())
 
-    def left_key(self, event=None): # pylint: disable=W0613
+    def left_key(self, event=None):  # pylint: disable=W0613
         """
         Функция прокручивает таблицу при нажатии на стрелку
         Автор: Озирный Максим
@@ -316,7 +314,7 @@ class MainWindow(IWindowListener):
                 self.main_frame.frame.winfo_width():
             self.main_frame.canvas.xview_scroll(-1, "units")
 
-    def right_key(self, event=None): # pylint: disable=W0613
+    def right_key(self, event=None):  # pylint: disable=W0613
         """
         Функция прокручивает таблицу при нажатии на стрелку
         Автор: Озирный Максим
@@ -326,7 +324,7 @@ class MainWindow(IWindowListener):
                 self.main_frame.frame.winfo_width():
             self.main_frame.canvas.xview_scroll(1, "units")
 
-    def top_key(self, event=None): # pylint: disable=W0613
+    def top_key(self, event=None):  # pylint: disable=W0613
         """
         Функция прокручивает соответствующий canvas при нажатии на стрелку
         в зависимости местаположения мыши
@@ -350,7 +348,7 @@ class MainWindow(IWindowListener):
                     self.table_frame.frame.winfo_height():
                 self.table_frame.canvas.yview_scroll(-1, "units")
 
-    def bottom_key(self, event=None): # pylint: disable=W0613
+    def bottom_key(self, event=None):  # pylint: disable=W0613
         """
         Функция прокручивает соответствующий canvas при нажатии на стрелку
         в зависимости местаположения мыши
@@ -374,7 +372,7 @@ class MainWindow(IWindowListener):
                     self.table_frame.frame.winfo_height():
                 self.table_frame.canvas.yview_scroll(1, "units")
 
-    def on_mousewheel(self, event=None): # pylint: disable=W0613
+    def on_mousewheel(self, event=None):  # pylint: disable=W0613
         """
         Функция прокручивает соответствующий canvas при прокрутке колесика
         в зависимости местаположения мыши
@@ -399,7 +397,7 @@ class MainWindow(IWindowListener):
                     self.table_frame.frame.winfo_height():
                 self.table_frame.canvas.yview_scroll(sgn, "units")
 
-    def new_xy_menu(self, event=None): # pylint: disable=W0613
+    def new_xy_menu(self, event=None):  # pylint: disable=W0613
         """
         Функция изменяет глобальную для класса переменную, записывая в нее
         название объекта на котором находится курсор
@@ -407,7 +405,7 @@ class MainWindow(IWindowListener):
         """
         self.widget = self.widget_pointer()
 
-    def widget_pointer(self, event=None): # pylint: disable=W0613
+    def widget_pointer(self, event=None):  # pylint: disable=W0613
         """
         Функция вычисляет на коком объекте находится курсор
 
@@ -419,7 +417,7 @@ class MainWindow(IWindowListener):
         widget = "{}".format(widget)
         return widget
 
-    def click_extend_menu(self, event=None): # pylint: disable=W0613
+    def click_extend_menu(self, event=None):  # pylint: disable=W0613
         """
         Функция показывает или скрывает поле 'последние изменения'
         Автор: Озирный Максим
@@ -437,7 +435,7 @@ class MainWindow(IWindowListener):
                 self.last_ch_frame.open()
             self.last_ch_bool = not self.last_ch_bool
 
-    def press_right_btn(self, event=None): # pylint: disable=W0613
+    def press_right_btn(self, event=None):  # pylint: disable=W0613
         """
         Функция изменяет глобальную для класса переменную, записывая в нее
         название объекта на котором находится курсор
@@ -445,7 +443,7 @@ class MainWindow(IWindowListener):
         """
         self.widget1 = self.widget_pointer()
 
-    def click_filter(self, event=None): # pylint: disable=W0613
+    def click_filter(self, event=None):  # pylint: disable=W0613
         """
         Функция показывает или скрывает поле фильтрации по строкам
         Автор: Озирный Максим
@@ -467,7 +465,7 @@ class MainWindow(IWindowListener):
                 self.filter_btn.config(bg=COLOR_BG_BTN_FILTR_TABLE)
             self.filter_bool = not self.filter_bool
 
-    def click_table(self, event=None): # pylint: disable=W0613
+    def click_table(self, event=None):  # pylint: disable=W0613
         """
         Функция показывает или скрывает поле фильтрации по столбцам
         Автор: Озирный Максим
@@ -521,10 +519,8 @@ class MainTableFrame(Canvas):
         super().__init__(master, {}, **kw)
         self.master = master
 
-        self.img_g = ImageTk.PhotoImage(Image.open(
-            "D:\\PycharmProjects\\ProductsViewer\\Work\\Scripts\\res\\drawable\\galka2.png"))
-        self.img_k = ImageTk.PhotoImage(Image.open(
-            "D:\\PycharmProjects\\ProductsViewer\\Work\\Scripts\\res\\drawable\\krest.png"))
+        self.img_g = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Scripts\res\drawable\galka2.png"))
+        self.img_k = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Scripts\res\drawable\krest.png"))
         # устанавливаем сылку на переданные объекты
         self.btn1 = btn1
         self.btn2 = btn2
@@ -555,9 +551,9 @@ class MainTableFrame(Canvas):
         self.cont.configure(yscrollcommand=scroll_y.set)
         self.canvas.configure(xscrollcommand=scroll_x.set)
         self.frame.bind("<Configure>", lambda event, canvas=self.canvas:
-                        self.on_frame_configure(self.canvas))
+        self.on_frame_configure(self.canvas))
         self.frame2.bind("<Configure>", lambda event, canvas=self.cont:
-                         self.on_frame_configure(self.cont))
+        self.on_frame_configure(self.cont))
         self.before_content()
 
         self.btn_on = Button(self.frame2, text="on")
@@ -585,7 +581,7 @@ class MainTableFrame(Canvas):
         self.x_cursor = 0
         self.width = self.list_max[self.characteristic[self.widget][3]]
         self.width_2 = self.width
-        if event.x > self.list_max[self.characteristic[self.widget][3]]*6 - 1:
+        if event.x > self.list_max[self.characteristic[self.widget][3]] * 6 - 1:
             self.x_cursor = event.x_root
             self.titles.config(cursor=CURSOR_CHANGE_HEIGHT)
 
@@ -608,11 +604,11 @@ class MainTableFrame(Canvas):
         if self.x_cursor:
             deltay = event.x_root - self.x_cursor
             self.width = self.width_2
-            self.width += deltay//6
+            self.width += deltay // 6
             self.list_max[self.characteristic[self.widget][3]] = self.width
             self.set_max_width(self.characteristic[self.widget][3])
 
-    def del_select(self, event=None): # pylint: disable=W0613
+    def del_select(self, event=None):  # pylint: disable=W0613
         """
         Функция удаляет выбранные строки
         Автор: Озирный Максим
@@ -623,14 +619,14 @@ class MainTableFrame(Canvas):
                 self.characteristic[key][-1] = False
                 key.grid_forget()
                 if self.characteristic[key][3] == 0 \
-                    and self.characteristic[key][2] != 0 \
-                    and self.characteristic[key][1] == "entry":
+                        and self.characteristic[key][2] != 0 \
+                        and self.characteristic[key][1] == "entry":
                     self.frame2.grid_rowconfigure(self.characteristic[key][2],
                                                   minsize=0)
 
         self.repaint()
 
-    def delete_row(self, event=None): # pylint: disable=W0613
+    def delete_row(self, event=None):  # pylint: disable=W0613
         """
         Функция удаляет выбранную строку
         Автор: Озирный Максим
@@ -645,7 +641,7 @@ class MainTableFrame(Canvas):
 
         self.repaint()
 
-    def repaint(self, num=-1, event=None): # pylint: disable=W0613
+    def repaint(self, num=-1, event=None):  # pylint: disable=W0613
         """
         Функция перекрашивает строки таблицы
         Автор: Озирный Максим
@@ -674,7 +670,7 @@ class MainTableFrame(Canvas):
                     else:
                         for key2 in self.characteristic.keys():
                             if self.characteristic[key2][2] == \
-                                    self.characteristic[key][2]and \
+                                    self.characteristic[key][2] and \
                                     num == -1 or \
                                     self.characteristic[key2][2] == num and \
                                     self.characteristic[key][2] == num:
@@ -685,18 +681,18 @@ class MainTableFrame(Canvas):
                                 else:
                                     key2.config(bg=COLOR_BG_EVENT_ROW)
 
-    def new_row(self, event=None): # pylint: disable=W0613
+    def new_row(self, event=None):  # pylint: disable=W0613
         """
         Функция создаёт елементы в которые вносятся данные новой строки
         Автор: Озирный Максим
         """
         for col in range(len(self.bd_array[0])):
-            new = Entry(self.titles, bd=0, width=self.list_max[col]+2)
+            new = Entry(self.titles, bd=0, width=self.list_max[col] + 2)
             self.list_new_col[col] = new
             new.bind("<Key>", self.change_new_row)
-            new.grid(row=1, column=1*col, sticky="w")
+            new.grid(row=1, column=1 * col, sticky="w")
 
-    def change_new_row(self, event=None): # pylint: disable=W0613
+    def change_new_row(self, event=None):  # pylint: disable=W0613
         """
         Функция делает кнопки видимыми для пользователя (позиционирует их)
         при изменении поля для ввода данных о новой строке
@@ -705,7 +701,7 @@ class MainTableFrame(Canvas):
         self.btn1.grid(row=0, column=2)
         self.btn2.grid(row=0, column=3)
 
-    def del_new_row(self, event=None): # pylint: disable=W0613
+    def del_new_row(self, event=None):  # pylint: disable=W0613
         """
         Функция удаляет елементы в которые вносятся данные новой строки
         Автор: Озирный Максим
@@ -713,7 +709,7 @@ class MainTableFrame(Canvas):
         for ind in range(len(self.bd_array[0])):
             self.list_new_col[ind].destroy()
 
-    def new_xy_menu(self, event=None): # pylint: disable=W0613
+    def new_xy_menu(self, event=None):  # pylint: disable=W0613
         """
         Функция изменяет глобальную для класса переменную, записывая в нее
         название объекта на котором находится курсор
@@ -721,7 +717,7 @@ class MainTableFrame(Canvas):
         """
         self.widget = self.widget_pointer()
 
-    def save_change(self, event=None): # pylint: disable=W0613
+    def save_change(self, event=None):  # pylint: disable=W0613
         """
         Функция сохраняет изменение текста в ячейке теблицы
         Автор: Озирный Максим
@@ -748,7 +744,7 @@ class MainTableFrame(Canvas):
                        self.characteristic[self.widget2][3])
         self.set_max_width()
 
-    def set_max_width(self, only=-1, event=None): # pylint: disable=W0613
+    def set_max_width(self, only=-1, event=None):  # pylint: disable=W0613
         """
         Функция устанавливает ширину каждой ячейки таблицы в зависимости
         от максимальной ширины в столбце
@@ -760,7 +756,7 @@ class MainTableFrame(Canvas):
                     self.characteristic[key][3] == only:
                 key.config(width=self.list_max[self.characteristic[key][3]] + 2)
 
-    def del_change(self, event=None): # pylint: disable=W0613
+    def del_change(self, event=None):  # pylint: disable=W0613
         """
         Функция удаляет последние изменения ячейки в таблице
         Автор: Озирный Максим
@@ -785,7 +781,7 @@ class MainTableFrame(Canvas):
             self.characteristic[self.widget2][0].config(justify="left",
                                                         state="disabled")
 
-    def before_change(self, event=None): # pylint: disable=W0613
+    def before_change(self, event=None):  # pylint: disable=W0613
         """
         Функция удаляет изменения последней ячейки в случае если
         не были сохранены ее изменения
@@ -795,7 +791,7 @@ class MainTableFrame(Canvas):
             self.del_change()
         self.change()
 
-    def change(self, event=None): # pylint: disable=W0613
+    def change(self, event=None):  # pylint: disable=W0613
         """
         Функция изменяет состояние ячейки чтоб ее можно было изменять
         Автор: Озирный Максим
@@ -847,7 +843,7 @@ class MainTableFrame(Canvas):
         self.btn_off.grid(row=0, column=2)
         self.widget2 = self.widget
 
-    def context_menu(self, event=None): # pylint: disable=W0613
+    def context_menu(self, event=None):  # pylint: disable=W0613
         """
         Функция вызывает соответсвующее контекстное меню в зависимости от
         параметров ячейки (закрашена она или нет)
@@ -859,7 +855,7 @@ class MainTableFrame(Canvas):
         else:
             self.menu.post(event.x_root, event.y_root)
 
-    def widget_pointer(self, event=None): # pylint: disable=W0613
+    def widget_pointer(self, event=None):  # pylint: disable=W0613
         """
         Функция вычисляет на коком объекте находится курсор
 
@@ -870,7 +866,7 @@ class MainTableFrame(Canvas):
         widget = self.master.winfo_containing(x_cursor, y_cursor)
         return widget
 
-    def click_title(self, event=None): # pylint: disable=W0613
+    def click_title(self, event=None):  # pylint: disable=W0613
         """
         Функия сортирует содержимое по столбцу
         Автор: Озирный Максим
@@ -909,7 +905,7 @@ class MainTableFrame(Canvas):
 
         self.init_content(array)
 
-    def click_cell(self, event=None): # pylint: disable=W0613
+    def click_cell(self, event=None):  # pylint: disable=W0613
         """
         Функция закрашивающая или наоборот строку
         Автор: Озирный Максим
@@ -942,7 +938,7 @@ class MainTableFrame(Canvas):
                     if self.characteristic[key][2] == \
                             self.characteristic[widget][2]:
                         self.characteristic[key][-2] = not \
-                        self.characteristic[key][-2]
+                            self.characteristic[key][-2]
                         if self.characteristic[key][1] == "frame":
                             key.config(bg=COLOR_BG_SELECT_ROW)
                         else:
@@ -951,7 +947,7 @@ class MainTableFrame(Canvas):
             else:
                 self.repaint(self.characteristic[widget][2])
 
-    def double_click_cell(self, event=None): # pylint: disable=W0613
+    def double_click_cell(self, event=None):  # pylint: disable=W0613
         """
         Функция отменяет закрашивание строки и вызывает функцию позволяющую
         изменять содержимое ячейки
@@ -961,7 +957,7 @@ class MainTableFrame(Canvas):
         self.before_change()
 
     @staticmethod
-    def on_frame_configure(main_lab2): # pylint: disable=W0613
+    def on_frame_configure(main_lab2):  # pylint: disable=W0613
         """
         Функция необходимая для прокрутки содержимого в canvas
         Автор: Озирный Максим
@@ -971,7 +967,7 @@ class MainTableFrame(Canvas):
         main_lab2.configure(scrollregion=main_lab2.bbox("all"))
 
     @staticmethod
-    def max_width(array, list, only=-1): # pylint: disable=W0613
+    def max_width(array, list, only=-1):  # pylint: disable=W0613
         """
         Функция высчитывает максимальную ширину столбцов в массиве
         Автор: Озирный Максим
@@ -1002,7 +998,7 @@ class MainTableFrame(Canvas):
                 list[col] = max
 
     @staticmethod
-    def add_arrow(list): # pylint: disable=W0613
+    def add_arrow(list):  # pylint: disable=W0613
         """
         Функция изменяющая текст в элементах списка
         Автор: Озирный Максим
@@ -1012,7 +1008,7 @@ class MainTableFrame(Canvas):
         for ind in range(len(list)):
             list[ind] += " ▲▼"
 
-    def before_content(self): # pylint: disable=W0613
+    def before_content(self):  # pylint: disable=W0613
         """
         Функция вносит изменения перед выводом контента на экран
         Автор: Озирный Максим
@@ -1024,7 +1020,7 @@ class MainTableFrame(Canvas):
         self.max_width(self.bd_array, self.list_max)
         self.content(self.bd_array)
 
-    def content(self, array): # pylint: disable=W0613
+    def content(self, array):  # pylint: disable=W0613
         """
         Функция заполняет таблицу данными
         Автор: Озирный Максим
@@ -1085,7 +1081,7 @@ class MainTableFrame(Canvas):
                 self.new_frame.grid(row=row, column=col, sticky="nwes",
                                     ipadx=5)
                 self.cell.grid(sticky="nwes")
-                self.cell.config(relief="flat", width=self.list_max[col]+2,
+                self.cell.config(relief="flat", width=self.list_max[col] + 2,
                                  state="disabled",
                                  bg="#fff",
                                  disabledbackground=COLOR_BG_ODD_ROW
@@ -1097,6 +1093,7 @@ class MainTableFrame(Canvas):
                     self.new_frame.config(bg=COLOR_BG_TITLE_TABLE)
                     self.cell.config(disabledbackground=COLOR_BG_TITLE_TABLE)
         self.frame2.grid_rowconfigure(0, minsize=0)
+
 
 class Btn(Button):
     """
@@ -1110,7 +1107,7 @@ class Btn(Button):
         super().__init__(master, {}, **kw)
         self.bind("<ButtonPress-1>", self.widget_pointer)
 
-    def widget_pointer(self, event=None): # pylint: disable=W0613
+    def widget_pointer(self, event=None):  # pylint: disable=W0613
         """
         Функция вычисляет на коком объекте находится курсор
         Автор: Озирный Максим
@@ -1150,7 +1147,6 @@ class OptionsMenu(Menu, MainMenuListener):
 
         self.master.config(menu=main_menu)
 
-
     @staticmethod
     def create_simple_report():
         """asd"""
@@ -1187,7 +1183,6 @@ class OptionsMenu(Menu, MainMenuListener):
         SettingsHistogram(Tk())
 
     @staticmethod
-
     def open_db():
         pass
 
@@ -1223,4 +1218,3 @@ class OptionsMenu(Menu, MainMenuListener):
     def edit_db():
         """asd"""
         DbEditorWindow(Tk(), "Расширенное редактирование БД")
-

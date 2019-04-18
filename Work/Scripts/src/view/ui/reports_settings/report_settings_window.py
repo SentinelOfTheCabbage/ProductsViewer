@@ -67,9 +67,9 @@ class SettingsWindow(OnEventInfoListener, ABC):
         self.main.grid_rowconfigure(3, weight=0)
         self.main.grid_rowconfigure(4, weight=0)
 
-        self.main.grid_columnconfigure(0, weight=2, minsize=2)
+        self.main.grid_columnconfigure(0, weight=1, minsize=300)
         self.main.grid_columnconfigure(1, weight=0)
-        self.main.grid_columnconfigure(2, weight=1)
+        self.main.grid_columnconfigure(2, weight=1, minsize=300)
 
         # Создание и упоковка текстовых полей
         self.title_left_label = Label(self.main,

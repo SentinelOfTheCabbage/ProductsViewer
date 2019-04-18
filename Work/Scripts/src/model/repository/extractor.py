@@ -1,12 +1,13 @@
 import os
 import pickle
 
+from Work.Scripts.conf import ROOT_DIR
 from Work.Scripts.src.model.repository.interf_extractor import IDataExtractor
 
 
 class DataExtractor(IDataExtractor):
     def __init__(self):
-        os.chdir(r'D:\PycharmProjects\ProductsViewer\Work\Data')
+        os.chdir(ROOT_DIR + r'\Data')
         with open('db.pickle', "rb") as open_data_base:
             data_base = pickle.load(open_data_base)
 

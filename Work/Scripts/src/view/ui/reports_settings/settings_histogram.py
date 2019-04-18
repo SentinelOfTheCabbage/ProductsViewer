@@ -26,19 +26,22 @@ class SettingsHistogram(SettingsWindow):
 
     def __init__(self, main):
         """Создаёт окно конфигурации графика"""
-        frame_1 = SingleChoiceFrame(main, self.controller
-                                    .get_products_groups())
+        groups = self.controller.get_products_groups()
+        self.frame_1: SingleChoiceFrame = SingleChoiceFrame(main, groups, self.rb_listener)
 
-        frame_2 = MultiChoiceFrame(main, self.controller
-                                   .get_products_by_group(None),
-                                   True, listener=self)
-        super().__init__(main, WINDOW_TITLE_GRAPH, frame_1, frame_2)
+        self.frame_2: MultiChoiceFrame = MultiChoiceFrame(main, self.controller
+                                                          .get_products_by_group(groups[0]),
+                                                          True, listener=self)
+        super().__init__(main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
         self.left_choice_is_done = True
         self.set_left_title(SUBTITLE_LEFT)
         self.set_right_title(SUBTITLE_RIGHT)
 
         # Запуск обработчика событий
         self.main.mainloop()
+
+    def rb_listener(self):
+        self.frame_2.fill_frame_by_list(self.frame_1.get_data(), True)
 
     def click_reports(self, event):
         """Создаёт графический отчёт по выбранным данным"""

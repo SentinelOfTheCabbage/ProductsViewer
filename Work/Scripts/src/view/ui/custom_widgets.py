@@ -90,39 +90,64 @@ class VerticalScrolledFrame(PVFrame):
         # create a canvas object and a vertical scrollbar for scrolling itz
         vscrollbar = Scrollbar(self, orient=VERTICAL, width=16)
         vscrollbar.pack(fill=Y, side=RIGHT, expand=FALSE)
-        canvas = Canvas(self, bd=0, highlightthickness=0,
-                        yscrollcommand=vscrollbar.set)
-        canvas['bg'] = parent['bg']
-        canvas.pack(side=LEFT, fill=BOTH, expand=TRUE)
-        vscrollbar.config(command=canvas.yview)
+        hscrollbar = Scrollbar(self, orient=HORIZONTAL, width=16)
+        hscrollbar.pack(fill=X, side=BOTTOM, expand=FALSE)
+
+        self.canvas = Canvas(self, bd=0, highlightthickness=0,
+                             xscrollcommand=hscrollbar.set)
+        self.frame = Frame(self.canvas)
+        self.canvas.create_window((0, 0), window=self.frame, anchor=NW)
+        content = Canvas(self.frame, bd=0, highlightthickness=0,
+                         yscrollcommand=vscrollbar.set)
+        content['bg'] = parent['bg']
+        content.pack()
+        self.canvas['bg'] = parent['bg']
+        self.canvas.pack(side=LEFT, fill=BOTH, expand=TRUE)
+        vscrollbar.config(command=content.yview)
+        hscrollbar.config(command=self.canvas.xview)
 
         # reset the view
-        canvas.xview_moveto(0)
-        canvas.yview_moveto(0)
+        content.xview_moveto(0)
+        content.yview_moveto(0)
+        self.canvas.xview_moveto(0)
+        self.canvas.yview_moveto(0)
 
         # create a frame inside the canvas which will be scrolled with it
-        self.interior = interior = PVFrame(canvas)
-        interior_id = canvas.create_window(0, 0, window=interior,
-                                           anchor=NW)
+        self.interior = interior = PVFrame(content)
+        interior_id = content.create_window(0, 0, window=interior,
+                                            anchor=NW)
 
         # track changes to the canvas and frame width and sync them,
         # also updating the scrollbar
         def _configure_interior(event):
             # update the scrollbars to match the size of the inner frame
             size = (interior.winfo_reqwidth(), interior.winfo_reqheight())
-            canvas.config(scrollregion="0 0 %s %s" % size)
-            if interior.winfo_reqwidth() != canvas.winfo_width():
+            content.config(scrollregion="0 0 %s %s" % size)
+            if interior.winfo_reqwidth() != content.winfo_width():
                 # update the canvas's width to fit the inner frame
-                canvas.config(width=interior.winfo_reqwidth())
+                content.config(width=interior.winfo_reqwidth())
+
+        # track changes to the canvas and frame width and sync them,
+        # also updating the scrollbar
+        def _configure_interior_2(event):
+            # update the scrollbars to match the size of the inner frame
+            size = (
+            self.frame.winfo_reqwidth(), self.frame.winfo_reqheight())
+            self.canvas.config(scrollregion="0 0 %s %s" % size)
+            if self.frame.winfo_reqwidth() != self.canvas.winfo_width():
+                # update the canvas's width to fit the inner frame
+                self.canvas.config(width=self.frame.winfo_reqwidth())
 
         interior.bind('<Configure>', _configure_interior)
+        self.frame.bind('<Configure>', _configure_interior_2)
 
-        def _configure_canvas(event):
-            if interior.winfo_reqwidth() != canvas.winfo_width():
-                # update the inner frame's width to fill the canvas
-                canvas.itemconfigure(interior_id, width=canvas.winfo_width())
-
-        canvas.bind('<Configure>', _configure_canvas)
+        # пусть пока пробудет закоменченным, вдруг это надо
+        # def _configure_canvas(event):
+        #     if interior.winfo_reqwidth() != content.winfo_width():
+        #         # update the inner frame's width to fill the canvas
+        #         content.itemconfigure(interior_id, width=content.winfo_width())
+        #
+        # content.bind('<Configure>', _configure_canvas)
 
 
 class HorizontalScrolledFrame(PVFrame):

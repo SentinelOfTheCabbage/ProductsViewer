@@ -10,8 +10,8 @@ from Work.Scripts.src.test.change_viewer import ChangeViewer
 from Work.Scripts.src.view.ui.main_window.config import COLOR_BG_FRAME_TABLE, \
     COLOR_FG_FRAME_TABLE, COLOR_BG_FRAME_FILTR, COLOR_FG_FRAME_FILTR, \
     COLOR_BG_TITLE_LAST_CH, COLOR_BG_LAST_CH, HEIGHT_INFO_FRAME, \
-    FONT_TITLE_FILTR, CURSOR_CHANGE_HEIGHT, MIN_SIZE_TABLE, WIDTH_FILR_FRAME, \
-    MIN_WIDTH_TABLE, MIN_WIDTH_FILR_FRAME
+    FONT_TITLE_FILTR, CURSOR_CHANGE_WIGHT, CURSOR_CHANGE_HEIGHT, \
+    MIN_SIZE_TABLE, WIDTH_FILR_FRAME, MIN_WIDTH_TABLE, MIN_WIDTH_FILR_FRAME
 
 import Work.Scripts.src.view.ui.main_window.config as conf
 
@@ -99,6 +99,8 @@ class RowFilterPanel(Frame):
         self.frame.bind("<ButtonPress-1>", self.start_move)
         self.frame.bind("<ButtonRelease-1>", self.stop_move)
         self.frame.bind("<B1-Motion>", self.on_motion)
+        self.frame.bind("<Motion>", self.change_cursor)
+        self.frame.bind("<Leave>", self.on_leave)
 
     @staticmethod
     def on_frame_configure(main_lab2):
@@ -107,6 +109,15 @@ class RowFilterPanel(Frame):
         Автор: Озирный Максим
         """
         main_lab2.configure(scrollregion=main_lab2.bbox("all"))
+
+    def change_cursor(self, event=None):
+        if event.x < 4:
+            self.frame.config(cursor=CURSOR_CHANGE_WIGHT)
+        else:
+            self.frame.config(cursor='arrow')
+
+    def on_leave(self, event=None):
+        self.frame.config(cursor='arrow')
 
     def close(self):
         """
@@ -134,7 +145,7 @@ class RowFilterPanel(Frame):
         # Проверка местоположения курсора для доступа к изменению ширины поля
         if event.x < 4:
             self.x = event.x_root
-            self.frame.config(cursor=CURSOR_CHANGE_HEIGHT)
+            self.frame.config(cursor=CURSOR_CHANGE_WIGHT)
 
     def stop_move(self, event=None):
         """
@@ -161,6 +172,7 @@ class RowFilterPanel(Frame):
                     and self.width + deltay > MIN_WIDTH_FILR_FRAME:
                 self.width += deltay
                 self.canvas.config(width=self.width)
+
 
 class ColumnFilterPanel(Frame):
     """
@@ -230,6 +242,8 @@ class ColumnFilterPanel(Frame):
         self.frame.bind("<ButtonPress-1>", self.start_move)
         self.frame.bind("<ButtonRelease-1>", self.stop_move)
         self.frame.bind("<B1-Motion>", self.on_motion)
+        self.frame.bind("<Motion>", self.change_cursor)
+        self.frame.bind("<Leave>", self.on_leave)
 
     @staticmethod
     def on_frame_configure(main_lab2):
@@ -238,6 +252,15 @@ class ColumnFilterPanel(Frame):
         Автор: Озирный Максим
         """
         main_lab2.configure(scrollregion=main_lab2.bbox("all"))
+
+    def change_cursor(self, event=None):
+        if event.x < 4:
+            self.frame.config(cursor=CURSOR_CHANGE_WIGHT)
+        else:
+            self.frame.config(cursor='arrow')
+
+    def on_leave(self, event=None):
+        self.frame.config(cursor='arrow')
 
     def close(self):
         """
@@ -265,7 +288,7 @@ class ColumnFilterPanel(Frame):
         # Проверка местоположения курсора для доступа к изменению высоты поля
         if event.x < 4:
             self.x = event.x_root
-            self.frame.config(cursor=CURSOR_CHANGE_HEIGHT)
+            self.frame.config(cursor=CURSOR_CHANGE_WIGHT)
 
     def stop_move(self, event=None):
         """
@@ -337,6 +360,8 @@ class ChangeHistoryPanel(Canvas):
         top_lab.bind("<ButtonPress-1>", self.start_move)
         top_lab.bind("<ButtonRelease-1>", self.stop_move)
         top_lab.bind("<B1-Motion>", self.on_motion)
+        top_lab.bind("<Motion>", self.change_cursor)
+        top_lab.bind("<Leave>", self.on_leave)
 
         # создается полоса прокрутки и поле которые связываются с canvas
         scroll = Scrollbar(self, orient="vertical", command=self.canvas.yview)
@@ -359,6 +384,15 @@ class ChangeHistoryPanel(Canvas):
                             fg="{}".format(self.list_last_ch[ind][0]),
                             text="{}".format(self.list_last_ch[ind][1]))
             message.grid()
+
+    def change_cursor(self, event=None):
+        if event.y < 4:
+            self.top_lab.config(cursor=CURSOR_CHANGE_HEIGHT)
+        else:
+            self.top_lab.config(cursor='arrow')
+
+    def on_leave(self, event=None):
+        self.top_lab.config(cursor='arrow')
 
     def start_move(self, event=None):
         """

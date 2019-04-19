@@ -13,7 +13,7 @@ from Work.Scripts.src.controller.adapters import ListMainTableAdapter
 from Work.Scripts.src.controller.db_event import Event
 from Work.Scripts.src.view.ui.db_editor.db_editor import DbEditorWindow
 from Work.Scripts.src.view.ui.main_window.config import WIN_W_START, \
-    WIN_H_START, MIN_SIZE_TABLE, CURSOR_CHANGE_HEIGHT, \
+    WIN_H_START, MIN_SIZE_TABLE, CURSOR_CHANGE_WIGHT, \
     COLOR_TEXT_TABLE, COLOR_BG_ODD_ROW, COLOR_BG_EVENT_ROW, \
     COLOR_BG_TITLE_TABLE, FILTER_TAB_TEXT, TABLES_TAB_TEXT, \
     LAST_CHANGES_CLOSED_TAB, LAST_CHANGES_OPENED_TAB, MENU_FILE_TEXT, \
@@ -88,6 +88,7 @@ class MainWindow(IWindowListener):
         self.img_g = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Scripts\res\drawable\galka2.png"))
         self.img_k = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Scripts\res\drawable\krest.png"))
         self.img_p = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Scripts\res\drawable\plus.png"))
+        self.img_k2 = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Scripts\res\drawable\cross.png"))
 
         # Создается верхнее меню
         footbar = OptionsMenu(master, self)
@@ -197,12 +198,12 @@ class MainWindow(IWindowListener):
         if self.btn_plus.widget1 == self.widget or \
                 self.btn_or_no.widget1 == self.widget:
             if self.plus_bool:
-                self.btn_plus.config(text="+")
+                self.btn_plus.config(image=self.img_p)
                 self.btn_save.grid_forget()
                 self.btn_or_no.grid_forget()
                 self.main_frame.del_new_row()
             else:
-                self.btn_plus.config(text="×")
+                self.btn_plus.config(image=self.img_k2)
                 self.main_frame.new_row()
             self.plus_bool = not self.plus_bool
 
@@ -254,6 +255,8 @@ class MainWindow(IWindowListener):
                                  disabledbackground=COLOR_BG_ODD_ROW
                                  )
             self.main_frame.repaint()
+            self.main_frame.cont.yview_moveto(1)
+            # self.main_frame.cont.yview_scroll(0, "units")
 
     def click_search(self, event=None):  # pylint: disable=W0613
         """
@@ -551,9 +554,9 @@ class MainTableFrame(Canvas):
         self.cont.configure(yscrollcommand=scroll_y.set)
         self.canvas.configure(xscrollcommand=scroll_x.set)
         self.frame.bind("<Configure>", lambda event, canvas=self.canvas:
-        self.on_frame_configure(self.canvas))
+                        self.on_frame_configure(self.canvas))
         self.frame2.bind("<Configure>", lambda event, canvas=self.cont:
-        self.on_frame_configure(self.cont))
+                         self.on_frame_configure(self.cont))
         self.before_content()
 
         self.btn_on = Button(self.frame2, text="on")
@@ -581,9 +584,9 @@ class MainTableFrame(Canvas):
         self.x_cursor = 0
         self.width = self.list_max[self.characteristic[self.widget][3]]
         self.width_2 = self.width
-        if event.x > self.list_max[self.characteristic[self.widget][3]] * 6 - 1:
+        if event.x > self.list_max[self.characteristic[self.widget][3]]*6 - 1:
             self.x_cursor = event.x_root
-            self.titles.config(cursor=CURSOR_CHANGE_HEIGHT)
+            self.titles.config(cursor=CURSOR_CHANGE_WIGHT)
 
     def stop_move(self, event=None):
         """
@@ -728,13 +731,14 @@ class MainTableFrame(Canvas):
             value = self.widget2.get()
             self.widget2.delete(0, "end")
             self.widget2.insert(0, value)
-            self.widget2.config(state="disabled")
+            self.widget2.config(state="disabled", cursor='arrow')
             self.widget2.bind("<Double-1>", self.double_click_cell)
         else:
             value = self.characteristic[self.widget2][0].get()
             self.characteristic[self.widget2][0].delete(0, "end")
             self.characteristic[self.widget2][0].insert(0, value)
-            self.characteristic[self.widget2][0].config(state="disabled")
+            self.characteristic[self.widget2][0].config(state="disabled",
+                                                        cursor='arrow')
             self.characteristic[self.widget2][0].bind("<Double-1>",
                                                       self.double_click_cell)
         self.bd_array[self.characteristic[self.widget2][2]][
@@ -773,13 +777,14 @@ class MainTableFrame(Canvas):
         if self.characteristic[self.widget2][1] == "entry":
             self.widget2.delete(0, "end")
             self.widget2.insert(0, self.start_value)
-            self.widget2.config(state="disabled")
+            self.widget2.config(state="disabled", cursor='arrow')
             self.widget2.bind("<Double-1>", self.double_click_cell)
         else:
             self.characteristic[self.widget2][0].delete(0, "end")
             self.characteristic[self.widget2][0].insert(0, self.start_value)
             self.characteristic[self.widget2][0].config(justify="left",
-                                                        state="disabled")
+                                                        state="disabled",
+                                                        cursor='arrow')
 
     def before_change(self, event=None):  # pylint: disable=W0613
         """
@@ -797,7 +802,7 @@ class MainTableFrame(Canvas):
         Автор: Озирный Максим
         """
         if self.characteristic[self.widget][1] == "entry":
-            self.widget.config(state="normal")
+            self.widget.config(state="normal", cursor='xterm')
             self.start_value = self.widget.get()
             self.btn_on = Button(self.characteristic[self.widget][0],
                                  bd=0, image=self.img_g,
@@ -812,7 +817,8 @@ class MainTableFrame(Canvas):
             self.widget.bind('<Escape>', self.del_change)
             self.widget.bind('<Double-1>', self.click_cell)
         else:
-            self.characteristic[self.widget][0].config(state="normal")
+            self.characteristic[self.widget][0].config(state="normal",
+                                                       cursor='xterm')
             self.start_value = self.characteristic[self.widget][0].get()
             self.btn_on = Button(self.widget,
                                  bd=0, image=self.img_g,
@@ -903,7 +909,7 @@ class MainTableFrame(Canvas):
             array.append(array_cell[ind])
         array.insert(0, array_titles)
 
-        self.init_content(array)
+        self.content(array)
 
     def click_cell(self, event=None):  # pylint: disable=W0613
         """
@@ -1008,6 +1014,19 @@ class MainTableFrame(Canvas):
         for ind in range(len(list)):
             list[ind] += " ▲▼"
 
+    # def on_entry(self, event=None):
+    #     self.new_xy_menu()
+    #
+    # def change_cursor(self, event=None):
+    #     if event.x > self.list_max[
+    #         self.characteristic[self.widget][3]] * 6 - 1:
+    #         self.titles.config(cursor=CURSOR_CHANGE_HEIGHT)
+    #     else:
+    #         self.titles.config(cursor='arrow')
+    #
+    # def on_leave(self, event=None):
+    #     self.titles.config(cursor='arrow')
+
     def before_content(self):  # pylint: disable=W0613
         """
         Функция вносит изменения перед выводом контента на экран
@@ -1047,7 +1066,8 @@ class MainTableFrame(Canvas):
                     self.new_frame = Frame(self.titles)
                     self.cell = Entry(self.new_frame,
                                       disabledforeground=COLOR_TEXT_TITLE,
-                                      fg=COLOR_TEXT_TITLE)
+                                      fg=COLOR_TEXT_TITLE,
+                                      cursor='arrow')
                     self.cell.bind("<Button-1>", self.click_title)
                     self.characteristic.update({
                         self.cell: [self.new_frame, "entry", row, col,
@@ -1059,11 +1079,15 @@ class MainTableFrame(Canvas):
                     self.new_frame.bind("<ButtonPress-1>", self.start_move)
                     self.new_frame.bind("<ButtonRelease-1>", self.stop_move)
                     self.new_frame.bind("<B1-Motion>", self.on_motion)
+                    # self.new_frame.bind("<Enter>", self.on_entry)
+                    # self.new_frame.bind("<Motion>", self.change_cursor)
+                    # self.new_frame.bind("<Leave>", self.on_leave)
                 else:
                     self.new_frame = Frame(self.frame2)
                     self.cell = Entry(self.new_frame,
                                       disabledforeground=COLOR_TEXT_TABLE,
-                                      fg=COLOR_TEXT_TABLE)
+                                      fg=COLOR_TEXT_TABLE,
+                                      cursor='arrow')
                     self.cell.bind("<Button-1>", self.click_cell)
                     self.cell.bind("<Double-1>", self.double_click_cell)
                     self.cell.bind("<Button-3>", self.context_menu)

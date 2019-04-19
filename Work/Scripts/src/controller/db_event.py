@@ -1,8 +1,9 @@
-from dataclasses import dataclass
-
-
-@dataclass
+# from dataclasses import dataclass
+#
+#
+# @dataclass
 class Event:
-    error: int = 0
-    text: str = ""
-    data: object = None
+    # error: int = 0
+    # text: str = ""
+    # data: object = None
+    a=6

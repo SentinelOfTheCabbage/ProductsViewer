@@ -37,6 +37,7 @@ MENU_FILE_TEXT = "Файл"
 MENU_CHANGE_TEXT = "Изменить"
 MENU_REPORT_TEXT = "Отчёты"
 DEFAULT_SEARCH_TEXT = "Найти"
-CURSOR_CHANGE_HEIGHT = "tcross"
+CURSOR_CHANGE_WIGHT = "sb_h_double_arrow"
+CURSOR_CHANGE_HEIGHT = "sb_v_double_arrow"
 
 MAIN_BACKGROUND = "#f8f9fa"

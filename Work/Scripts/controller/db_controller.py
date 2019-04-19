@@ -13,8 +13,9 @@ import pandas
 os.chdir('C:/Users/Tom/Documents/Python_projects/ProductsViewer/Work/Data')
 
 
-class db_controller():
-
+class DbController():
+    """SOme bad information
+    """
     def __init__(self):
         file_name = 'database.txt'
         with open(file_name) as file:
@@ -33,6 +34,7 @@ class db_controller():
                 exec('%s.append(%s)' % ('self.' + pattern_name, 'type(1)' if str(
                     type(data.iloc[1][j])) == "<class 'numpy.int64'>" else 'type("a")'))
             del data
+        self.current_file = []
 
     def check_input(self, new_walues: list, destination: str):
         """Lolkek
@@ -41,7 +43,6 @@ class db_controller():
         loyalty = True
         status = 'good'
         msg = ''
-        self.current_file = []
         exec('%s=%s' % ('self.current_file', pattern_name))
         if len(new_walues) == len(self.current_file):
             for i in range(len(self.current_file)):

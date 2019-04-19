@@ -8,13 +8,6 @@
 
     For more information, go to https://github.com/biermeester/Pylinter#readme
 """
-# Метод функция для получения средних цен по выбранным категориям
-# продуктов и выбранному качеству
-
-# Метод/функция на вход получает список групп продуктов и список категорий качества.
-#   Исходя из входных данныx необходимо получить список средних цен
-#   по каждой категории качества каждой группы вида
-#   [[группа1-качество1, группа1-качество2], [группа2-качество1, группа2-качество2]]
 import pickle
 
 import os
@@ -26,13 +19,16 @@ os.chdir('C:/Users/Tom/Documents/Python_projects/ProductsViewer/Work/Data')
 
 
 class ReportsInteractor:
-    """
-    docstring
+    """This class makes only requests to the database without any changes
+    Author : Sulejamov Nail'
     """
     file_name = 'database.txt'
 
-    def __init__(self):
-        with open('db.pickle', "rb") as open_data_base:
+    def __init__(self, pickle_db_filename: str = 'db.pickle'):
+        """Initialize self. Reading of db.pickle as main db
+
+        """
+        with open(pickle_db_filename, "rb") as open_data_base:
             data_base = pickle.load(open_data_base)
 
         self._db_products = data_base['_db_products']
@@ -42,14 +38,10 @@ class ReportsInteractor:
         self._db_groups = data_base['_db_groups']
 
     def get_main_table(self):
-        """
-        Author: Suleymanov Nail
-        Function returns list of lists that contain all needed information for main table
+        """Function returns list of lists that contain all needed information for main table
         as: product_id,product_name,product_price,product_producer,product_group,dicsount, quality
-        Return[0]==list of headers for table
+        Return[0]==list of headers for table with corrected names (like 'discount_id' -> 'Discount')
         """
-        # result = [] * 1
-        # result.append(list(self._db_products.columns))
         main_table = self._db_products.copy()
 
         def is_discount_works(discount_id: int):
@@ -70,7 +62,8 @@ class ReportsInteractor:
                 main_table.discount_id.loc[
                     main_table.discount_id == discount_list.iloc[i]] = 0
 
-        main_table.price *= round((1 - main_table.discount_id / 100.0), 2)
+        main_table.loc[
+            'price'] *= round((1 - main_table.discount_id / 100.0), 2)
         main_table = main_table.rename(columns={
             'id': 'Id',
             'name': 'Product name',
@@ -83,14 +76,8 @@ class ReportsInteractor:
         return main_table
 
     def get_prices_by_group_and_quality(self, groups: list, qualities: list):
-        """Author: Suleymanov Nail
-        output: result,qualities
-        result={
-            'group1': [q1_value,q2_value,q3_value...],
-            ...
-        }
-        qualities=['q1','q2',...]
-
+        """output: Dataframe that contain table with mean price
+        of every quality and group from input
         """
         products_table = self._db_products
         result = products_table[(products_table.group_name.isin(groups)) & (
@@ -99,14 +86,12 @@ class ReportsInteractor:
         return result
 
     def get_prices_by_group(self, product_group: str, products: list):
-        """Author: Suleymanov Nail
-        output: result
+        """output: result
         result=[
             {'product[i].name': price[i] },
             ...
         ]
         product[i] is in products and have product[i].group_name == product_group
-
         """
         result = {}
         table = self._db_products
@@ -115,10 +100,7 @@ class ReportsInteractor:
         return result
 
     def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):
-        """Author: Suleymanov Nail
-        output: result
-        I forgot for what it was created but it works !=)
-
+        """I forgot for what it was created but it works !=)
         """
         def get_quality_pos(quality: str, quality_list: str):
             for i, item in enumerate(quality_list):
@@ -137,18 +119,18 @@ class ReportsInteractor:
             if (database.iloc[i]['name'] in products) and (
                     database.iloc[i]['quality'] in qualities) and (
                         database.iloc[i]['group_name'] == product_group):
+                
                 current_quality_pos = get_quality_pos(
                     database.iloc[i]['quality'], qualities)
-                list_of_list[current_quality_pos].append(
-                    int(database.iloc[i]['price']))
+                
+                list_of_list[current_quality_pos] = int(database.iloc[i]['price'])
         for i, item in enumerate(list_of_list):
             result[qualities[i]] = item
 
         return result
 
     def get_spreading(self, product_group: str, date: str):
-        """Author: Suleymanov Nail
-        output: result
+        """Output: result
         Return information about amount of sold production of product_group and price
         in DD.MM.YYYY date
         Return =[
@@ -156,37 +138,39 @@ class ReportsInteractor:
              'amount': amount of this product},
             ...
         ]
-
         """
         vouchers = self._db_vouchers[self._db_vouchers.date == date]
         sales = self._db_sales[self._db_sales.check_id.isin(vouchers.id)]
 
-        result = sales.groupby(['products_id'])['amount'].sum()
+        intermediate_result = sales.groupby(['products_id'])['amount'].sum()
 
         # оставить только элементы подходящего типа продукции
-        for i in result.keys().tolist():
+        for i in intermediate_result.keys().tolist():
             if list(self._db_products[self._db_products.id == i].group_name)[0] != product_group:
-                result = result.drop(i)
+                intermediate_result = intermediate_result.drop(i)
             else:
-                # result[i] *= int(
+                # intermediate_result[i] *= int(
                 #     self._db_products[self._db_products.id == i].price)
-                result = result.rename({
+                intermediate_result = intermediate_result.rename({
                     i: list(self._db_products[self._db_products.id == i]['price'])[0]
                 })
+        price_list = intermediate_result.keys().tolist()
+        amount_list = intermediate_result.values.tolist()
+
+        result = []
+        for i, current_amount in enumerate(amount_list):
+            result.append({'price': price_list[i]})
+            result[i]['amount'] = current_amount
+
         return result
 
     def get_groups_list(self):
-        """Author: Suleymanov Nail
-        Returns list of products groups
-
+        """Returns list of product's groups
         """
         return list(self._db_groups['name'])
 
     def get_quality_list(self):
-        """Author: Suleymanov Nail
-        output: result
-        Returns list of sorted products qualities
-
+        """Returns list of sorted product's qualities
         """
         result = list(set(list(self._db_products['quality'])))
         result.sort()

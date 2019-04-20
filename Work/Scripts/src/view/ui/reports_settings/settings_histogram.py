@@ -46,13 +46,11 @@ class SettingsHistogram(SettingsWindow):
     def click_reports(self, event):
         """Создаёт графический отчёт по выбранным данным"""
         if self.left_choice_is_done and self.right_choice_is_done:
-            prices = list(self.controller
-                          .get_prices_by_group(self.frame_1.get_data(),
-                                               self.frame_2.get_data()))
+            product_prices = self.controller.get_prices_by_group(self.frame_1.get_data(), self.frame_2.get_data())
             self.main.destroy()
             Histogram(WINDOW_TITLE) \
-                .set_prices(prices) \
-                .set_products(self.frame_2.get_data()) \
+                .set_prices(list(product_prices['price'])) \
+                .set_products(list(product_prices['name'])) \
                 .set_color("red") \
                 .set_x_title(self.frame_1.get_data()) \
                 .set_y_title(PRICES_TEXT) \

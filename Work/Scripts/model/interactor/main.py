@@ -175,3 +175,10 @@ class ReportsInteractor:
         result = list(set(list(self._db_products['quality'])))
         result.sort()
         return result
+
+    def get_quality_categories(self):
+        """Return quality_list
+        """
+        result = list(self._db_products['quality'].unique())
+        return result
+   

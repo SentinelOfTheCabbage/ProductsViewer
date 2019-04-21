@@ -29,6 +29,7 @@ from Work.Scripts.src.view.ui.reports_settings.settings_box_and_whisker import \
     SettingsBoxAndWhisker
 from Work.Scripts.src.view.ui.reports_settings.settings_histogram import \
     SettingsHistogram
+from Work.Scripts.src.view.ui.reports_settings.settings_pivot import SettingsPivot
 from Work.Scripts.src.view.ui.reports_settings.settings_scatter_chart import \
     SettingsScatterChart
 
@@ -1184,7 +1185,7 @@ class OptionsMenu(Menu, MainMenuListener):
     @staticmethod
     def create_pivot_report():
         """asd"""
-        pass
+        SettingsPivot(Tk())
 
     @staticmethod
     def create_scatter_chart():

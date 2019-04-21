@@ -6,7 +6,7 @@ from tkinter import filedialog
 import pandas as pd
 
 
-class TkFileDialogExample(tkinter.Frame): # pylint: disable=too-many-ancestors
+class TkFileDialogExample(tkinter.Frame):  # pylint: disable=too-many-ancestors
     """
     Класс графической составляющей ввода
     """
@@ -132,7 +132,7 @@ class Exporttable(pd.DataFrame):
         :return: Сохраняет файл в формате csv .
         """
         name = TkFileDialogExample().asksaveasfilename()
-        table.to_csv(name+'.csv', sep=';', encoding='utf8', index=False)
+        table.to_csv(name + '.csv', sep=';', encoding='utf8', index=False)
 
     @staticmethod
     def csv_ind(table: pd.DataFrame):
@@ -142,7 +142,7 @@ class Exporttable(pd.DataFrame):
         :return: Сохраняет файл в формате csv с индексами.
         """
         name = TkFileDialogExample().asksaveasfilename()
-        table.to_csv(name+'.csv', sep=';', encoding='utf8', index=False)
+        table.to_csv(name + '.csv', sep=';', encoding='utf8', index=True)
 
     @staticmethod
     def txt(table: pd.DataFrame):
@@ -152,7 +152,7 @@ class Exporttable(pd.DataFrame):
         :return: Сохраняет файл в формате txt .
         """
         name = TkFileDialogExample().asksaveasfilename()
-        table.to_csv(name+'.txt', sep=';', encoding='utf8', index=False)
+        table.to_csv(name + '.txt', sep=';', encoding='utf8', index=False)
 
     @staticmethod
     def txt_ind(table: pd.DataFrame):
@@ -162,7 +162,7 @@ class Exporttable(pd.DataFrame):
         :return: Сохраняет файл в формате txt с индексами.
         """
         name = TkFileDialogExample().asksaveasfilename()
-        table.to_csv(name+'.txt', sep=';', encoding='utf8', index=False)
+        table.to_csv(name + '.txt', sep=';', encoding='utf8', index=False)
 
     @staticmethod
     def pickle(table: pd.DataFrame):
@@ -172,7 +172,7 @@ class Exporttable(pd.DataFrame):
         :return: Сохраняет файл в формате pickle.
         """
         name = TkFileDialogExample().asksaveasfilename()
-        table.to_pickle(name+'.pickle')
+        table.to_pickle(name + '.pickle')
 
     @staticmethod
     def xlsx(table: pd.DataFrame):
@@ -182,7 +182,7 @@ class Exporttable(pd.DataFrame):
         :return: Сохраняет файл в формате xlsx.
         """
         name = TkFileDialogExample().asksaveasfilename()
-        table.to_excel(name+'.xlsx', index=False)
+        table.to_excel(name + '.xlsx', index=False)
 
     @staticmethod
     def xlsx_ind(table: pd.DataFrame):
@@ -192,13 +192,14 @@ class Exporttable(pd.DataFrame):
         :return: Сохраняет файл в формате xlsx с индексами.
         """
         name = TkFileDialogExample().asksaveasfilename()
-        table.to_excel(name+'.xlsx', index=False)
+        table.to_excel(name + '.xlsx', index=False)
 
 
 class Reports:
     """
     Класс, содержащий методы создания отчетов
     """
+
     @staticmethod
     def sort_quality(table: pd.DataFrame):
         """
@@ -342,6 +343,7 @@ class Read:
     """
     Класс считывания таблиц пикл и преобразования в DataFrame
     """
+
     @staticmethod
     def read(path):
         """
@@ -350,7 +352,7 @@ class Read:
         :param path: путь к таблице
         :return: требуемая таблица в формате DataFrame
         """
-        table = pd.read_pickle(r""+path)
+        table = pd.read_pickle(r"" + path)
         dest = TkFileDialogExample().option_3()
         x_x = table[dest]
         return x_x

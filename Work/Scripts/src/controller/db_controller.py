@@ -188,7 +188,7 @@ class ReportsController:
         return self.reports_interactor.get_products_groups()
 
     def get_quality_categories(self):
-        return self.reports_interactor.get_quality_categories()
+        return self.reports_interactor.get_quality_list()
 
     def get_prices_by_group_and_quality(self, groups: list, quality: list):
         return self.reports_interactor.get_prices_by_group_and_quality(

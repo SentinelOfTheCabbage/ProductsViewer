@@ -30,18 +30,24 @@ class SettingsBoxAndWhisker(SettingsWindow):
     def __init__(self, main):
         """Создаёт окно конфигурации графика"""
         groups = self.controller.get_products_groups()
-        frame_1 = SingleChoiceFrame(main, groups)
+        self.frame_1: SingleChoiceFrame = SingleChoiceFrame(main, groups, self.rb_listener)
 
-        frame_2 = MultiChoiceFrame(main, self.controller
+        self.frame_2: MultiChoiceFrame = MultiChoiceFrame(main, self.controller
                                         .get_products_by_group(groups[0]),
                                         True, listener=self)
-        super().__init__(main, WINDOW_TITLE_GRAPH, frame_1, frame_2)
+        super().__init__(main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
         self.left_choice_is_done = True
         self.set_left_title(SUBTITLE_LEFT)
         self.set_right_title(SUBTITLE_RIGHT)
 
         # Запуск обработчика событий
         self.main.mainloop()
+
+    def rb_listener(self):
+        self.frame_2: MultiChoiceFrame = MultiChoiceFrame(self.main, self.controller
+                                                          .get_products_by_group(self.frame_1.get_data()),
+                                                          True, listener=self)
+        super().__init__(self.main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
 
     def click_reports(self, event):
         """Создаёт графический отчёт по выбранным данным"""
@@ -62,6 +68,16 @@ class SettingsBoxAndWhisker(SettingsWindow):
                 .set_x_title(QUALITY_TEXT) \
                 .set_y_title(PRICES_TEXT) \
                 .show()
+
+    def update_products(self):
+        self.frame_2: MultiChoiceFrame = MultiChoiceFrame(self.main, self.controller
+                                                          .get_products_by_group(self.frame_1.get_data()),
+                                                          True, listener=self)
+        super().__init__(self.main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
+
+    def click_default(self, event):
+        super().click_default(event)
+        self.update_products()
 
     def error(self, frame):
         """

@@ -1,13 +1,3 @@
-# -*- coding: utf-8 -*-
-
-""" PyLinter Sublime Text Plugin
-
-    This is a Pylint plugin for Sublime Text.
-
-    Copyright R. de Laat, Elit 2011-2013
-
-    For more information, go to https://github.com/biermeester/Pylinter#readme
-"""
 # Метод функция для получения средних цен по выбранным категориям
 # продуктов и выбранному качеству
 
@@ -70,7 +60,7 @@ class MainTableInteractor:
             if is_discount_works(discount_list.iloc[i]):
                 main_table.loc[main_table.discount_id == discount_list.iloc[
                     i], 'discount_id'] = \
-                self.extractor._db_discounts.amount.iloc[i]
+                    self.extractor._db_discounts.amount.iloc[i]
             else:
                 main_table.discount_id.loc[
                     main_table.discount_id == discount_list.iloc[i]] = 0
@@ -187,20 +177,43 @@ class ReportsInteractor:
         self.extractor = extractor
 
     def get_prices_by_group_and_quality(self, groups: list, qualities: list):
-        """Author: Suleymanov Nail
-        output: result,qualities
-        result={
-            'group1': [q1_value,q2_value,q3_value...],
-            ...
-        }
-        qualities=['q1','q2',...]
-
+        """output: Dataframe that contain table with mean price
+        of every quality and group from input
         """
         products_table = self.extractor._db_products
-        result = products_table[(products_table.group_name.isin(groups)) & (
-            products_table.quality.isin(qualities))].groupby(
-            ['group_name', 'quality'])['price'].mean()
+        result = []
+        # products_table[(products_table.group_name.isin(groups)) & (
+        #     products_table.quality.isin(qualities))].groupby(
+        #     ['group_name', 'quality'])['price'].mean()
+        for i in range(len(groups)):
+            result.append([0] * len(qualities))
+            for j in range(len(qualities)):
+                group_mean_prices = None
+                try:
+                    group_mean_prices = list(products_table[(products_table.group_name.isin([groups[i]])) & (
+                        products_table.quality.isin([qualities[j]]))].groupby(
+                            ['group_name', 'quality'])['price'].mean())
+                except IndexError:
+                    pass
+                if group_mean_prices:
+                    result[i][j] = group_mean_prices[0]
         return result
+
+    # def get_prices_by_group_and_quality(self, groups: list, qualities: list):
+    #     """Author: Suleymanov Nail
+    #     output: result,qualities
+    #     result={
+    #         'group1': [q1_value,q2_value,q3_value...],
+    #         ...
+    #     }
+    #     qualities=['q1','q2',...]
+    #
+    #     """
+    #     products_table = self.extractor._db_products
+    #     result = products_table[(products_table.group_name.isin(groups)) & (
+    #         products_table.quality.isin(qualities))].groupby(
+    #         ['group_name', 'quality'])['price'].mean()
+    #     return result
 
     def get_prices_by_group(self, product_group: str, products: list):
         """Author: Suleymanov Nail
@@ -230,7 +243,6 @@ class ReportsInteractor:
         """Author: Suleymanov Nail
         output: result
         I forgot for what it was created but it works !=)
-
         """
 
         def get_quality_pos(quality: str, quality_list: str):
@@ -241,7 +253,7 @@ class ReportsInteractor:
 
         database: pandas.DataFrame = self.extractor._db_products
         result = {}
-        list_of_list = [None] * len(qualities)
+        list_of_list = [[]] * len(qualities)
         for i, item in enumerate(list_of_list):
             item = []
 
@@ -260,8 +272,7 @@ class ReportsInteractor:
         return result
 
     def get_spreading(self, product_group: str, date: str):
-        """Author: Suleymanov Nail
-        output: result
+        """Output: result
         Return information about amount of sold production of product_group and price
         in DD.MM.YYYY date
         Return =[
@@ -269,44 +280,104 @@ class ReportsInteractor:
              'amount': amount of this product},
             ...
         ]
-
         """
-        vouchers = self.extractor._db_vouchers[
-            self.extractor._db_vouchers.date == date]
-        sales = self.extractor._db_sales[
-            self.extractor._db_sales.check_id.isin(vouchers.id)]
+        vouchers = self.extractor._db_vouchers[self.extractor._db_vouchers.date == date]
+        sales = self.extractor._db_sales[self.extractor._db_sales.check_id.isin(vouchers.id)]
 
-        result = sales.groupby(['products_id'])['amount'].sum()
+        intermediate_result = sales.groupby(['products_id'])['amount'].sum()
 
         # оставить только элементы подходящего типа продукции
-        for i in result.keys().tolist():
-            if list(self.extractor._db_products[
-                        self.extractor._db_products.id == i].group_name)[
-                0] != product_group:
-                result = result.drop(i)
+        for i in intermediate_result.keys().tolist():
+            if list(self.extractor._db_products[self.extractor._db_products.id == i].group_name)[0] != product_group:
+                intermediate_result = intermediate_result.drop(i)
             else:
-                # result[i] *= int(
+                # intermediate_result[i] *= int(
                 #     self._db_products[self._db_products.id == i].price)
-                result = result.rename({
-                    i: list(self.extractor._db_products[
-                                self.extractor._db_products.id == i]['price'])[
-                        0]
+                intermediate_result = intermediate_result.rename({
+                    i: list(self.extractor._db_products[self.extractor._db_products.id == i]['price'])[0]
                 })
+        price_list = intermediate_result.keys().tolist()
+        amount_list = intermediate_result.values.tolist()
+
+        result = []
+        for i, current_amount in enumerate(amount_list):
+            result.append({'price': price_list[i]})
+            result[i]['amount'] = current_amount
+
         return result
 
-    def get_groups_list(self):
-        """Author: Suleymanov Nail
-        Returns list of products groups
-
+    def get_spreading(self, product_group: str, date: str):
+        """Output: result
+        Return information about amount of sold production of product_group and price
+        in DD.MM.YYYY date
+        Return =[
+            {'price': price of 1 object,
+             'amount': amount of this product},
+            ...
+        ]
         """
-        return list(self.extractor._db_groups['name'])
+        vouchers = self.extractor._db_vouchers[self.extractor._db_vouchers.date == date]
+        sales = self.extractor._db_sales[self.extractor._db_sales.check_id.isin(vouchers.id)]
+
+        intermediate_result = sales.groupby(['products_id'])['amount'].sum()
+
+        # оставить только элементы подходящего типа продукции
+        for i in intermediate_result.keys().tolist():
+            if list(self.extractor._db_products[self.extractor._db_products.id == i].group_name)[0] != product_group:
+                intermediate_result = intermediate_result.drop(i)
+            else:
+                # intermediate_result[i] *= int(
+                #     self._db_products[self._db_products.id == i].price)
+                intermediate_result = intermediate_result.rename({
+                    i: list(self.extractor._db_products[self.extractor._db_products.id == i]['price'])[0]
+                })
+        price_list = intermediate_result.keys().tolist()
+        amount_list = intermediate_result.values.tolist()
+
+        result = []
+        for i, current_amount in enumerate(amount_list):
+            result.append({'price': price_list[i]})
+            result[i]['amount'] = current_amount
+
+        return result
+
+    def get_spreading(self, product_group: str, date: str):
+        """Output: result
+        Return information about amount of sold production of product_group and price
+        in DD.MM.YYYY date
+        Return =[
+            {'price': price of 1 object,
+             'amount': amount of this product},
+            ...
+        ]
+        """
+        vouchers = self.extractor._db_vouchers[self.extractor._db_vouchers.date == date]
+        sales = self.extractor._db_sales[self.extractor._db_sales.check_id.isin(vouchers.id)]
+
+        intermediate_result = sales.groupby(['products_id'])['amount'].sum()
+
+        # оставить только элементы подходящего типа продукции
+        for i in intermediate_result.keys().tolist():
+            if list(self.extractor._db_products[self.extractor._db_products.id == i].group_name)[0] != product_group:
+                intermediate_result = intermediate_result.drop(i)
+            else:
+                # intermediate_result[i] *= int(
+                #     self._db_products[self._db_products.id == i].price)
+                intermediate_result = intermediate_result.rename({
+                    i: list(self.extractor._db_products[self.extractor._db_products.id == i]['price'])[0]
+                })
+        price_list = intermediate_result.keys().tolist()
+        amount_list = intermediate_result.values.tolist()
+
+        result = []
+        for i, current_amount in enumerate(amount_list):
+            result.append({'price': price_list[i]})
+            result[i]['amount'] = current_amount
+
+        return result
 
     def get_quality_list(self):
-        """Author: Suleymanov Nail
-        output: result
-        Returns list of sorted products qualities
-
+        """Return quality_list
         """
-        result = list(set(list(self.extractor._db_products['quality'])))
-        result.sort()
+        result = list(self.extractor._db_products['quality'].unique())
         return result

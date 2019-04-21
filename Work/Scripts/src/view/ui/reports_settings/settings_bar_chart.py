@@ -29,11 +29,10 @@ class SettingsBarChart(SettingsWindow):
         """Создаёт окно конфигурации графика"""
 
         frame_1 = MultiChoiceFrame(main, self.controller
-                                        .get_products_groups(),
-                                        listener=self)
-        frame_2 = MultiChoiceFrame(main, self.controller
-                                        .get_quality_categories(),
-                                        True, listener=self)
+                                   .get_products_groups(),
+                                   listener=self)
+        frame_2 = MultiChoiceFrame(main, self.controller.get_quality_categories(),
+                                   True, listener=self)
 
         super().__init__(main, WINDOW_TITLE_GRAPH, frame_1, frame_2)
 
@@ -47,11 +46,8 @@ class SettingsBarChart(SettingsWindow):
         """Создаёт графический отчёт по выбранным данным"""
         if self.left_choice_is_done and self.right_choice_is_done:
             prices = list(self.controller
-                          .get_prices_by_group_and_quality(self.frame_1
-                                                           .get_data(),
-                                                           self.frame_2
-                                                           .get_data())
-                          .values())
+                          .get_prices_by_group_and_quality(self.frame_1.get_data(),
+                                                           self.frame_2.get_data()))
             self.main.destroy()
             ClusteredChart(BAR_CHART_WINDOW_TITLE) \
                 .set_groups(self.frame_1.get_data()) \

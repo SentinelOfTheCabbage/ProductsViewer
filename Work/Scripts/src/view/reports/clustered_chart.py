@@ -25,7 +25,7 @@ class ClusteredChart(chart_interfaces.IChart):
     """
 
     _colors = None
-    _qualities_by_group = []
+    _group_prices = []
     _quality_labels = []
     _groups = []
     _x_title = ""
@@ -63,14 +63,14 @@ class ClusteredChart(chart_interfaces.IChart):
         self._colors = colors
         return self
 
-    def set_prices(self, qualities_by_group: list):
+    def set_prices(self, group_prices: list):
         """Устанвливает список цен для кадой подгруппы качества каждой
         группы продуктов.
 
-        :param qualities_by_group: список цен для каждой подгруппы качества
+        :param group_prices: список цен для каждой подгруппы качества
         :return: возвращает себя же для реализации паттерна "Builder"
         """
-        self._qualities_by_group = qualities_by_group
+        self._group_prices = group_prices
         return self
 
     def set_groups(self, groups: list):
@@ -95,7 +95,7 @@ class ClusteredChart(chart_interfaces.IChart):
             self._colors = [self.random_color()
                             for _ in range(len(self._quality_labels))]
 
-        if len(self._groups) != len(self._qualities_by_group):
+        if len(self._groups) != len(self._group_prices):
             raise Exception(self._except_diff_group_and_vals)
         elif len(self._quality_labels) != len(self._colors):
             raise Exception(self._except_diff_legend_and_colors)
@@ -118,7 +118,7 @@ class ClusteredChart(chart_interfaces.IChart):
                     start_pos = i / len(self._quality_labels)
                     switch_pos = width / 2 * (i + len(self._quality_labels))
                     plt.bar(start_pos - switch_pos + j,
-                            self._qualities_by_group[j][i],
+                            self._group_prices[j][i],
                             width=width,
                             color=self._colors[i], alpha=0.8,
                             label=self._quality_labels[i] if j == 0 else None,

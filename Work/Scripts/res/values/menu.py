@@ -66,21 +66,6 @@ class MainMenuListener(ABC):
 
     @staticmethod
     @abstractmethod
-    def edit_db():
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def prev_step():
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def next_step():
-        pass
-
-    @staticmethod
-    @abstractmethod
     def about_app():
         pass
 
@@ -141,18 +126,6 @@ class MainMenuFactory(ABC):
             {
                 LABEL_KEY: "Сохранить как...",
                 COMMAND_KEY: self.listener.save_as
-            },
-            {
-                LABEL_KEY: "Назад",
-                COMMAND_KEY: self.listener.prev_step
-            },
-            {
-                LABEL_KEY: "Вперёд",
-                COMMAND_KEY: self.listener.next_step
-            },
-            {
-                LABEL_KEY: "Редактировать БД",
-                COMMAND_KEY: self.listener.edit_db
             },
             {
                 LABEL_KEY: "О программе",

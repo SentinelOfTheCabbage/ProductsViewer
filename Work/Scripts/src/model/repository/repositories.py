@@ -20,7 +20,7 @@ from Work.Scripts.src.model.repository.DB_constants import TableName
 from Work.Scripts.src.model.repository.interf_extractor import IDataExtractor
 
 
-class MainTableInteractor:
+class MainTableRepository:
     extractor: IDataExtractor
 
     def __init__(self, extractor: IDataExtractor):
@@ -78,16 +78,23 @@ class MainTableInteractor:
     df = pd.DataFrame()
     select_df = pd.DataFrame()
 
-    def __init__(self, extractor: IDataExtractor):
-        self.extractor = extractor
-        self.df = self.get_data()
-        self.selector = CommandSelect(TableName.PRODUCTS.value)
-
-    def get_data(self):
-        return self.extractor.get_data()
-
     def set_data(self, data: pd.DataFrame):
         self.df = data
+
+    def get_products_groups(self):
+        return self.extractor._db_groups["name"].unique()
+
+    def get_qualities(self):
+        """Return quality_list"""
+        return self.extractor._db_products['quality'].unique()
+
+    def get_producers(self):
+        """Return performers"""
+        return self.extractor._db_products['producer_name'].unique()
+
+    def get_products_names(self):
+        """Return product names"""
+        return self.extractor._db_products['name'].unique()
 
     def select(self, command_select: CommandSelect = None):
         if not (command_select is None):
@@ -197,22 +204,6 @@ class ReportsInteractor:
                     result[i][j] = group_mean_prices[0]
         return result
 
-    # def get_prices_by_group_and_quality(self, groups: list, qualities: list):
-    #     """Author: Suleymanov Nail
-    #     output: result,qualities
-    #     result={
-    #         'group1': [q1_value,q2_value,q3_value...],
-    #         ...
-    #     }
-    #     qualities=['q1','q2',...]
-    #
-    #     """
-    #     products_table = self.extractor._db_products
-    #     result = products_table[(products_table.group_name.isin(groups)) & (
-    #         products_table.quality.isin(qualities))].groupby(
-    #         ['group_name', 'quality'])['price'].mean()
-    #     return result
-
     def get_prices_by_group(self, product_group: str, products: list):
         """Author: Suleymanov Nail
         output: result
@@ -251,76 +242,6 @@ class ReportsInteractor:
             slice_of_db = temp_db.price.loc[
                 (temp_db.quality == item) & (temp_db.name.isin(products))]
             result.append(list(slice_of_db))
-
-        return result
-
-    def get_spreading(self, product_group: str, date: str):
-        """Output: result
-        Return information about amount of sold production of product_group and price
-        in DD.MM.YYYY date
-        Return =[
-            {'price': price of 1 object,
-             'amount': amount of this product},
-            ...
-        ]
-        """
-        vouchers = self.extractor._db_vouchers[self.extractor._db_vouchers.date == date]
-        sales = self.extractor._db_sales[self.extractor._db_sales.check_id.isin(vouchers.id)]
-
-        intermediate_result = sales.groupby(['products_id'])['amount'].sum()
-
-        # оставить только элементы подходящего типа продукции
-        for i in intermediate_result.keys().tolist():
-            if list(self.extractor._db_products[self.extractor._db_products.id == i].group_name)[0] != product_group:
-                intermediate_result = intermediate_result.drop(i)
-            else:
-                # intermediate_result[i] *= int(
-                #     self._db_products[self._db_products.id == i].price)
-                intermediate_result = intermediate_result.rename({
-                    i: list(self.extractor._db_products[self.extractor._db_products.id == i]['price'])[0]
-                })
-        price_list = intermediate_result.keys().tolist()
-        amount_list = intermediate_result.values.tolist()
-
-        result = []
-        for i, current_amount in enumerate(amount_list):
-            result.append({'price': price_list[i]})
-            result[i]['amount'] = current_amount
-
-        return result
-
-    def get_spreading(self, product_group: str, date: str):
-        """Output: result
-        Return information about amount of sold production of product_group and price
-        in DD.MM.YYYY date
-        Return =[
-            {'price': price of 1 object,
-             'amount': amount of this product},
-            ...
-        ]
-        """
-        vouchers = self.extractor._db_vouchers[self.extractor._db_vouchers.date == date]
-        sales = self.extractor._db_sales[self.extractor._db_sales.check_id.isin(vouchers.id)]
-
-        intermediate_result = sales.groupby(['products_id'])['amount'].sum()
-
-        # оставить только элементы подходящего типа продукции
-        for i in intermediate_result.keys().tolist():
-            if list(self.extractor._db_products[self.extractor._db_products.id == i].group_name)[0] != product_group:
-                intermediate_result = intermediate_result.drop(i)
-            else:
-                # intermediate_result[i] *= int(
-                #     self._db_products[self._db_products.id == i].price)
-                intermediate_result = intermediate_result.rename({
-                    i: list(self.extractor._db_products[self.extractor._db_products.id == i]['price'])[0]
-                })
-        price_list = intermediate_result.keys().tolist()
-        amount_list = intermediate_result.values.tolist()
-
-        result = []
-        for i, current_amount in enumerate(amount_list):
-            result.append({'price': price_list[i]})
-            result[i]['amount'] = current_amount
 
         return result
 

@@ -4,7 +4,7 @@ from Work.Scripts.src.model.repository.UI_table_constants import \
     ProductColumns, TableNameUI
 from Work.Scripts.src.model.repository.extractor import DataExtractor
 from Work.Scripts.src.model.repository.repositories import ReportsInteractor, \
-    MainTableInteractor
+    MainTableRepository
 from Work.Scripts.src.model.commands import CommandSelect, CommandInsert, \
     CommandUpdate, CommandDelete
 from Work.Scripts.src.model.pojo.db_event import Event
@@ -23,7 +23,7 @@ class EditDbError(Enum):
 class MainTableController:
 
     def __init__(self, save_curr_state=False):
-        self.main_interactor = MainTableInteractor(DataExtractor())
+        self.main_interactor = MainTableRepository(DataExtractor())
         self.selector = CommandSelect(TableNameUI.PRODUCTS.value)
         if save_curr_state:
             self._save_state()

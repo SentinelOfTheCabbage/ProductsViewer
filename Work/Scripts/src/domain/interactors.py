@@ -32,15 +32,8 @@ class ListMainTableInteractor(MainTableController):
         event.data = self.tolist(event.data)
         return event
 
-    def prev_state(self):
-        event = super().prev_state()
-        event.data = self.tolist(event.data)
-        return event
-
-    def next_state(self):
-        event = super().next_state()
-        event.data = self.tolist(event.data)
-        return event
+    def get_product_names(self):
+        super()
 
     def get_data(self):
         return self.tolist(super().get_data_frame())[:100]

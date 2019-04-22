@@ -96,6 +96,14 @@ class MainTableRepository:
         """Return product names"""
         return self.extractor._db_products['name'].unique()
 
+    def get_max_price(self):
+        """Return product names"""
+        return max(list(self.extractor._db_products['price']))
+
+    def get_max_discount(self):
+        """Return product names"""
+        return max(list(self.extractor._db_discounts['amount']))
+
     def select(self, command_select: CommandSelect = None):
         if not (command_select is None):
             self.selector = command_select

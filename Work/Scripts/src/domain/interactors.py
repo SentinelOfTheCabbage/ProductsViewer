@@ -22,6 +22,29 @@ class ListMainTableInteractor(MainTableController):
         event.data = self.tolist(event.data)
         return event
 
+    def get_products_groups(self):
+        return list(super().get_products_groups())
+
+    def get_qualities(self):
+        """Return quality_list"""
+        return list(super().get_qualities())
+
+    def get_producers(self):
+        """Return performers"""
+        return list(super().get_producers())
+
+    def get_products_names(self):
+        """Return product names"""
+        return list(super().get_products_names())
+
+    def get_max_price(self):
+        """Return product names"""
+        return super().get_max_price()
+
+    def get_max_discount(self):
+        """Return product names"""
+        return super().get_max_discount()
+
     def update(self, set_frames: list, expressions: list):
         event = super().update(set_frames, expressions)
         event.data = self.tolist(event.data)
@@ -31,9 +54,6 @@ class ListMainTableInteractor(MainTableController):
         event = super().delete(expressions)
         event.data = self.tolist(event.data)
         return event
-
-    def get_product_names(self):
-        super()
 
     def get_data(self):
         return self.tolist(super().get_data_frame())[:100]

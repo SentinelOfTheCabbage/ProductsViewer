@@ -34,7 +34,7 @@ from Work.Scripts.src.presentation.menu_subwindows.db_saver.views import db_save
 from Work.Scripts.src.presentation.menu_subwindows.db_opener.views import db_opener
 from Work.Scripts.src.model.repository.db_controller import MainTableController
 
-controller = ListMainTableInteractor(True)
+interactor = ListMainTableInteractor(True)
 
 
 class IWindowListener(ABC):
@@ -497,7 +497,7 @@ class MainTableFrame(Canvas):
     Автор: Озирный Максим
     """
     # Переменная хранящая список строк из базы данных
-    bd_array = controller.get_data()
+    bd_array = interactor.get_data()
     # словарь с информацией об объектах в таблице
     # entry или frame :
     # [frame или entry, this_type, строка, столбец, номер, select, grid]
@@ -1223,11 +1223,11 @@ class OptionsMenu(Menu, MainMenuListener):
 
     @staticmethod
     def prev_step():
-        print(controller.prev_state())
+        print(interactor.prev_state())
 
     @staticmethod
     def next_step():
-        print(controller.next_state())
+        print(interactor.next_state())
 
     @staticmethod
     def about_app():

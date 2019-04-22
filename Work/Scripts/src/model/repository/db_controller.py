@@ -23,16 +23,37 @@ class EditDbError(Enum):
 class MainTableController:
 
     def __init__(self, save_curr_state=False):
-        self.main_interactor = MainTableRepository(DataExtractor())
+        self.repository = MainTableRepository(DataExtractor())
         self.selector = CommandSelect(TableNameUI.PRODUCTS.value)
         if save_curr_state:
             self._save_state()
 
     def get_data_frame(self):
-        return self.main_interactor.get_main_table()
+        return self.repository.get_main_table()
 
     def get_columns_by_table(self, table):
         pass
+
+    def get_products_groups(self):
+        return self.repository.get_products_groups()
+
+    def get_qualities(self):
+        """Return quality_list"""
+        return self.repository.get_qualities()
+
+    def get_producers(self):
+        """Return performers"""
+        return self.repository.get_producers()
+
+    def get_products_names(self):
+        """Return product names"""
+        return self.repository.get_products_names()
+
+    def get_max_price(self):
+        return self.repository.get_max_price()
+
+    def get_max_discount(self):
+        return self.repository.get_max_discount()
 
     def select(self, column_choices: dict, expressions):
         columns = []
@@ -69,7 +90,7 @@ class MainTableController:
             self.selector = CommandSelect(TableNameUI.PRODUCTS.value)
             self.selector.set_columns(columns)
             self.selector.set_conditions(expressions)
-            data = self.main_interactor.select(self.selector)
+            data = self.repository.select(self.selector)
             self._save_state()
             return Event(0, get_text(), data)
 
@@ -89,7 +110,7 @@ class MainTableController:
         if is_full_row:
             inserter = CommandInsert()
             inserter.add_row(row)
-            row_list = self.main_interactor.insert(inserter)
+            row_list = self.repository.insert(inserter)
             titled_row = dict(zip(ProductColumns.get_empty_row().keys(),
                                   row_list))
             cutted_row = [val for col, val in titled_row.items()
@@ -122,7 +143,7 @@ class MainTableController:
         else:
             updater.update_values(values)
             updater.set_conditions(expressions)
-            data = self.main_interactor.update(updater)
+            data = self.repository.update(updater)
             self._save_state()
             return Event(0, get_text(), data)
 
@@ -142,12 +163,12 @@ class MainTableController:
         else:
             deleter = CommandDelete()
             deleter.set_conditions(expressions)
-            data = self.main_interactor.delete(deleter)
+            data = self.repository.delete(deleter)
             self._save_state()
             return Event(0, get_text(), data)
 
     def get_vals_by_col(self, column):
-        return self.main_interactor.get_vals_by_col(column)
+        return self.repository.get_vals_by_col(column)
 
     def _save_state(self):
         pass
@@ -161,8 +182,8 @@ class MainTableController:
             return Event(EditDbError.NO_SELECTOR.value, "")
         else:
             state, selector = tuple_state
-            self.main_interactor.set_data(state)
-            return Event(0, get_text(), self.main_interactor.select(selector))
+            self.repository.set_data(state)
+            return Event(0, get_text(), self.repository.select(selector))
 
 
 class ReportsController:

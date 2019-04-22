@@ -3,9 +3,10 @@
 Автор: Озирный Максим
 """
 from tkinter import Frame, Scrollbar, Label, Canvas, Button, \
-    Checkbutton, IntVar
+    Checkbutton, IntVar, StringVar
 from tkinter.ttk import Combobox, Scale
 
+from Work.Scripts.src.domain.interactors import ListMainTableInteractor
 from Work.Scripts.src.test.change_viewer import ChangeViewer
 from Work.Scripts.src.presentation.main_window.presenters.config import COLOR_BG_FRAME_TABLE, \
     COLOR_FG_FRAME_TABLE, COLOR_BG_FRAME_FILTR, COLOR_FG_FRAME_FILTR, \
@@ -15,6 +16,7 @@ from Work.Scripts.src.presentation.main_window.presenters.config import COLOR_BG
 
 import Work.Scripts.src.presentation.main_window.presenters.config as conf
 
+interactor = ListMainTableInteractor(True)
 
 class RowFilterPanel(Frame):
     """
@@ -25,12 +27,12 @@ class RowFilterPanel(Frame):
     x = 0
     width = WIDTH_FILR_FRAME
     width_2 = width
-    _list_filtr = [["Наименование", ["Кефир", "Молоко", "Хлеб"]],
-                   ["Цена", 1280],
-                   ["Производитель", ["деревня", "простоквашино"]],
-                   ["Группа", ["Выпечка", "Молочка", "Мясо", "Алкоголь"]],
-                   ["Скидка", 40],
-                   ["Качество", ["ГОСТ", "СТО", "ТУ"]]]
+    _list_filtr = {"Наименование": None,
+                   "Цена": 0,
+                   "Производитель": None,
+                   "Группа": None,
+                   "Скидка": 40,
+                   "Качество": None}
 
     def __init__(self, master, **kw):
         super().__init__(master, {}, **kw)
@@ -39,6 +41,13 @@ class RowFilterPanel(Frame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, minsize=16)
+
+        self._list_filtr["Наименование"] = interactor.get_products_names()
+        self._list_filtr["Цена"] = interactor.get_max_price()
+        self._list_filtr["Производитель"] = interactor.get_producers()
+        self._list_filtr["Группа"] = interactor.get_products_groups()
+        self._list_filtr["Скидка"] = interactor.get_max_discount()
+        self._list_filtr["Качество"] = interactor.get_qualities()
 
     def content(self):
         """
@@ -65,34 +74,40 @@ class RowFilterPanel(Frame):
         frame5 = Frame(self.frame, height=1, bg="#000")
         frame5.grid(row=1, column=0, sticky="we", padx=10, ipadx=10,
                     columnspan=2)
-        ind = 0
         # в цикле создаются и позиционируются подзаголовки и соответствующие
         # им объекты (Scale или Combobox) в зависимости от содержимого списка
-        for ind in range(len(self._list_filtr)):
+        pos = 0
+        for key in self._list_filtr.keys():
             title = Label(self.frame, bg=COLOR_BG_FRAME_FILTR, bd=0,
                           fg=COLOR_FG_FRAME_FILTR,
-                          text="{}:".format(self._list_filtr[ind][0]))
-            title.grid(row=2 + 2*ind, column=0, sticky="w", padx=10, pady=2)
-            if self._list_filtr[ind][0] == "Цена" or \
-                    self._list_filtr[ind][0] == "Скидка":
-                slider = IntVar()
-                scale = Scale(self.frame, orient="horizontal", length=95,
-                              from_=0,
-                              to=self._list_filtr[ind][1], variable=slider)
-                scale.grid(row=2 + 2*ind+1, column=0, sticky="w", padx=20,
+                          text="{}:".format(key))
+            title.grid(row=2 + 2*pos, column=0, sticky="w", padx=10, pady=2)
+            if key == "Цена" or key == "Скидка":
+                slider = IntVar(self.master)
+                scale = Scale(self.frame, orient="horizontal", length=95, from_=0,
+                              to=self._list_filtr[key], variable=slider)
+
+                scale.grid(row=2 + 2*pos + 1, column=0, sticky="w", padx=20,
                            pady=2)
-                label = Label(self.frame, textvariable=slider, width=2,
-                              anchor="w", justify="left")
-                label.grid(row=2 + 2*ind+1, column=1, sticky="w", pady=2)
+                label = Label(self.frame, textvariable=slider, width=6,
+                              anchor="w", justify="left", background="#fff")
+                label.grid(row=2 + 2*pos + 1, column=1, sticky="w", pady=2)
             else:
                 box = Combobox(self.frame, width=13,
-                               values=self._list_filtr[ind][1])
-                box.grid(row=2 + 2*ind+1, column=0, sticky="w", padx=20,
+                               values=self._list_filtr[key])
+                box.grid(row=2 + 2*pos + 1, column=0, sticky="w", padx=20,
                          pady=2)
+            pos += 1
 
         # Кнопка вызывающая функцию отвечающюю за фильтрацию строк
         btn = Button(self.frame, text="Сохранить")
-        btn.grid(row=3 + 2*ind+1, column=0, sticky="we", padx=10, pady=2,
+        btn.grid(row=3 + 2*pos + 1, column=0, sticky="we", padx=10, pady=2,
+                 columnspan=2)
+        pos += 1
+
+        # Кнопка вызывающая функцию отвечающюю за экспорт таблицы в файл
+        btn = Button(self.frame, text="Экспорт")
+        btn.grid(row=3 + 2 * pos + 1, column=0, sticky="we", padx=10, pady=2,
                  columnspan=2)
 
         # отслеживаем события для изменения ширины поля

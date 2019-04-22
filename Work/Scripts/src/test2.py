@@ -21,6 +21,11 @@ class TkFileDialogExample(tkinter.Frame):  # pylint: disable=too-many-ancestors
         options['initialfile'] = 'New'
         options['parent'] = root
 
+        self.file_opt1 = options1 = {}
+        options1['filetypes'] = [('pickle files', '.pickle')]
+        options1['initialfile'] = 'db.pickle'
+        options1['parent'] = root
+
     def asksaveasfilename(self):
         """
         Метод позволяет выбрать путь для сохранения файла в привычном окне
@@ -34,7 +39,7 @@ class TkFileDialogExample(tkinter.Frame):  # pylint: disable=too-many-ancestors
         Метод позволяет выбрать путь для открытия файла в привычном окне
         :return: возвращает путь к файлу
         """
-        filename = filedialog.askopenfilename(**self.file_opt)
+        filename = filedialog.askopenfilename(**self.file_opt1)
         return filename
 
     @staticmethod
@@ -69,7 +74,7 @@ class TkFileDialogExample(tkinter.Frame):  # pylint: disable=too-many-ancestors
         variable = tkinter.StringVar(master)
         variable.set("csv")  # default value
 
-        w_w = tkinter.OptionMenu(master, variable, "csv", "txt", "xlsx", "pickle")
+        w_w = tkinter.OptionMenu(master, variable, "csv", "xlsx", "pickle")
         w_w.grid(row=1, column=0, padx=5, pady=5)
 
         tkinter.mainloop()
@@ -145,26 +150,6 @@ class Exporttable(pd.DataFrame):
         table.to_csv(name + '.csv', sep=';', encoding='utf8', index=True)
 
     @staticmethod
-    def txt(table: pd.DataFrame):
-        """
-        Author: Andrey Fedorov
-        :param table: таблица DataFrame
-        :return: Сохраняет файл в формате txt .
-        """
-        name = TkFileDialogExample().asksaveasfilename()
-        table.to_csv(name + '.txt', sep=';', encoding='utf8', index=False)
-
-    @staticmethod
-    def txt_ind(table: pd.DataFrame):
-        """
-        Author: Andrey Fedorov
-        :param table: таблица DataFrame
-        :return: Сохраняет файл в формате txt с индексами.
-        """
-        name = TkFileDialogExample().asksaveasfilename()
-        table.to_csv(name + '.txt', sep=';', encoding='utf8', index=False)
-
-    @staticmethod
     def pickle(table: pd.DataFrame):
         """
         Author: Andrew Fedorov
@@ -192,7 +177,7 @@ class Exporttable(pd.DataFrame):
         :return: Сохраняет файл в формате xlsx с индексами.
         """
         name = TkFileDialogExample().asksaveasfilename()
-        table.to_excel(name + '.xlsx', index=False)
+        table.to_excel(name + '.xlsx', index=True)
 
 
 class Reports:
@@ -335,8 +320,6 @@ class Reports:
             Exporttable().pickle(rows1)
         elif extension == "xlsx":
             Exporttable().xlsx_ind(rows1)
-        elif extension == "txt":
-            Exporttable().txt_ind(rows1)
 
 
 class Read:
@@ -365,3 +348,8 @@ class Read:
         """
         pa_th = TkFileDialogExample().askopenfilename()
         return pa_th
+
+
+if __name__ == '__main__':
+    ROWS = Read.read(Read.get_path())
+    print(ROWS)

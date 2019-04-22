@@ -1,0 +1,1 @@
+D:/Git/ProductsViewer/Work/Data/db.pickle

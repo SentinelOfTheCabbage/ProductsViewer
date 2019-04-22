@@ -32,6 +32,8 @@ from Work.Scripts.src.view.ui.reports_settings.settings_histogram import \
 from Work.Scripts.src.view.ui.reports_settings.settings_pivot import SettingsPivot
 from Work.Scripts.src.view.ui.reports_settings.settings_scatter_chart import \
     SettingsScatterChart
+from Work.Scripts.src.view.ui.main_window import open_db, save
+from Work.Scripts.src.controller.db_controller import MainTableController
 
 controller = ListMainTableAdapter(True)
 
@@ -91,10 +93,6 @@ class MainWindow(IWindowListener):
         self.img_p = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Scripts\res\drawable\plus.png"))
         self.img_k2 = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Scripts\res\drawable\cross.png"))
 
-        # Создается верхнее меню
-        footbar = OptionsMenu(master, self)
-        footbar.create_menu()
-
         # Создается верхнее поле и устанавливается размерная сетка
         self.search_frame = Frame(master)
         self.search_frame.grid_columnconfigure(0, minsize=30)
@@ -126,6 +124,10 @@ class MainWindow(IWindowListener):
                                          self.btn_save,
                                          self.btn_or_no,
                                          bg="#f0f0f0")
+        # Создается верхнее меню
+        footbar = OptionsMenu(master, self, self.main_frame)
+        footbar.create_menu()
+
         # Создаются и заполняются правые поля (фильтр строк и столбцов)
         self.filtr_frame = RowFilterPanel(master)
         self.table_frame = ColumnFilterPanel(master)
@@ -182,7 +184,7 @@ class MainWindow(IWindowListener):
                                         "Сохранить последние изменения?")
         if ask is not None:
             if ask:
-                print("сохранить")
+                OptionsMenu.save()
             else:
                 print("не сохраняй")
             self.master.destroy()
@@ -1148,9 +1150,9 @@ class OptionsMenu(Menu, MainMenuListener):
     """
 
     def __init__(self, master,
-                 main_wind_listener: IWindowListener, **kw):
+                 main_wind_listener: IWindowListener, m_table, **kw):
         super().__init__(master, {}, **kw)
-
+        self.m_table = m_table
         self.main_wind_listener = main_wind_listener
 
     def exit(self):
@@ -1207,17 +1209,16 @@ class OptionsMenu(Menu, MainMenuListener):
         """asd"""
         SettingsHistogram(Tk())
 
-    @staticmethod
-    def open_db():
-        pass
+    def open_db(self):
+        open_db.Open().open(self.m_table)
 
     @staticmethod
     def save():
-        pass
+        save.Save().pickle(MainTableController().get_data_frame())
 
     @staticmethod
     def save_as():
-        pass
+        save.SaveAs().pickle(MainTableController().get_data_frame())
 
     def edit_db(self):
         DbEditorWindow(Tk(), self.listener,

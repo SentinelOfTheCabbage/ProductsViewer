@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from tkinter import Menu
 
-from Work.Scripts.src.view.ui.main_window.config import COLOR_FG_MENU, \
+from Work.Scripts.src.presentation.views.ui.main_window.config import COLOR_FG_MENU, \
     COLOR_BG_MENU
 
 LABEL_KEY = 'label'

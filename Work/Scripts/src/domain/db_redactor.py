@@ -14,7 +14,7 @@ import pandas
 os.chdir('C:/Users/Tom/Documents/Python_projects/ProductsViewer/Work/Data')
 
 
-class DbRedactor():
+class DbRedactor:
     """LOL!
     """
     def __init__(self):

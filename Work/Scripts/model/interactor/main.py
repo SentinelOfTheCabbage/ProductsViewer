@@ -19,13 +19,11 @@ os.chdir('C:/Users/Tom/Documents/Python_projects/ProductsViewer/Work/Data')
 
 
 class ReportsInteractor:
-    """This class makes only requests to the database without any changes
-    Author : Sulejamov Nail'
+    """Данный класс никак не изменяет исходной БД и лишь достаёт необходимые данные
     """
-    file_name = 'database.txt'
 
     def __init__(self, pickle_db_filename: str = 'db.pickle'):
-        """Initialize self. Reading of db.pickle as main db
+        """Считывание pickle файла и создание каждой таблицы
 
         """
         with open(pickle_db_filename, "rb") as open_data_base:
@@ -38,9 +36,12 @@ class ReportsInteractor:
         self._db_groups = data_base['_db_groups']
 
     def get_main_table(self):
-        """Function returns list of lists that contain all needed information for main table
-        as: product_id,product_name,product_price,product_producer,product_group,dicsount, quality
-        Return[0]==list of headers for table with corrected names (like 'discount_id' -> 'Discount')
+        """Эта функция возвращает DataFrame с основной таблицей, с конвертированными заголовками:
+            discount_id -> Dicsount (при чём теперь тут значения скидки, 
+                                        а не id, если эта скидка ещё активна)
+            group_name  -> Category
+            price       -> Price (цена пересчитана с  учётом скидки)
+        ... и т.д
         """
         main_table = self._db_products.copy()
 
@@ -53,17 +54,16 @@ class ReportsInteractor:
             return date_begin <= now <= date_end
 
         discount_list = self._db_discounts.id.copy()
-
         for i in range(len(discount_list)):
             if is_discount_works(discount_list.iloc[i]):
-                main_table.loc[main_table.discount_id == discount_list.iloc[
-                    i], 'discount_id'] = self._db_discounts.amount.iloc[i]
+                main_table.discount_id[main_table.discount_id ==
+                                       self._db_discounts.id.iloc[
+                                           i]] = self._db_discounts.amount.iloc[i]
             else:
                 main_table.discount_id.loc[
                     main_table.discount_id == discount_list.iloc[i]] = 0
 
-        main_table.loc[
-            'price'] *= round((1 - main_table.discount_id / 100.0), 2)
+        main_table.price *= round((1 - main_table.discount_id / 100.0), 2)
         main_table = main_table.rename(columns={
             'id': 'Id',
             'name': 'Product name',
@@ -76,8 +76,11 @@ class ReportsInteractor:
         return main_table
 
     def get_prices_by_group_and_quality(self, groups: list, qualities: list):
-        """output: Dataframe that contain table with mean price
-        of every quality and group from input
+        """На вход подаётся лист групп товаров (Овощи, Мясное, к примеру)
+        и лист качеств (ГОСТ, ТУ, например).
+        Функция возвращает DataFrame содержащий отсортированную таблицу вида:
+            Группа -> Качество -> СС
+        Где СС - средняя стоимость товаров данной группы и качества
         """
         products_table = self._db_products
         result = products_table[(products_table.group_name.isin(groups)) & (
@@ -86,12 +89,10 @@ class ReportsInteractor:
         return result
 
     def get_prices_by_group(self, product_group: str, products: list):
-        """output: result
-        result=[
-            {'product[i].name': price[i] },
-            ...
-        ]
-        product[i] is in products and have product[i].group_name == product_group
+        """Функция принимает на вход тип продукции и лист продуктов
+        Возвращает Dataframe с колонками:
+            name -> наименование продукта
+            price -> стоимость единицы данного товара 
         """
         result = {}
         table = self._db_products
@@ -100,57 +101,42 @@ class ReportsInteractor:
         return result
 
     def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):
-        """I forgot for what it was created but it works !=)
+        """Функция принимает на вход тип продукции, лист качеств и лист продуктов
+        Возвращает лист листов, где каждая ячейка содержит стоимости всех продуктов данного качества
+        Т.е к примеру, если qualities = ['ГОСТ','ТУ']
+        То  result[0] сожержит стоимости продуктов из листа productsкачества 'ГОСТ',
+            result[1] ->'ТУ'  
         """
-        def get_quality_pos(quality: str, quality_list: str):
-            for i, item in enumerate(quality_list):
-                if quality == item:
-                    return i
-            return None
-
-        database = self._db_products
-        result = {}
-        list_of_list = [None] * len(qualities)
-        for i, item in enumerate(list_of_list):
-            item = []
-
-        result = result.fromkeys(qualities, [])
-        for i in range(len(database)):
-            if (database.iloc[i]['name'] in products) and (
-                    database.iloc[i]['quality'] in qualities) and (
-                        database.iloc[i]['group_name'] == product_group):
-                
-                current_quality_pos = get_quality_pos(
-                    database.iloc[i]['quality'], qualities)
-                
-                list_of_list[current_quality_pos] = int(database.iloc[i]['price'])
-        for i, item in enumerate(list_of_list):
-            result[qualities[i]] = item
-
+        temp_db = self._db_products.copy()
+        temp_db = temp_db.loc[temp_db.group_name == product_group]
+        result = []
+        
+        for _, item in enumerate(qualities):
+            slice_of_db = temp_db.price.loc[
+                (temp_db.quality == item) & (temp_db.name.isin(products))]
+            result.append(list(slice_of_db))
+        
         return result
 
     def get_spreading(self, product_group: str, date: str):
-        """Output: result
-        Return information about amount of sold production of product_group and price
-        in DD.MM.YYYY date
+        """Функция принимает на вход наименование типа продукции и дату
+        Возвращает лист словарей вида:
         Return =[
-            {'price': price of 1 object,
-             'amount': amount of this product},
+            {'price': стоимость единицы товара данного типа проданного в этот день,
+             'amount': кол-во продаж этого товара},
             ...
         ]
+        Где содержатся все товары данного типа, проданные в этот день
         """
         vouchers = self._db_vouchers[self._db_vouchers.date == date]
         sales = self._db_sales[self._db_sales.check_id.isin(vouchers.id)]
 
         intermediate_result = sales.groupby(['products_id'])['amount'].sum()
 
-        # оставить только элементы подходящего типа продукции
         for i in intermediate_result.keys().tolist():
             if list(self._db_products[self._db_products.id == i].group_name)[0] != product_group:
                 intermediate_result = intermediate_result.drop(i)
             else:
-                # intermediate_result[i] *= int(
-                #     self._db_products[self._db_products.id == i].price)
                 intermediate_result = intermediate_result.rename({
                     i: list(self._db_products[self._db_products.id == i]['price'])[0]
                 })
@@ -165,20 +151,12 @@ class ReportsInteractor:
         return result
 
     def get_groups_list(self):
-        """Returns list of product's groups
+        """Возвращает лист, содержащий все возможные категории продукции
         """
         return list(self._db_groups['name'])
 
-    def get_quality_list(self):
-        """Returns list of sorted product's qualities
-        """
-        result = list(set(list(self._db_products['quality'])))
-        result.sort()
-        return result
-
     def get_quality_categories(self):
-        """Return quality_list
+        """Возвращает все возможные категории качества
         """
         result = list(self._db_products['quality'].unique())
         return result
-   

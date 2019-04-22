@@ -6,18 +6,16 @@
 #   по каждой категории качества каждой группы вида
 #   [[группа1-качество1, группа1-качество2], [группа2-качество1, группа2-качество2]]
 import copy
-import pickle
 
-import os
 import datetime
 import time
 
 import pandas
 import pandas as pd
 
-from Work.Scripts.src.controller.commands import CommandDelete, CommandUpdate, \
+from Work.Scripts.src.presentation.presenters.commands import CommandDelete, CommandUpdate, \
     CommandInsert, CommandSelect
-from Work.Scripts.src.controller.key_words import CompareOp
+from Work.Scripts.src.presentation.presenters.key_words import CompareOp
 from Work.Scripts.src.model.repository.DB_constants import TableName
 from Work.Scripts.src.model.repository.interf_extractor import IDataExtractor
 
@@ -62,7 +60,7 @@ class MainTableInteractor:
                     i], 'discount_id'] = \
                     self.extractor._db_discounts.amount.iloc[i]
             else:
-                main_table.discount_id.loc[
+                main_table.discount_id.copy().loc[
                     main_table.discount_id == discount_list.iloc[i]] = 0
 
         main_table.price *= round((1 - main_table.discount_id / 100.0), 2)
@@ -238,36 +236,21 @@ class ReportsInteractor:
         db_products = self.extractor._db_products
         return db_products[db_products["group_name"] == group]["name"]
 
-    def get_box_and_whisker_prices(self, product_group: str, qualities: list,
-                                   products: list):
-        """Author: Suleymanov Nail
-        output: result
-        I forgot for what it was created but it works !=)
+    def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):
+        """Функция принимает на вход тип продукции, лист качеств и лист продуктов
+        Возвращает лист листов, где каждая ячейка содержит стоимости всех продуктов данного качества
+        Т.е к примеру, если qualities = ['ГОСТ','ТУ']
+        То  result[0] сожержит стоимости продуктов из листа productsкачества 'ГОСТ',
+            result[1] ->'ТУ'
         """
+        temp_db = self.extractor._db_products.copy()
+        temp_db = temp_db.loc[temp_db.group_name == product_group]
+        result = []
 
-        def get_quality_pos(quality: str, quality_list: str):
-            for i, item in enumerate(quality_list):
-                if quality == item:
-                    return i
-            return None
-
-        database: pandas.DataFrame = self.extractor._db_products
-        result = {}
-        list_of_list = [[]] * len(qualities)
-        for i, item in enumerate(list_of_list):
-            item = []
-
-        result = result.fromkeys(qualities, [])
-        for i in range(len(database)):
-            if (database.iloc[i]['name'] in products) and (
-                    database.iloc[i]['quality'] in qualities) and (
-                    database.iloc[i]['group_name'] == product_group):
-                current_quality_pos = get_quality_pos(
-                    database.iloc[i]['quality'], qualities)
-                list_of_list[current_quality_pos].append(
-                    int(database.iloc[i]['price']))
-        for i, item in enumerate(list_of_list):
-            result[qualities[i]] = item
+        for _, item in enumerate(qualities):
+            slice_of_db = temp_db.price.loc[
+                (temp_db.quality == item) & (temp_db.name.isin(products))]
+            result.append(list(slice_of_db))
 
         return result
 

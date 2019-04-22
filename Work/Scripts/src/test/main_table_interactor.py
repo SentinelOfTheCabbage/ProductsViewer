@@ -1,4 +1,4 @@
-from Work.Scripts.src.controller.commands import CommandSelect, CommandInsert, \
+from Work.Scripts.src.presentation.presenters.commands import CommandSelect, CommandInsert, \
     CommandUpdate, CommandDelete
 
 

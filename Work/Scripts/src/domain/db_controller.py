@@ -14,7 +14,7 @@ import pandas
 os.chdir('C:/Users/Tom/Documents/Python_projects/ProductsViewer/Work/Data')
 
 
-class DbController():
+class DbController:
     """SOme bad information
     """
 

@@ -1,4 +1,4 @@
-from Work.Scripts.src.presentation.views.ui.main_window.main_window import MainWindow
+from Work.Scripts.src.presentation.main_window.views.main_window import MainWindow
 from tkinter import Tk
 from Work.Scripts import conf
 

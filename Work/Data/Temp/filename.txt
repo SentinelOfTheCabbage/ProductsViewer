@@ -1,1 +1,0 @@
-D:/Python projects/ProductsViewer/Work/Data/db.pickle

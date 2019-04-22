@@ -2,7 +2,7 @@
 В файле расположены классы отвечающие за визуальную часть
 главного окна и таблицы в нем
 """
-from tkinter import Frame, Canvas, Button, \
+from tkinter import Frame, Canvas, Button, Event, \
     Tk, Scrollbar, Menu, NSEW, NE, W, NW, NS, EW, Entry, messagebox
 from abc import ABC, abstractmethod
 from PIL import ImageTk, Image
@@ -90,10 +90,6 @@ class MainWindow(IWindowListener):
         self.img_p = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Scripts\res\drawable\plus.png"))
         self.img_k2 = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Scripts\res\drawable\cross.png"))
 
-        # Создается верхнее меню
-        footbar = OptionsMenu(master, self)
-        footbar.create_menu()
-
         # Создается верхнее поле и устанавливается размерная сетка
         self.search_frame = Frame(master)
         self.search_frame.grid_columnconfigure(0, minsize=30)
@@ -125,6 +121,11 @@ class MainWindow(IWindowListener):
                                          self.btn_save,
                                          self.btn_or_no,
                                          bg="#f0f0f0")
+
+        # Создается верхнее меню
+        footbar = OptionsMenu(master, self, self.main_frame)
+        footbar.create_menu()
+
         # Создаются и заполняются правые поля (фильтр строк и столбцов)
         self.filtr_frame = RowFilterPanel(master)
         self.table_frame = ColumnFilterPanel(master)
@@ -168,6 +169,21 @@ class MainWindow(IWindowListener):
         self.master.bind('<Down>', self.bottom_key)
         self.master.bind("<Configure>", self.new_height)
         self.master.bind("<Button-1>", self.del_focus)
+        self.master.bind("<Control-s>", footbar.save)
+        self.master.bind("<Control-Alt-s>", footbar.save_as)
+        self.master.bind("<Control-o>", footbar.open_db)
+        self.master.bind("<Control-z>", footbar.prev_step)
+        self.master.bind("<Control-Z>", footbar.next_step)
+        self.master.bind("<Control-r>", footbar.edit_db)
+        self.master.bind("<Control-a>", footbar.about_app)
+        self.master.bind("<+>", self.plus)
+        self.master.bind("<Control-q>", footbar.create_simple_report)
+        self.master.bind("<Control-w>", footbar.create_statistic_report)
+        self.master.bind("<Control-e>", footbar.create_pivot_report)
+        self.master.bind("<Control-t>", footbar.create_bar_chart)
+        self.master.bind("<Control-y>", footbar.create_histogram)
+        self.master.bind("<Control-u>", footbar.create_box_and_whisker)
+        self.master.bind("<Control-i>", footbar.create_scatter_chart)
 
         master.mainloop()
 
@@ -196,7 +212,8 @@ class MainWindow(IWindowListener):
         # Условие необходимо для того, чтоб действия в фукции выполнялись,
         # если на кнопку нажали и на ней же отпустили кнопку мыши
         if self.btn_plus.widget1 == self.widget or \
-                self.btn_or_no.widget1 == self.widget:
+                self.btn_or_no.widget1 == self.widget or \
+                event.keysym == "plus":
             if self.plus_bool:
                 self.btn_plus.config(image=self.img_p)
                 self.btn_save.grid_forget()
@@ -572,6 +589,7 @@ class MainTableFrame(Canvas):
                                     command=self.repaint)
         self.black_menu.add_command(label="Удалить строки",
                                     command=self.del_select)
+        self.bind("<Escape>", self.repaint)
 
     def start_move(self, event=None):
         """
@@ -644,7 +662,7 @@ class MainTableFrame(Canvas):
 
         self.repaint()
 
-    def repaint(self, num=-1, event=None):  # pylint: disable=W0613
+    def repaint(self, event=None, num=-1):  # pylint: disable=W0613
         """
         Функция перекрашивает строки таблицы
         Автор: Озирный Максим
@@ -937,7 +955,7 @@ class MainTableFrame(Canvas):
                                 key.config(
                                     disabledbackground=COLOR_BG_SELECT_ROW)
                 else:
-                    self.repaint(self.characteristic[widget][2])
+                    self.repaint(None, self.characteristic[widget][2])
         else:
             if not self.characteristic[widget][-2]:
                 for key in self.characteristic.keys():
@@ -951,7 +969,7 @@ class MainTableFrame(Canvas):
                             key.config(
                                 disabledbackground=COLOR_BG_SELECT_ROW)
             else:
-                self.repaint(self.characteristic[widget][2])
+                self.repaint(None, self.characteristic[widget][2])
 
     def double_click_cell(self, event=None):  # pylint: disable=W0613
         """
@@ -1147,9 +1165,9 @@ class OptionsMenu(Menu, MainMenuListener):
     """
 
     def __init__(self, master,
-                 main_wind_listener: IWindowListener, **kw):
+                 main_wind_listener: IWindowListener, m_table, **kw):
         super().__init__(master, {}, **kw)
-
+        self.m_table = m_table
         self.main_wind_listener = main_wind_listener
 
     def exit(self):
@@ -1172,73 +1190,89 @@ class OptionsMenu(Menu, MainMenuListener):
         self.master.config(menu=main_menu)
 
     @staticmethod
-    def create_simple_report():
+    def create_simple_report(event=None):
         """asd"""
+        print("simple report")
         pass
 
     @staticmethod
-    def create_statistic_report():
+    def create_statistic_report(event=None):
         """asd"""
+        print("static report")
         pass
 
     @staticmethod
-    def create_pivot_report():
+    def create_pivot_report(event=None):
         """asd"""
+        print("pivot report")
         pass
 
     @staticmethod
-    def create_scatter_chart():
+    def create_scatter_chart(event=None):
         """asd"""
+        print("scatter_chart")
         SettingsScatterChart(Tk())
 
     @staticmethod
-    def create_bar_chart():
+    def create_bar_chart(event=None):
         """asd"""
+        print("bar_chart")
         SettingsBarChart(Tk())
 
     @staticmethod
-    def create_box_and_whisker():
+    def create_box_and_whisker(event=None):
         """asd"""
+        print("box_and_whisker")
         SettingsBoxAndWhisker(Tk())
 
     @staticmethod
-    def create_histogram():
+    def create_histogram(event=None):
         """asd"""
+        print("histogram")
         SettingsHistogram(Tk())
 
     @staticmethod
-    def open_db():
+    def open_db(event=None):
+        print("open")
         pass
 
     @staticmethod
-    def save():
+    def save(event=None):
+        print("save")
         pass
 
     @staticmethod
-    def save_as():
+    def save_as(event=None):
+        print("save as")
         pass
 
-    def edit_db(self):
+    def edit_db(self, event=None):
+        print("edit db")
         DbEditorWindow(Tk(), self.listener,
                        "Расширенное редактирование БД")
 
     @staticmethod
-    def prev_step():
+    def prev_step(event=None):
+        print("prev step")
         print(controller.prev_state())
 
     @staticmethod
-    def next_step():
+    def next_step(event=None):
+        print("next step")
         print(controller.next_state())
 
     @staticmethod
-    def about_app():
+    def about_app(event=None):
+        print("about app")
         pass
 
     @staticmethod
-    def exit():
+    def exit(event=None):
+        print("exit")
         pass
 
     @staticmethod
-    def edit_db():
+    def edit_db(event=None):
         """asd"""
+        print("edit db")
         DbEditorWindow(Tk(), "Расширенное редактирование БД")

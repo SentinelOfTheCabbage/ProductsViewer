@@ -1152,7 +1152,7 @@ class OptionsMenu(Menu, MainMenuListener):
         self.m_table = m_table
         self.main_wind_listener = main_wind_listener
 
-    def exit(self):
+    def close_window(self):
         """asd"""
         self.main_wind_listener.close()
 
@@ -1222,22 +1222,15 @@ class OptionsMenu(Menu, MainMenuListener):
                        "Расширенное редактирование БД")
 
     @staticmethod
-    def prev_step():
-        print(interactor.prev_state())
-
-    @staticmethod
-    def next_step():
-        print(interactor.next_state())
-
-    @staticmethod
     def about_app():
         pass
 
     @staticmethod
-    def exit():
-        pass
+    def close_app():
+        exit(0)
 
     @staticmethod
     def edit_db():
         """asd"""
-        DbEditorWindow(Tk(), "Расширенное редактирование БД")
+        DbEditorWindow(Tk(), None, "Расширенное редактирование БД")
+

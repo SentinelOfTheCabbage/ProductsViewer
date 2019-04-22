@@ -18,7 +18,7 @@ class DbEditorWindow:
     commands = ['Вывести', 'Вставить', 'Заменить', 'Удалить']
     tables = ['Продукты', 'Чеки']
 
-    def __init__(self, master, listener: IEventListener, title):
+    def __init__(self, master, listener: IEventListener = None, title = ""):
         self.listener = listener
         self.master = master
         master['bg'] = MAIN_BACKGROUND

@@ -10,8 +10,9 @@ COMMAND_KEY = 'command'
 
 class MainMenuListener(ABC):
 
+    @staticmethod
     @abstractmethod
-    def exit(self):
+    def close_app():
         pass
 
     @staticmethod
@@ -65,13 +66,12 @@ class MainMenuListener(ABC):
         pass
 
     @staticmethod
-    @abstractmethod
-    def about_app():
+    def edit_db():
         pass
 
     @staticmethod
     @abstractmethod
-    def exit():
+    def about_app():
         pass
 
 
@@ -128,13 +128,17 @@ class MainMenuFactory(ABC):
                 COMMAND_KEY: self.listener.save_as
             },
             {
+                LABEL_KEY: "Редактировать БД",
+                COMMAND_KEY: self.listener.edit_db
+            },
+            {
                 LABEL_KEY: "О программе",
                 COMMAND_KEY: self.listener.about_app
             },
             None,
             {
                 LABEL_KEY: "Выйти",
-                COMMAND_KEY: self.listener.exit
+                COMMAND_KEY: self.listener.close_app
             },
         ]
 

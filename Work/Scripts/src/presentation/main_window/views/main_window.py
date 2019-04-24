@@ -1175,7 +1175,7 @@ class OptionsMenu(Menu, MainMenuListener):
         self.master.config(menu=main_menu)
 
     def db_1(self):
-        bd_array = controller.get_data()
+        bd_array = interactor.get_data()
         self.m_table.content(bd_array)
 
     def db_2(self):

@@ -1017,13 +1017,11 @@ class MainTableFrame(Canvas):
 
     # def on_entry(self, event=None):
     #     self.new_xy_menu()
+    #     self.qwe = self.list_max[self.characteristic[self.widget][3]] * 6 - 1
     #
     # def change_cursor(self, event=None):
-    #     if event.x > self.list_max[
-    #         self.characteristic[self.widget][3]] * 6 - 1:
-    #         self.titles.config(cursor=CURSOR_CHANGE_HEIGHT)
-    #     else:
-    #         self.titles.config(cursor='arrow')
+    #     if event.x > self.qwe:
+    #         self.titles.config(cursor=CURSOR_CHANGE_WIGHT)
     #
     # def on_leave(self, event=None):
     #     self.titles.config(cursor='arrow')
@@ -1165,12 +1163,24 @@ class OptionsMenu(Menu, MainMenuListener):
                                           menu_factory.get_file_items())
         menu_report = menu_factory.get_menu(MENU_REPORT_TEXT,
                                             menu_factory.get_report_items())
+        menu_db = Menu(tearoff=0)
+        menu_db.add_command(label="таблица 1", command=self.db_1)
+        menu_db.add_command(label="таблица 2", command=self.db_2)
 
         main_menu = Menu()
         main_menu.add_cascade(menu_file)
         main_menu.add_cascade(menu_report)
+        main_menu.add_cascade(menu=menu_db, label="Таблицы")
 
         self.master.config(menu=main_menu)
+
+    def db_1(self):
+        bd_array = controller.get_data()
+        self.m_table.content(bd_array)
+
+    def db_2(self):
+        bd_array = [["тут", "крч", "я"], ["получаю", "список", "списков"]]
+        self.m_table.content(bd_array)
 
     @staticmethod
     def create_simple_report():

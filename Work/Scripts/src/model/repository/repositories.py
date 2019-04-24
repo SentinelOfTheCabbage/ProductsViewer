@@ -22,6 +22,8 @@ from Work.Scripts.src.model.repository.interf_extractor import IDataExtractor
 
 class MainTableRepository:
     extractor: IDataExtractor
+    df = pd.DataFrame()
+    select_df = pd.DataFrame()
 
     def __init__(self, extractor: IDataExtractor):
         self.extractor = extractor
@@ -73,10 +75,9 @@ class MainTableRepository:
             'discount_id': 'Discount',
             'quality': 'Quality'
         })
+        self.df = main_table
+        self.select_df = main_table
         return main_table
-
-    df = pd.DataFrame()
-    select_df = pd.DataFrame()
 
     def set_data(self, data: pd.DataFrame):
         self.df = data
@@ -112,7 +113,7 @@ class MainTableRepository:
         self.select_df = self.df.drop(drop_list, axis=1)
         for col, op, val in self.selector.items():
             self.select_df = self.select_df[self._filter(
-                self.select_df, col, op, val)]
+                self.df, col, op, val)]
         return self.select_df
 
     @staticmethod

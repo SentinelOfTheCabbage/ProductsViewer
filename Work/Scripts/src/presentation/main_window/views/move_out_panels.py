@@ -18,6 +18,26 @@ import Work.Scripts.src.presentation.main_window.presenters.config as conf
 
 interactor = ListMainTableInteractor(True)
 
+
+class ScaleFilter(Frame):
+
+    def __init__(self, master, pos, value, **kw):
+        super().__init__(master, {}, **kw)
+        self.slider = IntVar(master)
+        scale = Scale(master, orient="horizontal", length=95,
+                      from_=0, to=value,
+                      variable=self.slider, command=self.float_to_int)
+
+        scale.grid(row=2 + 2 * pos + 1, column=0, sticky="w", padx=20,
+                   pady=2)
+        label = Label(master, textvariable=self.slider, width=6,
+                      anchor="w", justify="left", background="#fff")
+        label.grid(row=2 + 2 * pos + 1, column=1, sticky="w", pady=2)
+
+    def float_to_int(self, event=None):
+        self.slider.set(self.slider.get())
+
+
 class RowFilterPanel(Frame):
     """
     Класс отвечающий за создание и позиционирование
@@ -83,15 +103,7 @@ class RowFilterPanel(Frame):
                           text="{}:".format(key))
             title.grid(row=2 + 2*pos, column=0, sticky="w", padx=10, pady=2)
             if key == "Цена" or key == "Скидка":
-                slider = IntVar(self.master)
-                scale = Scale(self.frame, orient="horizontal", length=95, from_=0,
-                              to=self._list_filtr[key], variable=slider)
-
-                scale.grid(row=2 + 2*pos + 1, column=0, sticky="w", padx=20,
-                           pady=2)
-                label = Label(self.frame, textvariable=slider, width=6,
-                              anchor="w", justify="left", background="#fff")
-                label.grid(row=2 + 2*pos + 1, column=1, sticky="w", pady=2)
+                sc = ScaleFilter(self.frame, pos, self._list_filtr[key])
             else:
                 box = Combobox(self.frame, width=13,
                                values=self._list_filtr[key])

@@ -11,8 +11,8 @@ from Work.Scripts.conf import ROOT_DIR
 from Work.Scripts.res.values.menu import MainMenuFactory, MainMenuListener
 from Work.Scripts.src.domain.interactors import ListMainTableInteractor
 from Work.Scripts.src.presentation.db_editor.db_editor import DbEditorWindow
-from Work.Scripts.src.presentation.main_window.presenters.config import WIN_W_START, \
-    WIN_H_START, MIN_SIZE_TABLE, CURSOR_CHANGE_WIGHT, \
+from Work.Scripts.src.presentation.main_window.presenters.config import \
+    WIN_W_START, WIN_H_START, MIN_SIZE_TABLE, CURSOR_CHANGE_WIGHT, \
     COLOR_TEXT_TABLE, COLOR_BG_ODD_ROW, COLOR_BG_EVENT_ROW, \
     COLOR_BG_TITLE_TABLE, FILTER_TAB_TEXT, TABLES_TAB_TEXT, \
     LAST_CHANGES_CLOSED_TAB, LAST_CHANGES_OPENED_TAB, MENU_FILE_TEXT, \
@@ -934,6 +934,7 @@ class MainTableFrame(Canvas):
         Автор: Озирный Максим
         """
         widget = self.widget_pointer()
+        print(widget)
         # если нажали на entry
         if self.characteristic[widget][1] == "entry":
             # если ячейка была заблокирована

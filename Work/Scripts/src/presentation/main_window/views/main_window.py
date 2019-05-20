@@ -7,7 +7,7 @@ from tkinter import Frame, Canvas, Button, \
 from abc import ABC, abstractmethod
 from PIL import ImageTk, Image
 
-from Work.Scripts.conf import ROOT_DIR
+from Work.Scripts.src.conf import ROOT_DIR
 from Work.Scripts.res.values.menu import MainMenuFactory, MainMenuListener
 from Work.Scripts.src.domain.interactors import ListMainTableInteractor
 from Work.Scripts.src.presentation.db_editor.db_editor import DbEditorWindow
@@ -19,7 +19,6 @@ from Work.Scripts.src.presentation.main_window.presenters.config import WIN_W_ST
     MENU_REPORT_TEXT, DEFAULT_SEARCH_TEXT, HEIGHT_ROW, \
     COLOR_BG_SELECT_ROW, COLOR_TEXT_TITLE, COLOR_BG_BOTTOM_BTN, \
     COLOR_FG_BOTTOM_BTN, COLOR_BG_BTN_FILTR_TABLE
-from Work.Scripts.src.presentation.main_window.presenters.event_listener import IEventListener
 from Work.Scripts.src.presentation.main_window.views.move_out_panels import \
     ChangeHistoryPanel, ColumnFilterPanel, RowFilterPanel
 from Work.Scripts.src.presentation.reports_settings.settings_bar_chart import \

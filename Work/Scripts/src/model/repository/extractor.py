@@ -1,7 +1,7 @@
 import os
 import pickle
 
-from Work.Scripts.conf import ROOT_DIR
+from Work.Scripts.src.conf import ROOT_DIR
 from Work.Scripts.src.model.repository.interf_extractor import IDataExtractor
 
 

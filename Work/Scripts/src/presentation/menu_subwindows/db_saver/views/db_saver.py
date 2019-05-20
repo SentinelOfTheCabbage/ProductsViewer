@@ -1,7 +1,7 @@
 import tkinter
 from tkinter import Tk, filedialog, Frame
 import pandas as pd
-from Work.Scripts import conf
+from Work.Scripts.src import conf
 from Work.Scripts.src.model.repository.db_controller import MainTableController
 
 

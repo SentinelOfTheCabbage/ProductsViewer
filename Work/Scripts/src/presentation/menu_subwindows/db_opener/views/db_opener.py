@@ -1,7 +1,7 @@
 from tkinter import filedialog, Frame
 import pandas as pd
 from Work.Scripts.src.domain.interactors import ListMainTableInteractor
-from Work.Scripts import conf
+from Work.Scripts.src import conf
 
 
 class Open(Frame):
@@ -18,7 +18,7 @@ class Open(Frame):
         :return: возвращает путь к файлу
         """
         filename = filedialog.askopenfilename(**self.file_opt)
-        f = open(conf.ROOT_DIR+r'\Data\Temp\filename.txt', 'w')
+        f = open(conf.ROOT_DIR + r'\Data\Temp\filename.txt', 'w')
         f.write(filename)
         f.close()
         return filename

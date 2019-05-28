@@ -65,11 +65,12 @@ class RowFilterPanel(Frame):
 
     def __init__(self, master, **kw):
         super().__init__(master, {}, **kw)
-        self.canvas = Canvas(self, bg=COLOR_BG_FRAME_TABLE,
+        self.canvas = Canvas(self, bg=COLOR_BG_FRAME_TABLE, bd=0,
                              width=WIDTH_FILR_FRAME - 16)
         self.frame = Frame(self.canvas, bg=COLOR_BG_FRAME_TABLE)
         self.btn_1 = Button(self.frame, text="Сохранить", command=self.save)
         self.btn_2 = Button(self.frame, text="Экспорт", command=self.export)
+        self.configure(bd=0)
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, minsize=16)

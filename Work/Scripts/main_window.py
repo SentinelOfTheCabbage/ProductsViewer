@@ -962,6 +962,7 @@ class MainTableFrame(Canvas):
         Автор: Озирный Максим
         """
         widget = self.widget_pointer()
+        print(widget)
         # если нажали на entry
         if self.characteristic[widget][1] == "entry":
             # если ячейка была заблокирована

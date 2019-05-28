@@ -33,4 +33,3 @@ class ProductColumns(IColumnsName):
             ProductColumns.DISCOUNT_NAME.value: None,
             ProductColumns.QUALITY.value: None
         }
-

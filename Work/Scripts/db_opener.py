@@ -44,5 +44,5 @@ class Open(Frame):
     def open(self, m_table):
         main_table_df: pd.DataFrame = self.read(self.askopenfilename())
         if main_table_df is not None:
-            m_table.content(ListMainTableInteractor().tolist(main_table_df)[:100])
-
+            m_table.content(ListMainTableInteractor().tolist(main_table_df)
+                            [:100])

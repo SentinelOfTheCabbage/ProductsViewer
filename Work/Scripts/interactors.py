@@ -70,4 +70,3 @@ class ListReportsAdapter(ReportsController):
 
     def get_products_groups(self):
         return self.tolist(super().get_products_groups())
-

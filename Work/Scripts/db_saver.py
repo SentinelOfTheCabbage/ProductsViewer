@@ -9,7 +9,8 @@ class SaveAs(Frame):
     def __init__(self):
         Frame.__init__(self)
         self.file_opt = options = {}
-        options['filetypes'] = [('all files', '.*'), ('pickle files', '.pickle')]
+        options['filetypes'] = [('all files', '.*'),
+                                ('pickle files', '.pickle')]
         options['initialfile'] = 'New'
         options['parent'] = self
 
@@ -29,7 +30,8 @@ class SaveAs(Frame):
             master.destroy()
 
         master = Tk()
-        message_label = tkinter.Label(master, text="Выберите нужный формат сохранения")
+        message_label = tkinter.Label(master,
+                                      text="Выберите нужный формат сохранения")
         message_label.grid(row=0, column=0, sticky='w')
 
         variable = tkinter.StringVar()
@@ -148,6 +150,7 @@ class Save:
         """
         name = conf.ROOT_DIR + r"\Data\db.pickle"
         table.to_excel(name + '.xlsx', index=True)
+
 
 if __name__ == '__main__':
     f = open(conf.ROOT_DIR + r'\Data\Temp\filename.txt', 'r')

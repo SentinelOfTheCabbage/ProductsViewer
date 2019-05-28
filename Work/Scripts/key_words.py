@@ -27,4 +27,3 @@ class Expression:
 
     def get_expression(self):
         return self.field, self.compare_op, self.value
-

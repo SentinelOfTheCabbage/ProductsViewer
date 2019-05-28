@@ -14,16 +14,20 @@ from Work.Library.settings_pivot import SettingsPivot
 from Work.Library.settings_scatter_chart import SettingsScatterChart
 from Work.Scripts import db_saver, db_opener
 from Work.Scripts.conf import ROOT_DIR
-from Work.Scripts.config import MIN_SIZE_TABLE, WIN_H_START, WIN_W_START, DEFAULT_SEARCH_TEXT, COLOR_BG_BOTTOM_BTN, \
-    LAST_CHANGES_CLOSED_TAB, COLOR_FG_BOTTOM_BTN, COLOR_BG_ODD_ROW, FILTER_TAB_TEXT, TABLES_TAB_TEXT, COLOR_TEXT_TABLE, \
-    HEIGHT_ROW, LAST_CHANGES_OPENED_TAB, COLOR_BG_BTN_FILTR_TABLE, COLOR_BG_TITLE_TABLE, CURSOR_CHANGE_WIGHT, \
-    COLOR_BG_EVENT_ROW, COLOR_BG_SELECT_ROW, MENU_FILE_TEXT, MENU_REPORT_TEXT, COLOR_TEXT_TITLE
+from Work.Scripts.config import MIN_SIZE_TABLE, WIN_H_START, WIN_W_START, \
+    DEFAULT_SEARCH_TEXT, COLOR_BG_BOTTOM_BTN, LAST_CHANGES_CLOSED_TAB, \
+    COLOR_FG_BOTTOM_BTN, COLOR_BG_ODD_ROW, FILTER_TAB_TEXT, TABLES_TAB_TEXT, \
+    COLOR_TEXT_TABLE, HEIGHT_ROW, LAST_CHANGES_OPENED_TAB, \
+    COLOR_BG_BTN_FILTR_TABLE, COLOR_BG_TITLE_TABLE, CURSOR_CHANGE_WIGHT, \
+    COLOR_BG_EVENT_ROW, COLOR_BG_SELECT_ROW, MENU_FILE_TEXT, MENU_REPORT_TEXT, \
+    COLOR_TEXT_TITLE
 from Work.Scripts.db_editor import DbEditorWindow
 from Work.Scripts.interactors import ListMainTableInteractor
-from Work.Scripts.menu import MainMenuFactory, MainMenuListener
-from Work.Scripts.move_out_panels import ChangeHistoryPanel, ColumnFilterPanel, RowFilterPanel
+from Work.Scripts.menu import MainMenuFactory
+from Work.Scripts.move_out_panels import ChangeHistoryPanel, \
+    ColumnFilterPanel, RowFilterPanel
 
-interactor = ListMainTableInteractor(True)
+INTERACTOR = ListMainTableInteractor(True)
 
 
 class IWindowListener(ABC):
@@ -226,7 +230,7 @@ class MainWindow(IWindowListener):
             for ind in range(len(self.main_frame.bd_array[0])):
                 self.main_frame.bd_array[
                     len(self.main_frame.bd_array) - 1].append(
-                    "{}".format(self.main_frame.list_new_col[ind].get()))
+                        "{}".format(self.main_frame.list_new_col[ind].get()))
             row = len(self.main_frame.bd_array) - 1
             self.main_frame.frame2.grid_rowconfigure(row, minsize=HEIGHT_ROW)
             for col in range((len(self.main_frame.bd_array[0]))):
@@ -519,7 +523,7 @@ class MainTableFrame(Canvas):
     Автор: Озирный Максим
     """
     # Переменная хранящая список строк из базы данных
-    bd_array = interactor.get_data()
+    bd_array = INTERACTOR.get_data()
     # словарь с информацией об объектах в таблице
     # entry или frame :
     # [frame или entry, this_type, строка, столбец, номер, select, grid]
@@ -1225,7 +1229,7 @@ class OptionsMenu(Menu, MainMenuListener):
         return None
 
     def db_1(self, event=None):
-        bd_array = interactor.get_data()
+        bd_array = INTERACTOR.get_data()
         self.m_table.content(bd_array)
         return None
 

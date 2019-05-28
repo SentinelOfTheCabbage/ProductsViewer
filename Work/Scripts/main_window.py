@@ -4,7 +4,7 @@
 """
 from tkinter import Frame, Canvas, Button, \
     Tk, Scrollbar, Menu, NSEW, NE, W, NW, NS, EW, Entry, messagebox
-from abc import ABC, abstractmethod
+from abc import ABC
 from PIL import ImageTk, Image
 
 from Work.Library.settings_bar_chart import SettingsBarChart
@@ -19,24 +19,25 @@ from Work.Scripts.config import MIN_SIZE_TABLE, WIN_H_START, WIN_W_START, \
     COLOR_FG_BOTTOM_BTN, COLOR_BG_ODD_ROW, FILTER_TAB_TEXT, TABLES_TAB_TEXT, \
     COLOR_TEXT_TABLE, HEIGHT_ROW, LAST_CHANGES_OPENED_TAB, \
     COLOR_BG_BTN_FILTR_TABLE, COLOR_BG_TITLE_TABLE, CURSOR_CHANGE_WIGHT, \
-    COLOR_BG_EVENT_ROW, COLOR_BG_SELECT_ROW, MENU_FILE_TEXT, MENU_REPORT_TEXT, \
-    COLOR_TEXT_TITLE
+    COLOR_BG_EVENT_ROW, COLOR_BG_SELECT_ROW, MENU_FILE_TEXT, \
+    MENU_REPORT_TEXT, COLOR_TEXT_TITLE
 from Work.Scripts.db_editor import DbEditorWindow
+from Work.Scripts.db_controller import MainTableController
 from Work.Scripts.interactors import ListMainTableInteractor
 from Work.Scripts.menu import MainMenuFactory
 from Work.Scripts.move_out_panels import ChangeHistoryPanel, \
     ColumnFilterPanel, RowFilterPanel
+
 
 INTERACTOR = ListMainTableInteractor(True)
 
 
 class IWindowListener(ABC):
     """asd"""
-
-    @abstractmethod
-    def close(self):
-        """asd"""
-        pass
+    @staticmethod
+    def asdfgh():
+        """asdfgh"""
+        print(123)
 
 
 class MainWindow(IWindowListener):
@@ -155,6 +156,10 @@ class MainWindow(IWindowListener):
         self.right_menu.grid(row=1, column=3, sticky=NSEW)
         self.bottom_btn.grid(row=3, column=0, columnspan=4, sticky=NSEW)
 
+        # доп объекты которые будут использоваться в других функциях
+        self.new_frame = Frame()
+        self.cell = Entry()
+
         # Устанавливается вызов функций при соответствующем событии
         # и горячие клавиши
         self.master.bind_all("<MouseWheel>", self.on_mousewheel)
@@ -192,7 +197,6 @@ class MainWindow(IWindowListener):
             if ask:
                 OptionsMenu.save()
             self.master.destroy()
-        return None
 
     def plus(self, event=None):  # pylint: disable=W0613
         """
@@ -215,7 +219,6 @@ class MainWindow(IWindowListener):
                 self.btn_plus.config(image=self.img_k2)
                 self.main_frame.new_row()
             self.plus_bool = not self.plus_bool
-        return None
 
     def save_new_row(self, event=None):  # pylint: disable=W0613
         """
@@ -267,7 +270,6 @@ class MainWindow(IWindowListener):
             self.main_frame.repaint()
             self.main_frame.cont.yview_moveto(1)
             # self.main_frame.cont.yview_scroll(0, "units")
-        return None
 
     def click_search(self, event=None):  # pylint: disable=W0613
         """
@@ -278,7 +280,6 @@ class MainWindow(IWindowListener):
         if self.search.get() == DEFAULT_SEARCH_TEXT:
             self.search.delete(0, "end")
             self.search.config(fg="#000")
-        return None
 
     def del_focus(self, event=None):  # pylint: disable=W0613
         """
@@ -286,12 +287,11 @@ class MainWindow(IWindowListener):
         заполняет его дефолтной надписью конкретного цвета
         Автор: Озирный Максим
         """
-        if ".!frame.!entry" != "{}".format(self.widget_pointer()):
+        if ".!frame.!entry" not in ["{}".format(self.widget_pointer())]:
             if self.search.get() == "":
                 self.search.config(fg="#d0d0d0")
                 self.search.insert(0, DEFAULT_SEARCH_TEXT)
                 self.master.focus_set()
-        return None
 
     def get_tab_btn(self, text, height):
         """
@@ -313,13 +313,12 @@ class MainWindow(IWindowListener):
         if self.last_ch_bool:
             self.main_frame.cont.config(
                 height=self.master.winfo_height() - 99 -
-                       self.main_frame.titles.winfo_height() -
-                       self.last_ch_frame.canvas.winfo_height())
+                self.main_frame.titles.winfo_height() -
+                self.last_ch_frame.canvas.winfo_height())
         else:
             self.main_frame.cont.config(
                 height=self.master.winfo_height() - 75 -
-                       self.main_frame.titles.winfo_height())
-        return None
+                self.main_frame.titles.winfo_height())
 
     def left_key(self, event=None):  # pylint: disable=W0613
         """
@@ -330,7 +329,6 @@ class MainWindow(IWindowListener):
         if self.main_frame.canvas.winfo_width() < \
                 self.main_frame.frame.winfo_width():
             self.main_frame.canvas.xview_scroll(-1, "units")
-        return None
 
     def right_key(self, event=None):  # pylint: disable=W0613
         """
@@ -341,7 +339,6 @@ class MainWindow(IWindowListener):
         if self.main_frame.canvas.winfo_width() < \
                 self.main_frame.frame.winfo_width():
             self.main_frame.canvas.xview_scroll(1, "units")
-        return None
 
     def top_key(self, event=None):  # pylint: disable=W0613
         """
@@ -366,7 +363,6 @@ class MainWindow(IWindowListener):
             if self.table_frame.canvas.winfo_height() < \
                     self.table_frame.frame.winfo_height():
                 self.table_frame.canvas.yview_scroll(-1, "units")
-        return None
 
     def bottom_key(self, event=None):  # pylint: disable=W0613
         """
@@ -391,7 +387,6 @@ class MainWindow(IWindowListener):
             if self.table_frame.canvas.winfo_height() < \
                     self.table_frame.frame.winfo_height():
                 self.table_frame.canvas.yview_scroll(1, "units")
-        return None
 
     def on_mousewheel(self, event=None):  # pylint: disable=W0613
         """
@@ -417,7 +412,6 @@ class MainWindow(IWindowListener):
             if self.table_frame.canvas.winfo_height() < \
                     self.table_frame.frame.winfo_height():
                 self.table_frame.canvas.yview_scroll(sgn, "units")
-        return None
 
     def new_xy_menu(self, event=None):  # pylint: disable=W0613
         """
@@ -426,7 +420,6 @@ class MainWindow(IWindowListener):
         Автор: Озирный Максим
         """
         self.widget = self.widget_pointer()
-        return None
 
     def widget_pointer(self, event=None):  # pylint: disable=W0613
         """
@@ -457,7 +450,6 @@ class MainWindow(IWindowListener):
                 self.last_ch_frame.open()
             self.last_ch_bool = not self.last_ch_bool
         self.bottom_btn.focus_set()
-        return None
 
     def press_right_btn(self, event=None):  # pylint: disable=W0613
         """
@@ -466,7 +458,6 @@ class MainWindow(IWindowListener):
         Автор: Озирный Максим
         """
         self.widget1 = self.widget_pointer()
-        return None
 
     def click_filter(self, event=None):  # pylint: disable=W0613
         """
@@ -490,7 +481,6 @@ class MainWindow(IWindowListener):
                 self.filter_btn.config(bg=COLOR_BG_BTN_FILTR_TABLE)
             self.filter_bool = not self.filter_bool
         self.bottom_btn.focus_set()
-        return None
 
     def click_table(self, event=None):  # pylint: disable=W0613
         """
@@ -514,7 +504,6 @@ class MainWindow(IWindowListener):
                 self.table_btn.config(bg=COLOR_BG_BTN_FILTR_TABLE)
             self.table_bool = not self.table_bool
         self.bottom_btn.focus_set()
-        return None
 
 
 class MainTableFrame(Canvas):
@@ -584,6 +573,9 @@ class MainTableFrame(Canvas):
                         self.on_frame_configure(self.canvas))
         self.frame2.bind("<Configure>", lambda event, canvas=self.cont:
                          self.on_frame_configure(self.cont))
+
+        self.cell = Entry()
+        self.new_frame = Frame()
         self.before_content()
 
         self.btn_on = Button(self.frame2, text="on")
@@ -616,9 +608,8 @@ class MainTableFrame(Canvas):
         if event.x > self.list_max[self.characteristic[self.widget][3]]*6 - 1:
             self.x_cursor = event.x_root
             self.titles.config(cursor=CURSOR_CHANGE_WIGHT)
-        return None
 
-    def stop_move(self, event=None):
+    def stop_move(self, event=None):# pylint: disable=W0613
         """
         Функция изменяет переменную, отвечающую за высоту поля,
         для дальнейшего корректного изменения параметра этого поля
@@ -627,7 +618,6 @@ class MainTableFrame(Canvas):
         self.x_cursor = None
         self.width_2 = self.list_max[self.characteristic[self.widget][3]]
         self.titles.config(cursor='arrow')
-        return None
 
     def on_motion(self, event):
         """
@@ -641,14 +631,13 @@ class MainTableFrame(Canvas):
             self.width += deltay // 6
             self.list_max[self.characteristic[self.widget][3]] = self.width
             self.set_max_width(self.characteristic[self.widget][3])
-        return None
 
     def del_select(self, event=None):  # pylint: disable=W0613
         """
         Функция удаляет выбранные строки
         Автор: Озирный Максим
         """
-        for key in self.characteristic.keys():
+        for key in list(self.characteristic.keys()):
             if self.characteristic[key][-2]:
                 self.characteristic[key][-2] = False
                 self.characteristic[key][-1] = False
@@ -659,7 +648,6 @@ class MainTableFrame(Canvas):
                     self.frame2.grid_rowconfigure(self.characteristic[key][2],
                                                   minsize=0)
         self.repaint()
-        return None
 
     def delete_row(self, event=None):  # pylint: disable=W0613
         """
@@ -668,13 +656,12 @@ class MainTableFrame(Canvas):
         """
         self.frame2.grid_rowconfigure(self.characteristic[self.widget][2],
                                       minsize=0)
-        for key in self.characteristic.keys():
+        for key in list(self.characteristic.keys()):
             if self.characteristic[key][2] == \
                     self.characteristic[self.widget][2]:
                 key.grid_forget()
                 self.characteristic[key][-1] = False
         self.repaint()
-        return None
 
     def repaint(self, event=None, num=-1):  # pylint: disable=W0613
         """
@@ -683,39 +670,31 @@ class MainTableFrame(Canvas):
         """
         j = -1
 
-        for key in self.characteristic.keys():
+        for key in list(self.characteristic.keys()):
             if self.characteristic[key][3] == 0 \
                     and self.characteristic[key][2] != 0 \
-                    and self.characteristic[key][1] == "entry":
-                if self.characteristic[key][-1]:
-                    j += 1
-                    if j % 2 == 0:
-                        for key2 in self.characteristic.keys():
-                            if self.characteristic[key2][2] == \
-                                    self.characteristic[key][2] and \
-                                    num == -1 or \
-                                    self.characteristic[key2][2] == num and \
-                                    self.characteristic[key][2] == num:
-                                self.characteristic[key2][-2] = False
-                                if self.characteristic[key2][1] == "entry":
-                                    key2.config(
-                                        disabledbackground=COLOR_BG_ODD_ROW)
-                                else:
-                                    key2.config(bg=COLOR_BG_ODD_ROW)
-                    else:
-                        for key2 in self.characteristic.keys():
-                            if self.characteristic[key2][2] == \
-                                    self.characteristic[key][2] and \
-                                    num == -1 or \
-                                    self.characteristic[key2][2] == num and \
-                                    self.characteristic[key][2] == num:
-                                self.characteristic[key2][-2] = False
-                                if self.characteristic[key2][1] == "entry":
-                                    key2.config(
-                                        disabledbackground=COLOR_BG_EVENT_ROW)
-                                else:
-                                    key2.config(bg=COLOR_BG_EVENT_ROW)
-        return None
+                    and self.characteristic[key][1] == "entry"\
+                    and self.characteristic[key][-1]:
+                j += 1
+                for key2 in list(self.characteristic.keys()):
+                    if self.characteristic[key2][2] == \
+                            self.characteristic[key][2] and \
+                            num == -1 or \
+                            self.characteristic[key2][2] == num and \
+                            self.characteristic[key][2] == num:
+                        self.characteristic[key2][-2] = False
+                        if j % 2 == 0:
+                            if self.characteristic[key2][1] == "entry":
+                                key2.config(
+                                    disabledbackground=COLOR_BG_ODD_ROW)
+                            else:
+                                key2.config(bg=COLOR_BG_ODD_ROW)
+                        else:
+                            if self.characteristic[key2][1] == "entry":
+                                key2.config(
+                                    disabledbackground=COLOR_BG_EVENT_ROW)
+                            else:
+                                key2.config(bg=COLOR_BG_EVENT_ROW)
 
     def new_row(self, event=None):  # pylint: disable=W0613
         """
@@ -727,7 +706,6 @@ class MainTableFrame(Canvas):
             self.list_new_col[col] = new
             new.bind("<Key>", self.change_new_row)
             new.grid(row=1, column=1 * col, sticky="w")
-        return None
 
     def change_new_row(self, event=None):  # pylint: disable=W0613
         """
@@ -737,7 +715,6 @@ class MainTableFrame(Canvas):
         """
         self.btn1.grid(row=0, column=2)
         self.btn2.grid(row=0, column=3)
-        return None
 
     def del_new_row(self, event=None):  # pylint: disable=W0613
         """
@@ -746,7 +723,6 @@ class MainTableFrame(Canvas):
         """
         for ind in range(len(self.bd_array[0])):
             self.list_new_col[ind].destroy()
-        return None
 
     def new_xy_menu(self, event=None):  # pylint: disable=W0613
         """
@@ -755,7 +731,6 @@ class MainTableFrame(Canvas):
         Автор: Озирный Максим
         """
         self.widget = self.widget_pointer()
-        return None
 
     def save_change(self, event=None):  # pylint: disable=W0613
         """
@@ -785,7 +760,6 @@ class MainTableFrame(Canvas):
                        self.characteristic[self.widget2][3])
         self.set_max_width()
         self.main.bottom_btn.focus_set()
-        return None
 
     def set_max_width(self, only=-1, event=None):  # pylint: disable=W0613
         """
@@ -793,12 +767,11 @@ class MainTableFrame(Canvas):
         от максимальной ширины в столбце
         Автор: Озирный Максим
         """
-        for key in self.characteristic.keys():
+        for key in list(self.characteristic.keys()):
             if self.characteristic[key][1] == "entry" and only == -1 or \
                     self.characteristic[key][1] == "entry" and \
                     self.characteristic[key][3] == only:
                 key.config(width=self.list_max[self.characteristic[key][3]]+2)
-        return None
 
     def del_change(self, event=None):  # pylint: disable=W0613
         """
@@ -807,7 +780,7 @@ class MainTableFrame(Canvas):
         """
         self.btn_on.destroy()
         self.btn_off.destroy()
-        for key in self.characteristic.keys():
+        for key in list(self.characteristic.keys()):
             if self.characteristic[key][2] == 0 and \
                     self.characteristic[key][1] == "entry" and \
                     self.characteristic[key][3] == \
@@ -826,7 +799,6 @@ class MainTableFrame(Canvas):
                                                         state="disabled",
                                                         cursor='arrow')
         self.main.bottom_btn.focus_set()
-        return None
 
     def before_change(self, event=None):  # pylint: disable=W0613
         """
@@ -837,7 +809,6 @@ class MainTableFrame(Canvas):
         if self.widget2 != 0:
             self.del_change()
         self.change()
-        return None
 
     def change(self, event=None):  # pylint: disable=W0613
         """
@@ -878,7 +849,7 @@ class MainTableFrame(Canvas):
             self.characteristic[self.widget][0].bind('<Double-1>',
                                                      self.click_cell)
 
-        for key in self.characteristic.keys():
+        for key in list(self.characteristic.keys()):
             if self.characteristic[key][2] == 0 and \
                     self.characteristic[key][1] == "entry":
                 key.config(
@@ -891,7 +862,6 @@ class MainTableFrame(Canvas):
         self.btn_on.grid(row=0, column=1)
         self.btn_off.grid(row=0, column=2)
         self.widget2 = self.widget
-        return None
 
     def context_menu(self, event=None):  # pylint: disable=W0613
         """
@@ -904,7 +874,6 @@ class MainTableFrame(Canvas):
             self.black_menu.post(event.x_root, event.y_root)
         else:
             self.menu.post(event.x_root, event.y_root)
-        return None
 
     def widget_pointer(self, event=None):  # pylint: disable=W0613
         """
@@ -924,7 +893,7 @@ class MainTableFrame(Canvas):
         widget = self.widget_pointer()
         num = self.characteristic[widget][3]
 
-        for key in self.characteristic.keys():
+        for key in list(self.characteristic.keys()):
             if not self.characteristic[key][-1] and \
                     self.characteristic[key][3] == 0:
                 self.bd_array[self.characteristic[key][2]] = 0
@@ -937,24 +906,26 @@ class MainTableFrame(Canvas):
 
         array_titles = self.bd_array[0]
         array_cell = []
-        for ind in range(len(self.bd_array) - 1):
+        len_bd_arr = len(self.bd_array)
+        len_arr_sort = len(self.list_sort)
+        for ind in range(len_bd_arr - 1):
             array_cell.append(self.bd_array[ind + 1])
         if self.list_sort[num]:
             array_cell.sort(key=lambda x: x[num], reverse=True)
-            for ind in range(len(self.list_sort)):
+            for ind in range(len_arr_sort):
                 self.list_sort[ind] = False
         else:
             array_cell.sort(key=lambda x: x[num])
-            for ind in range(len(self.list_sort)):
+            for ind in range(len_arr_sort):
                 self.list_sort[ind] = False
             self.list_sort[num] = True
         array = []
-        for ind in range(len(array_cell)):
+        len_arr_cell = len(array_cell)
+        for ind in range(len_arr_cell):
             array.append(array_cell[ind])
         array.insert(0, array_titles)
 
         self.content(array)
-        return None
 
     def click_cell(self, event=None):  # pylint: disable=W0613
         """
@@ -962,31 +933,26 @@ class MainTableFrame(Canvas):
         Автор: Озирный Максим
         """
         widget = self.widget_pointer()
-        print(widget)
-        # если нажали на entry
-        if self.characteristic[widget][1] == "entry":
-            # если ячейка была заблокирована
-            if "{}".format(widget["state"]) == "disabled":
-                # если ячейка не была выбрана
-                if not self.characteristic[widget][-2]:
-                    for key in self.characteristic.keys():
-                        # если строка совпадает
-                        if self.characteristic[key][2] == \
-                                self.characteristic[widget][2]:
-                            # меняем флаг, отвечающий за выбранность строки
-                            self.characteristic[key][-2] = not \
-                                self.characteristic[key][-2]
-                            # если это фрейм
-                            if self.characteristic[key][1] == "frame":
-                                key.config(bg=COLOR_BG_SELECT_ROW)
-                            else:
-                                key.config(
-                                    disabledbackground=COLOR_BG_SELECT_ROW)
-                else:
-                    self.repaint(num=self.characteristic[widget][2])
-        else:
-            if not self.characteristic[widget][-2]:
-                for key in self.characteristic.keys():
+        # если не была выбрана ячейка
+        if not self.characteristic[widget][-2]:
+            # если нажали на entry и если ячейка была заблокирована
+            if self.characteristic[widget][1] == "entry" \
+                    and "{}".format(widget["state"]) == "disabled":
+                for key in list(self.characteristic.keys()):
+                    # если строка совпадает
+                    if self.characteristic[key][2] == \
+                            self.characteristic[widget][2]:
+                        # меняем флаг, отвечающий за выбранность строки
+                        self.characteristic[key][-2] = not \
+                            self.characteristic[key][-2]
+                        # если это фрейм
+                        if self.characteristic[key][1] == "frame":
+                            key.config(bg=COLOR_BG_SELECT_ROW)
+                        else:
+                            key.config(
+                                disabledbackground=COLOR_BG_SELECT_ROW)
+            elif self.characteristic[widget][1] == "frame":
+                for key in list(self.characteristic.keys()):
                     if self.characteristic[key][2] == \
                             self.characteristic[widget][2]:
                         self.characteristic[key][-2] = not \
@@ -996,9 +962,8 @@ class MainTableFrame(Canvas):
                         else:
                             key.config(
                                 disabledbackground=COLOR_BG_SELECT_ROW)
-            else:
-                self.repaint(num=self.characteristic[widget][2])
-        return None
+        else:
+            self.repaint(num=self.characteristic[widget][2])
 
     def double_click_cell(self, event=None):  # pylint: disable=W0613
         """
@@ -1008,7 +973,6 @@ class MainTableFrame(Canvas):
         self.click_cell()
         self.new_xy_menu()
         self.before_change()
-        return None
 
     @staticmethod
     def on_frame_configure(main_lab2):  # pylint: disable=W0613
@@ -1018,51 +982,51 @@ class MainTableFrame(Canvas):
         принимает объект параметры которого нужно изменить при прокрутке
         """
         main_lab2.configure(scrollregion=main_lab2.bbox("all"))
-        return None
 
     @staticmethod
-    def max_width(array, list, only=-1):  # pylint: disable=W0613
+    def max_width(array, list_of_len, only=-1):  # pylint: disable=W0613
         """
         Функция высчитывает максимальную ширину столбцов в массиве
         Автор: Озирный Максим
         принимает двумерный массив (список списков), список для результата,
         колонку в которой нужно проверить результат
         """
+        len_arr = len(array)
+        len_arr0 = len(array[0])
         if only != -1:
-            max = len(array[0][only])
-            for row in range(len(array)):
-                if max < len(array[row][only]):
-                    max = len(array[row][only])
-                if max < len(array[0][only]) + 3:
-                    max = len(array[0][only]) + 3
-                if max > len(array[0][only]) + 13:
-                    max = len(array[0][only]) + 13
-            list[only] = max
+            max_len = len(array[0][only])
+            for row in range(len_arr):
+                if max_len < len(array[row][only]):
+                    max_len = len(array[row][only])
+                if max_len < len(array[0][only]) + 3:
+                    max_len = len(array[0][only]) + 3
+                if max_len > len(array[0][only]) + 13:
+                    max_len = len(array[0][only]) + 13
+            list_of_len[only] = max_len
         else:
-            for col in range(len(array[0])):
-                max = len(array[0][col])
-                for row in range(len(array)):
-                    if max < len(str(array[row][col])):
-                        max = len(str(array[row][col]))
-                    if max < len(str(array[0][col])) + 3:
-                        max = len(str(array[0][col])) + 3
-                    if max > len(str(array[0][col])) + 13:
-                        max = len(str(array[0][col])) + 13
-                list[col] = max
-        return None
+            for col in range(len_arr0):
+                max_len = len(array[0][col])
+                for row in range(len_arr):
+                    if max_len < len(str(array[row][col])):
+                        max_len = len(str(array[row][col]))
+                    if max_len < len(str(array[0][col])) + 3:
+                        max_len = len(str(array[0][col])) + 3
+                    if max_len > len(str(array[0][col])) + 13:
+                        max_len = len(str(array[0][col])) + 13
+                list_of_len[col] = max_len
 
     @staticmethod
-    def add_arrow(list):  # pylint: disable=W0613
+    def add_arrow(list_header):  # pylint: disable=W0613
         """
         Функция изменяющая текст в элементах списка
         Автор: Озирный Максим
         принимает список
         """
-        for ind in range(len(list)):
-            list[ind] += " ▲▼"
-        return None
+        len_list = len(list_header)
+        for ind in range(len_list):
+            list_header[ind] += " ▲▼"
 
-    # def on_entry(self, event=None):
+    # def on_entry(self, event=None):# pylint: disable=W0613
     #     self.new_xy_menu()
     #     self.qwe = self.list_max[self.characteristic[self.widget][3]] * 6 - 1
     #
@@ -1070,7 +1034,7 @@ class MainTableFrame(Canvas):
     #     if event.x > self.qwe:
     #         self.titles.config(cursor=CURSOR_CHANGE_WIGHT)
     #
-    # def on_leave(self, event=None):
+    # def on_leave(self, event=None):# pylint: disable=W0613
     #     self.titles.config(cursor='arrow')
 
     def before_content(self):  # pylint: disable=W0613
@@ -1079,12 +1043,10 @@ class MainTableFrame(Canvas):
         Автор: Озирный Максим
         """
         self.add_arrow(self.bd_array[0])
-        self.list_sort = []
-        for ind in range(len(self.bd_array[0])):
-            self.list_sort.append(False)
+        len_arr = len(self.bd_array[0])
+        self.list_sort = [False for i in range(len_arr)]
         self.max_width(self.bd_array, self.list_max)
         self.content(self.bd_array)
-        return None
 
     def content(self, array):  # pylint: disable=W0613
         """
@@ -1105,9 +1067,11 @@ class MainTableFrame(Canvas):
             child.destroy()
 
         self.characteristic = {}
-        for row in range(len(array)):
+        len_arr = len(array)
+        len_arr0 = len(array[0])
+        for row in range(len_arr):
             self.frame2.grid_rowconfigure(row, minsize=HEIGHT_ROW)
-            for col in range(len(array[0])):
+            for col in range(len_arr0):
                 if row == 0:
                     self.new_frame = Frame(self.titles)
                     self.cell = Entry(self.new_frame,
@@ -1163,7 +1127,6 @@ class MainTableFrame(Canvas):
                     self.new_frame.config(bg=COLOR_BG_TITLE_TABLE)
                     self.cell.config(disabledbackground=COLOR_BG_TITLE_TABLE)
         self.frame2.grid_rowconfigure(0, minsize=0)
-        return None
 
 
 class Btn(Button):
@@ -1186,11 +1149,13 @@ class Btn(Button):
         x_cursor, y_cursor = self.master.winfo_pointerxy()
         widget = self.master.winfo_containing(x_cursor, y_cursor)
         self.widget1 = "{}".format(widget)
-        return None
 
 
-class MainMenuListener(object):
-    pass
+class MainMenuListener(Frame):
+    """ 123asd """
+    def asdfgh(self):
+        """asdghj"""
+        print(self)
 
 
 class OptionsMenu(Menu, MainMenuListener):
@@ -1207,7 +1172,6 @@ class OptionsMenu(Menu, MainMenuListener):
     def close_window(self):
         """asd"""
         self.main_wind_listener.close()
-        return None
 
     def create_menu(self):
         """asd"""
@@ -1227,91 +1191,82 @@ class OptionsMenu(Menu, MainMenuListener):
         main_menu.add_cascade(menu=menu_db, label="Таблицы")
 
         self.master.config(menu=main_menu)
-        return None
 
-    def db_1(self, event=None):
+    def db_1(self, event=None):# pylint: disable=W0613
+        """ asd """
         bd_array = INTERACTOR.get_data()
         self.m_table.content(bd_array)
-        return None
 
-    def db_2(self, event=None):
+    def db_2(self, event=None):# pylint: disable=W0613
+        """asd"""
         bd_array = [["тут", "крч", "я"], ["получаю", "список", "списков"]]
         self.m_table.content(bd_array)
-        return None
 
     @staticmethod
-    def create_simple_report(event=None):
+    def create_simple_report(event=None):# pylint: disable=W0613
         """asd"""
-        pass
-        return None
+        print("simple")
 
     @staticmethod
-    def create_statistic_report(event=None):
+    def create_statistic_report(event=None):# pylint: disable=W0613
         """asd"""
-        pass
-        return None
+        print("statistic")
 
     @staticmethod
-    def create_pivot_report(event=None):
+    def create_pivot_report(event=None):# pylint: disable=W0613
         """asd"""
         SettingsPivot(Tk())
-        return None
 
     @staticmethod
-    def create_scatter_chart(event=None):
+    def create_scatter_chart(event=None):# pylint: disable=W0613
         """asd"""
         SettingsScatterChart(Tk())
-        return None
 
     @staticmethod
-    def create_bar_chart(event=None):
+    def create_bar_chart(event=None):# pylint: disable=W0613
         """asd"""
         SettingsBarChart(Tk())
-        return None
 
     @staticmethod
-    def create_box_and_whisker(event=None):
+    def create_box_and_whisker(event=None):# pylint: disable=W0613
         """asd"""
         SettingsBoxAndWhisker(Tk())
-        return None
 
     @staticmethod
-    def create_histogram(event=None):
+    def create_histogram(event=None):# pylint: disable=W0613
         """asd"""
         SettingsHistogram(Tk())
-        return None
 
-    def open_db(self, event=None):
+    def open_db(self, event=None):# pylint: disable=W0613
+        """asd"""
         db_opener.Open().open(self.m_table)
-        return None
 
     @staticmethod
-    def save(event=None):
+    def save(event=None):# pylint: disable=W0613
+        """asd"""
         db_saver.Save().pickle(MainTableController().get_data_frame())
-        return None
 
     @staticmethod
-    def save_as(event=None):
+    def save_as(event=None):# pylint: disable=W0613
+        """asd"""
         db_saver.SaveAs().pickle(MainTableController().get_data_frame())
-        return None
 
-    def edit_db(self, event=None):
-        DbEditorWindow(Tk(), self.listener,
-                       "Расширенное редактирование БД")
-        return None
-
-    @staticmethod
-    def about_app(event=None):
-        pass
-        return None
+    # def edit_db(self, event=None):# pylint: disable=W0613
+    #     """asd"""
+    #     DbEditorWindow(Tk(), self.listener,
+    #                    "Расширенное редактирование БД")
 
     @staticmethod
-    def close_app(event=None):
+    def about_app(event=None):# pylint: disable=W0613
+        """asd"""
+        print("about app")
+
+    @staticmethod
+    def close_app(event=None):# pylint: disable=W0613
+        """asd"""
         exit(0)
-        return None
 
     @staticmethod
-    def edit_db(event=None):
+    def edit_db(event=None):# pylint: disable=W0613
         """asd"""
         DbEditorWindow(Tk(), None, "Расширенное редактирование БД")
-        return None

@@ -9,4 +9,3 @@ f.write(conf.ROOT_DIR + r'\Data\db.pickle')
 f.close()
 sys.path.insert(0, "D:\\Python projects\\ProductsViewer\\Work\\Scripts")
 MainWindow(Tk(), "База данных продуктов")
-

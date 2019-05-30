@@ -3,7 +3,7 @@
 главного окна и таблицы в нем
 """
 from tkinter import Frame, Canvas, Button, \
-    Tk, Scrollbar, Menu, NSEW, NE, W, NW, NS, EW, Entry, messagebox
+    Tk, Scrollbar, Menu, NE, W, NW, Entry, messagebox
 from abc import ABC
 from PIL import ImageTk, Image
 
@@ -14,7 +14,7 @@ from Work.Library.settings_pivot import SettingsPivot
 from Work.Library.settings_scatter_chart import SettingsScatterChart
 from Work.Scripts import db_saver, db_opener
 from Work.Scripts.conf import ROOT_DIR
-from Work.Scripts.config import MIN_SIZE_TABLE, WIN_H_START, WIN_W_START, \
+from Work.Scripts.config import WIN_H_START, WIN_W_START, \
     DEFAULT_SEARCH_TEXT, COLOR_BG_BOTTOM_BTN, LAST_CHANGES_CLOSED_TAB, \
     COLOR_FG_BOTTOM_BTN, COLOR_BG_ODD_ROW, FILTER_TAB_TEXT, TABLES_TAB_TEXT, \
     COLOR_TEXT_TABLE, HEIGHT_ROW, LAST_CHANGES_OPENED_TAB, \
@@ -72,48 +72,41 @@ class MainWindow(IWindowListener):
             centerh=(master.winfo_screenheight() - WIN_H_START - 30) // 2))
         master.minsize(WIN_W_START, WIN_H_START - 20)
         master.resizable(True, True)
-        master.grid_rowconfigure(0, minsize=24)
-        master.grid_rowconfigure(1, weight=1, minsize=MIN_SIZE_TABLE)
-        master.grid_rowconfigure(2, minsize=0)
-        master.grid_rowconfigure(3, minsize=24)
-        master.grid_columnconfigure(0, weight=1)
-        master.grid_columnconfigure(1, minsize=0)
-        master.grid_columnconfigure(2, minsize=0)
-        master.grid_columnconfigure(3, minsize=24)
 
-        self.img_g = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Data\galka2.png"))
-        self.img_k = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Data\krest.png"))
-        self.img_p = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Data\plus.png"))
-        self.img_k2 = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Data\cross.png"))
+        self.img_g = ImageTk.PhotoImage(Image.open(
+            ROOT_DIR + r"\Data\galka2.png"))
+        self.img_k = ImageTk.PhotoImage(Image.open(
+            ROOT_DIR + r"\Data\krest.png"))
+        self.img_p = ImageTk.PhotoImage(Image.open(
+            ROOT_DIR + r"\Data\plus.png"))
+        self.img_k2 = ImageTk.PhotoImage(Image.open(
+            ROOT_DIR + r"\Data\cross.png"))
 
-        # Создается верхнее поле и устанавливается размерная сетка
+        # Создается верхнее поле
         self.search_frame = Frame(master)
-        self.search_frame.grid_columnconfigure(0, minsize=30)
-        self.search_frame.grid_columnconfigure(1, weight=1)
-        self.search_frame.grid_columnconfigure(2, minsize=30)
-        self.search_frame.grid_columnconfigure(3, minsize=30)
-        self.search_frame.grid_columnconfigure(4, minsize=49)
 
         # Создаётся и позиционируется содержимое верхнего поля
         self.btn_plus = Btn(self.search_frame, bd=0, image=self.img_p,
                             command=self.plus)
-        self.btn_plus.grid(row=0, column=0)
         self.search = Entry(self.search_frame, fg="#d0d0d0")
         self.search.insert(0, DEFAULT_SEARCH_TEXT)
         self.search.bind("<Button-1>", self.click_search)
-        self.search.grid(row=0, column=1, sticky="w")
 
         self.btn_save = Btn(self.search_frame, bd=0, image=self.img_g,
                             command=self.save_new_row)
         self.btn_or_no = Btn(self.search_frame, bd=0, image=self.img_k,
                              command=self.plus)
-        self.btn_save.grid(row=0, column=2)
-        self.btn_or_no.grid(row=0, column=3)
-        self.btn_save.grid_forget()
-        self.btn_or_no.grid_forget()
+        self.btn_plus.pack(side="left")
+        self.search.pack(side="left")
+        # self.btn_or_no.pack(side="right", padx=28)
+        # self.btn_save.pack(side="right")
+        # self.btn_save.pack_forget()
+        # self.btn_or_no.pack_forget()
 
+        # создаётся поле для главного поля и фильтраций
+        self.top_frame_content = Frame(master)
         # Создаётся главное поле (в которое выводится бд)
-        self.main_frame = MainTableFrame(master, self,
+        self.main_frame = MainTableFrame(self.top_frame_content, self,
                                          self.btn_save,
                                          self.btn_or_no,
                                          bg="#f0f0f0")
@@ -122,8 +115,8 @@ class MainWindow(IWindowListener):
         footbar.create_menu()
 
         # Создаются и заполняются правые поля (фильтр строк и столбцов)
-        self.filtr_frame = RowFilterPanel(master)
-        self.table_frame = ColumnFilterPanel(master)
+        self.filtr_frame = RowFilterPanel(self.top_frame_content)
+        self.table_frame = ColumnFilterPanel(self.top_frame_content)
         # Создается нижнее поле (последние изменения)
         self.last_ch_frame = ChangeHistoryPanel(self.master)
 
@@ -136,25 +129,25 @@ class MainWindow(IWindowListener):
         self.bottom_btn.bind("<ButtonRelease-1>", self.click_extend_menu)
 
         # Создается поле для кнопок справа
-        self.right_menu = Frame(master)
+        self.right_menu = Frame(self.top_frame_content)
 
         # Создаются кнопки для появления перед пользователем полей фильтрации
         self.filter_btn = self.get_tab_btn(FILTER_TAB_TEXT, 55)
         self.filter_btn.bind("<ButtonPress-1>", self.press_right_btn)
         self.filter_btn.bind("<ButtonRelease-1>", self.click_filter)
-        self.filter_btn.place(x=0, y=0)
+        self.filter_btn.pack(side="top")
+
         self.table_btn = self.get_tab_btn(TABLES_TAB_TEXT, 40)
         self.table_btn.bind("<ButtonPress-1>", self.press_right_btn)
         self.table_btn.bind("<ButtonRelease-1>", self.click_table)
-        self.table_btn.place(x=0, y=54)
+        self.table_btn.pack(side="top")
 
         # Происхожит позиционирование объектов в главном классе
-        self.search_frame.grid(row=0, column=0, columnspan=4, sticky=NSEW)
-        self.main_frame.grid(row=1, column=0, sticky=NSEW)
-        # self.filtr_frame.grid(row=1, column=1, sticky=NSEW)
-        # self.table_frame.grid(row=1, column=2, sticky=NSEW)
-        self.right_menu.grid(row=1, column=3, sticky=NSEW)
-        self.bottom_btn.grid(row=3, column=0, columnspan=4, sticky=NSEW)
+        self.search_frame.pack(side="top", fill="x")
+        self.top_frame_content.pack(side="top", fill="both", expand=1)
+        self.bottom_btn.pack(side="bottom", fill="x")
+        self.right_menu.pack(side="right", fill="y")
+        self.main_frame.pack(side="left", fill="both", expand=1)
 
         # доп объекты которые будут использоваться в других функциях
         self.new_frame = Frame()
@@ -212,8 +205,8 @@ class MainWindow(IWindowListener):
                 event.keysym == "plus":
             if self.plus_bool:
                 self.btn_plus.config(image=self.img_p)
-                self.btn_save.grid_forget()
-                self.btn_or_no.grid_forget()
+                self.btn_save.pack_forget()
+                self.btn_or_no.pack_forget()
                 self.main_frame.del_new_row()
             else:
                 self.btn_plus.config(image=self.img_k2)
@@ -446,10 +439,9 @@ class MainWindow(IWindowListener):
                 self.last_ch_frame.close()
             else:
                 self.bottom_btn.config(text=LAST_CHANGES_OPENED_TAB)
-                self.last_ch_frame = ChangeHistoryPanel(self.master)
                 self.last_ch_frame.open()
             self.last_ch_bool = not self.last_ch_bool
-        self.bottom_btn.focus_set()
+            self.bottom_btn.focus_set()
 
     def press_right_btn(self, event=None):  # pylint: disable=W0613
         """
@@ -476,11 +468,10 @@ class MainWindow(IWindowListener):
                 self.filtr_frame.close()
                 self.filter_btn.config(bg="#f0f0f0")
             else:
-                self.filtr_frame = RowFilterPanel(self.master)
                 self.filtr_frame.open()
                 self.filter_btn.config(bg=COLOR_BG_BTN_FILTR_TABLE)
             self.filter_bool = not self.filter_bool
-        self.bottom_btn.focus_set()
+            self.bottom_btn.focus_set()
 
     def click_table(self, event=None):  # pylint: disable=W0613
         """
@@ -499,11 +490,10 @@ class MainWindow(IWindowListener):
                 self.table_frame.close()
                 self.table_btn.config(bg="#f0f0f0")
             else:
-                self.table_frame = ColumnFilterPanel(self.master)
                 self.table_frame.open()
                 self.table_btn.config(bg=COLOR_BG_BTN_FILTR_TABLE)
             self.table_bool = not self.table_bool
-        self.bottom_btn.focus_set()
+            self.bottom_btn.focus_set()
 
 
 class MainTableFrame(Canvas):
@@ -538,35 +528,33 @@ class MainTableFrame(Canvas):
         self.master = master
         self.main = main
 
-        self.img_g = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Data\galka2.png"))
-        self.img_k = ImageTk.PhotoImage(Image.open(ROOT_DIR + r"\Data\krest.png"))
+        self.img_g = ImageTk.PhotoImage(Image.open(
+            ROOT_DIR + r"\Data\galka2.png"))
+        self.img_k = ImageTk.PhotoImage(Image.open(
+            ROOT_DIR + r"\Data\krest.png"))
         # устанавливаем сылку на переданные объекты
         self.btn1 = btn1
         self.btn2 = btn2
-        # устанавливаем параметры сетки главного поля для таблицы
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_rowconfigure(1, minsize=24)
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, minsize=24)
 
         self.canvas = Canvas(self)
         self.frame = Frame(self.canvas)
         self.canvas.create_window((0, 0), window=self.frame, anchor=NW)
-        self.canvas.grid(row=0, column=0, sticky=NSEW)
 
         self.titles = Canvas(self.frame, bg=COLOR_BG_TITLE_TABLE)
         self.cont = Canvas(self.frame, height=350)
-        self.titles.grid(row=0, column=0, sticky=NW)
+        self.titles.pack(side="top", fill="x")
         self.frame2 = Frame(self.cont, background="#f0f0f0")
         self.cont.create_window((0, 0), window=self.frame2, anchor=NW)
-        self.cont.grid(row=1, column=0, sticky=NSEW)
+        self.cont.pack(side="top", fill="both", expand=1)
 
         scroll_x = Scrollbar(self, orient="horizontal",
                              command=self.canvas.xview)
-        scroll_x.grid(row=1, column=0, sticky=EW)
-
         scroll_y = Scrollbar(self, orient="vertical", command=self.cont.yview)
-        scroll_y.grid(row=0, column=1, sticky=NS)
+
+        scroll_y.pack(side="right", fill="y")
+        self.canvas.pack(side="top", fill="both", expand=1)
+        scroll_x.pack(side="bottom", fill="x")
+
         self.cont.configure(yscrollcommand=scroll_y.set)
         self.canvas.configure(xscrollcommand=scroll_x.set)
         self.frame.bind("<Configure>", lambda event, canvas=self.canvas:
@@ -578,8 +566,10 @@ class MainTableFrame(Canvas):
         self.new_frame = Frame()
         self.before_content()
 
-        self.btn_on = Button(self.frame2, text="on")
-        self.btn_off = Button(self.frame2, text="off")
+        self.btn_on = Button(self.frame2, text="on", command=self.save_change,
+                             bd=0, image=self.img_g)
+        self.btn_off = Button(self.frame2, text="off", command=self.del_change,
+                              bd=0, image=self.img_k)
 
         self.menu = Menu(self.master, tearoff=0, postcommand=self.new_xy_menu)
         self.menu.add_command(label="Изменить", command=self.before_change)
@@ -713,8 +703,8 @@ class MainTableFrame(Canvas):
         при изменении поля для ввода данных о новой строке
         Автор: Озирный Максим
         """
-        self.btn1.grid(row=0, column=2)
-        self.btn2.grid(row=0, column=3)
+        self.btn2.pack(side="right", padx=28)
+        self.btn1.pack(side="right")
 
     def del_new_row(self, event=None):  # pylint: disable=W0613
         """
@@ -737,8 +727,8 @@ class MainTableFrame(Canvas):
         Функция сохраняет изменение текста в ячейке теблицы
         Автор: Озирный Максим
         """
-        self.btn_on.destroy()
-        self.btn_off.destroy()
+        self.btn_on.grid_forget()
+        self.btn_off.grid_forget()
         if self.characteristic[self.widget2][1] == "entry":
             value = self.widget2.get()
             self.widget2.delete(0, "end")
@@ -778,8 +768,8 @@ class MainTableFrame(Canvas):
         Функция удаляет последние изменения ячейки в таблице
         Автор: Озирный Максим
         """
-        self.btn_on.destroy()
-        self.btn_off.destroy()
+        self.btn_on.grid_forget()
+        self.btn_off.grid_forget()
         for key in list(self.characteristic.keys()):
             if self.characteristic[key][2] == 0 and \
                     self.characteristic[key][1] == "entry" and \
@@ -818,15 +808,9 @@ class MainTableFrame(Canvas):
         if self.characteristic[self.widget][1] == "entry":
             self.widget.config(state="normal", cursor='xterm')
             self.start_value = self.widget.get()
-            self.btn_on = Button(self.characteristic[self.widget][0],
-                                 bd=0, image=self.img_g,
-                                 bg=self.characteristic[self.widget][0]["bg"],
-                                 command=self.save_change)
-            self.btn_off = Button(self.characteristic[self.widget][0],
-                                  bd=0, image=self.img_k,
-                                  bg=self.characteristic[
-                                      self.widget][0]["bg"],
-                                  command=self.del_change)
+            self.btn_on.config(bg=self.characteristic[self.widget][0]["bg"])
+            self.btn_off.config(bg=self.characteristic[self.widget][0]["bg"])
+            parent = self.characteristic[self.widget][0]
             self.widget.bind('<Return>', self.save_change)
             self.widget.bind('<Escape>', self.del_change)
             self.widget.bind('<Double-1>', self.click_cell)
@@ -834,14 +818,9 @@ class MainTableFrame(Canvas):
             self.characteristic[self.widget][0].config(state="normal",
                                                        cursor='xterm')
             self.start_value = self.characteristic[self.widget][0].get()
-            self.btn_on = Button(self.widget,
-                                 bd=0, image=self.img_g,
-                                 bg=self.widget["bg"],
-                                 command=self.save_change)
-            self.btn_off = Button(self.widget,
-                                  bd=0, image=self.img_k,
-                                  bg=self.widget["bg"],
-                                  command=self.del_change)
+            self.btn_on.config(bg=self.widget["bg"])
+            self.btn_off.config(bg=self.widget["bg"])
+            parent = self.widget
             self.characteristic[self.widget][0].bind('<Return>',
                                                      self.save_change)
             self.characteristic[self.widget][0].bind('<Escape>',
@@ -859,8 +838,8 @@ class MainTableFrame(Canvas):
                     key.config(
                         width=self.list_max[self.characteristic[key][3]] + 9)
 
-        self.btn_on.grid(row=0, column=1)
-        self.btn_off.grid(row=0, column=2)
+        self.btn_on.grid(row=0, column=1, in_=parent)
+        self.btn_off.grid(row=0, column=2, in_=parent)
         self.widget2 = self.widget
 
     def context_menu(self, event=None):  # pylint: disable=W0613

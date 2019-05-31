@@ -32,15 +32,7 @@ from Work.Scripts.move_out_panels import ChangeHistoryPanel, \
 INTERACTOR = ListMainTableInteractor(True)
 
 
-class IWindowListener(ABC):
-    """asd"""
-    @staticmethod
-    def asdfgh():
-        """asdfgh"""
-        print(123)
-
-
-class MainWindow(IWindowListener):
+class MainWindow:
     """
     Класс отвечает за разметку главного окна и позиционирование его содержимого
     Автор: Озирный Максим
@@ -111,7 +103,7 @@ class MainWindow(IWindowListener):
                                          self.btn_or_no,
                                          bg="#f0f0f0")
         # Создается верхнее меню
-        footbar = OptionsMenu(master, self, self.main_frame)
+        footbar = OptionsMenu(master, self.main_frame)
         footbar.create_menu()
 
         # Создаются и заполняются правые поля (фильтр строк и столбцов)
@@ -1142,15 +1134,9 @@ class OptionsMenu(Menu, MainMenuListener):
     Класс отвечающий за создание верхнего меню
     """
 
-    def __init__(self, master,
-                 main_wind_listener: IWindowListener, m_table, **kw):
+    def __init__(self, master, m_table, **kw):
         super().__init__(master, {}, **kw)
         self.m_table = m_table
-        self.main_wind_listener = main_wind_listener
-
-    def close_window(self):
-        """asd"""
-        self.main_wind_listener.close()
 
     def create_menu(self):
         """asd"""

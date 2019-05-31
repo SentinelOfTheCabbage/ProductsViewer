@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
-
-""" PyLinter Sublime Text Plugin
-
-    This is a Pylint plugin for Sublime Text.
-
-    Copyright R. de Laat, Elit 2011-2013
-
-    For more information, go to https://github.com/biermeester/Pylinter#readme
-"""
-import pickle
 import os
-import pandas
-os.chdir('C:/Users/Tom/Documents/Python_projects/ProductsViewer/Work/Data')
+import pickle
+
+from Work.Scripts.conf import ROOT_DIR
+
+os.chdir(ROOT_DIR + '/Work/Data')
 
 
 class DbRedactor:

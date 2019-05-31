@@ -1,6 +1,8 @@
 """
 Модуль предоставляет возможность для работы с диаграммой типа
-"Кластеризованная столбчатая диаграмма".
+"Кластеризованная столбчатая диаграмма"
+
+Автор: Перятин Виталий
 """
 
 import random
@@ -22,6 +24,7 @@ class ClusteredChart(chart_interfaces.IChart):
     заголовок для диаграммы ("Группа продуктов - качество производства")
     и список цен для каждой подгруппы качества продуктов каждой группы.
 
+    Автор: Перятин Виталий
     """
 
     _colors = None
@@ -42,6 +45,8 @@ class ClusteredChart(chart_interfaces.IChart):
         """
         Возвращает случайный цвет. Используется для
         генерирования цвета по умолчанию.
+
+        Автор: Перятин Виталий
         """
         return random.random(), random.random(), random.random()
 
@@ -50,6 +55,8 @@ class ClusteredChart(chart_interfaces.IChart):
 
         :param quality_labels: название подгруппы качества
         :return: возвращает себя же для реализации паттерна "Builder"
+
+        Автор: Перятин Виталий
         """
         self._quality_labels = quality_labels
         return self
@@ -59,6 +66,8 @@ class ClusteredChart(chart_interfaces.IChart):
 
         :param colors: список цветов для подгрупп качества (столбцов)
         :return: возвращает себя же для реализации паттерна "Builder"
+
+        Автор: Перятин Виталий
         """
         self._colors = colors
         return self
@@ -69,6 +78,8 @@ class ClusteredChart(chart_interfaces.IChart):
 
         :param group_prices: список цен для каждой подгруппы качества
         :return: возвращает себя же для реализации паттерна "Builder"
+
+        Автор: Перятин Виталий
         """
         self._group_prices = group_prices
         return self
@@ -78,6 +89,8 @@ class ClusteredChart(chart_interfaces.IChart):
 
         :param groups: список групп продуктов
         :return: возвращает себя же для реализации паттерна "Builder"
+
+        Автор: Перятин Виталий
         """
         self._groups = groups
         return self
@@ -89,6 +102,8 @@ class ClusteredChart(chart_interfaces.IChart):
         При вызове этой функции открывается новое окно с отчётом
         на основе переданных значений. Если значение не передавалось,
         то используется значение по умолчанию.
+
+        Автор: Перятин Виталий
         """
 
         if self._colors is None:
@@ -130,17 +145,3 @@ class ClusteredChart(chart_interfaces.IChart):
         plt.ylabel(self._y_title)
         plt.xlabel(self._x_title)
         plt.show()
-
-
-# ClusteredChart()\
-#     .set_groups(["Groups 1", "Groups 2", "Groups 3", "Groups 4",
-#                  "Groups 1", "Groups 2", "Groups 3", "Groups 4",
-#                  "Groups 1", "Groups 2", "Groups 3", "Groups 4"]) \
-#     .set_quality_labels(["ГОСТ", "СТО", "ТУ"]) \
-#     .set_colors(["red", "blue", "green"]) \
-#     .set_prices([[12, 34, 45], [34, 12, 43], [34, 12, 43], [34, 12, 43],
-#                  [12, 34, 45], [34, 12, 43], [34, 12, 43], [34, 12, 43],
-#                  [12, 34, 45], [34, 12, 43], [34, 12, 43], [34, 12, 43]])\
-#     .set_x_title("Название оси X")\
-#     .set_y_title("Название оси Y")\
-#     .show()

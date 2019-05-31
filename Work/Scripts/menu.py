@@ -1,3 +1,9 @@
+"""
+Содержит абстрактную реализацию мсобытий меню
+
+Автор: Перятин Виталий
+"""
+
 from abc import ABC, abstractmethod
 from tkinter import Menu
 
@@ -9,78 +15,146 @@ COMMAND_KEY = 'command'
 
 
 class MainMenuListener(ABC):
+    """
+    Слушатель событий меню
+
+    Автор: Перятин Виталий
+    """
 
     @staticmethod
     @abstractmethod
     def close_app():
-        pass
+        """
+        Закрывает приложение
+
+        Автор: Перятин Виталий
+        """
 
     @staticmethod
     @abstractmethod
     def create_simple_report():
-        pass
+        """
+        Создаёт простой текстовый отчёт
+
+        Автор: Перятин Виталий
+        """
 
     @staticmethod
     @abstractmethod
     def create_statistic_report():
-        pass
+        """
+        Создаёт текстовый статистический  отчёт
+
+        Автор: Перятин Виталий
+        """
 
     @staticmethod
     @abstractmethod
     def create_pivot_report():
-        pass
+        """
+        Создаёт сводную таблицу
+
+        Автор: Перятин Виталий
+        """
 
     @staticmethod
     @abstractmethod
     def create_scatter_chart():
-        pass
+        """
+        Создаёт диаграмму рассеивания
+
+        Автор: Перятин Виталий
+        """
 
     @staticmethod
     @abstractmethod
     def create_bar_chart():
-        pass
+        """
+        Создаёт столбчатую диаграмму
+
+        Автор: Перятин Виталий
+        """
 
     @staticmethod
     @abstractmethod
     def create_box_and_whisker():
-        pass
+        """
+        Создаёт диаграмму "Ящик с усами"
+
+        Автор: Перятин Виталий
+        """
 
     @staticmethod
     @abstractmethod
     def create_histogram():
-        pass
+        """
+        Создаёт гистограмму
+
+        Автор: Перятин Виталий
+        """
 
     @staticmethod
     @abstractmethod
     def open_db():
-        pass
+        """
+        Открывает Бд
+
+        Автор: Перятин Виталий
+        """
 
     @staticmethod
     @abstractmethod
     def save():
-        pass
+        """
+        Сохраняет БД
+
+        Автор: Перятин Виталий
+        """
 
     @staticmethod
     @abstractmethod
     def save_as():
-        pass
+        """
+        Сохраняет БД в выбранную дирекотрию
+
+        Автор: Перятин Виталий
+        """
 
     @staticmethod
     def edit_db():
-        pass
+        """
+        Редактирует БД
+
+        Автор: Перятин Виталий
+        """
 
     @staticmethod
     @abstractmethod
     def about_app():
-        pass
+        """
+        Открывет информацию "О приложении"
+
+        Автор: Перятин Виталий
+        """
 
 
 class MainMenuFactory(ABC):
+    """
+    Фабрика для создания элементов меню
+
+    Автор: Перятин Виталий
+    """
 
     def __init__(self, listener: MainMenuListener):
         self.listener = listener
 
     def get_report_items(self):
+        """
+        Возвращает список элементов словаря со слушателями для отчётов
+        :return: список элементов словаря со слушателями
+
+        Автор: Перятин Виталий
+        """
         return [
             {
                 LABEL_KEY: "Простой отчёт",
@@ -114,6 +188,12 @@ class MainMenuFactory(ABC):
         ]
 
     def get_file_items(self):
+        """
+        Возвращает список элементов словаря со слушателями пункта "Файл"
+        :return: список элементов словаря со слушателями
+
+        Автор: Перятин Виталий
+        """
         return [
             {
                 LABEL_KEY: "Открыть",
@@ -144,6 +224,15 @@ class MainMenuFactory(ABC):
 
     @staticmethod
     def get_menu(name: str, items: list):
+        """
+        Создаёт и возвращает список основных элементов меню
+
+        :param name: заголовок меню
+        :param items: список элементов меню
+        :return: Основной пункт меню
+
+        Автор: Перятин Виталий
+        """
         menu = Menu(tearoff=0, bg=COLOR_BG_MENU, fg=COLOR_FG_MENU)
         for item in items:
             if item is None:

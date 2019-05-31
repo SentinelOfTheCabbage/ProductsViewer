@@ -1,3 +1,9 @@
+"""
+Модуль для извлечения данных из БД
+
+Автор: Перятин Виталий
+"""
+
 import os
 import pickle
 
@@ -6,6 +12,11 @@ from Work.Scripts.interf_extractor import IDataExtractor
 
 
 class DataExtractor(IDataExtractor):
+    """
+    Извлекает данные из БД
+
+    Автор: Перятин Виталий
+    """
     def __init__(self):
         os.chdir(ROOT_DIR + r'\Data')
         with open('db.pickle', "rb") as open_data_base:
@@ -20,4 +31,8 @@ class DataExtractor(IDataExtractor):
         file_name = 'database.txt'
 
     def get_data(self):
-        pass
+        """
+        Получает данные из БД
+
+        Автор: Перятин Виталий
+        """

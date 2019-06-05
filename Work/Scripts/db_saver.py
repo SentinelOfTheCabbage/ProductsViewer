@@ -3,7 +3,7 @@ from tkinter import Tk, filedialog, Frame
 import pandas as pd
 from Work.Scripts import conf
 from Work.Scripts.db_controller import MainTableController
-
+# import pickle
 
 class SaveAs(Frame):
     def __init__(self):
@@ -125,11 +125,18 @@ class Save:
         :param table: таблица DataFrame
         :return: Сохраняет файл в формате pickle.
         """
-        f_f = open(conf.ROOT_DIR + r'\Data\Temp\filename.txt', 'r')
+        f_f = open(conf.ROOT_DIR + r'\Data\filename.txt', 'r')
         te_xt = f_f.read()
         f_f.close()
         name = r'' + te_xt
-        table.to_pickle(name + '.pickle')
+        """
+        with open(name,'rb') as fp:
+            L = pickle.load(fp)
+        L['_db_products'] = table
+        
+        
+        """
+        table.to_pickle(name)
 
     @staticmethod
     def xlsx(table: pd.DataFrame):

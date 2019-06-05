@@ -1,1 +1,1 @@
-D:\Python projects\ProductsViewer\Work\Data\db.pickle
+C:\Users\Tom\Documents\Python_projects\ProductsViewer\Work\Data\db.pickle

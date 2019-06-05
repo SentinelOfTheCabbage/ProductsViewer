@@ -37,46 +37,49 @@ class MainTableRepository:
         as: product_id,product_name,product_price,product_producer,product_group,dicsount, quality
         Return[0]==list of headers for table
         """
-        # result = [] * 1
-        # result.append(list(self._db_products.columns))
         main_table: pandas.DataFrame = self.extractor._db_products.copy()
 
-        def is_discount_works(discount_id: int):
-            now = time.mktime(datetime.datetime.now().timetuple())
-            date_begin = time.mktime(datetime.datetime.strptime(
+
+        discount_list = self.extractor._db_discounts.id.copy()
+        
+        for i in range(len(discount_list)):
+            if self.is_discount_works(discount_list.iloc[i]):
+                main_table.loc[main_table.discount_id == discount_list.iloc[
+                    i], 'discount_id'] = '{} % [{}]'.format(
+                        self.extractor._db_discounts.amount.iloc[i],
+                        self.extractor._db_discounts.date_end.iloc[i])
+            else:
+                change_list = main_table.discount_id == discount_list.iloc[i]
+                main_table.discount_id.loc[change_list] = '{} % [{}]'.format(
+                        0,self.extractor._db_discounts.date_end.iloc[0])
+
+        # main_table.price *= round((1 - main_table.discount_id / 100.0), 2)
+        # main_table.price = round(main_table.price, 2)
+        main_table = main_table.rename(columns={
+            'id': 'Id',
+            'name': 'Назв. продукта',
+            'price': 'Цена',
+            'producer_name': 'Производитель',
+            'group_name': 'Категория',
+            'discount_id': 'Скидка',
+            'quality': 'Кат. стандарта'
+        })
+        del main_table['Id']
+        self.df = main_table
+        self.select_df = main_table
+        return main_table
+
+    def is_discount_works(self, discount_id: int):
+        now = time.mktime(datetime.datetime.now().timetuple())
+        date_begin = time.mktime(datetime.datetime.strptime(
                 self.extractor._db_discounts['date_begin'].iloc[discount_id],
                 "%d.%m.%Y").timetuple())
-            date_end = time.mktime(
+        date_end = time.mktime(
                 datetime.datetime.strptime(
                     self.extractor._db_discounts['date_end'].iloc[
                         discount_id],
                     "%d.%m.%Y").timetuple())
-            return date_begin <= now <= date_end
-
-        discount_list = self.extractor._db_discounts.id.copy()
-
-        for i in range(len(discount_list)):
-            if is_discount_works(discount_list.iloc[i]):
-                main_table.loc[main_table.discount_id == discount_list.iloc[
-                    i], 'discount_id'] = \
-                    self.extractor._db_discounts.amount.iloc[i]
-            else:
-                main_table.discount_id.copy().loc[
-                    main_table.discount_id == discount_list.iloc[i]] = 0
-
-        main_table.price *= round((1 - main_table.discount_id / 100.0), 2)
-        main_table = main_table.rename(columns={
-            'id': 'Id',
-            'name': 'Product name',
-            'price': 'Price',
-            'producer_name': 'Producer name',
-            'group_name': 'Category',
-            'discount_id': 'Discount',
-            'quality': 'Quality'
-        })
-        self.df = main_table
-        self.select_df = main_table
-        return main_table
+        return date_begin <= now <= date_end
 
     def set_data(self, data: pd.DataFrame):
         self.df = data
@@ -179,6 +182,30 @@ class MainTableRepository:
     def get_db_copy(self):
         return copy.deepcopy(self.df)
 
+    def get_quality_list(self):
+        """Return quality_list
+        """
+        result = list(self.extractor._db_products['quality'].unique())
+        return result
+    def get_producers_list(self):
+        producers = self.extractor._db_producers.copy()
+        producer_list = list(producers['name'])
+        return producer_list
+
+    def get_group_list(self):
+        groups = self.extractor._db_groups.copy()
+        producer_list = list(groups['name'])
+        return producer_list
+
+    def get_discount_list(self):
+        discounts = self.extractor._db_discounts.copy()
+        date_list = list(discounts['date_end']) 
+        discount_list = list(discounts['amount'])
+        for i,j in enumerate(discount_list):
+            discount_list[i]=str(j)+'% ['+date_list[i]+']'
+        return discount_list
+
+
 
 class ReportsInteractor:
     """
@@ -203,8 +230,9 @@ class ReportsInteractor:
             for j in range(len(qualities)):
                 group_mean_prices = None
                 try:
-                    group_mean_prices = list(products_table[(products_table.group_name.isin([groups[i]])) & (
-                        products_table.quality.isin([qualities[j]]))].groupby(
+                    group_mean_prices = list(products_table[(products_table.group_name.isin(
+                        [groups[i]])) & (products_table.quality.isin(
+                        [qualities[j]]))].groupby(
                             ['group_name', 'quality'])['price'].mean())
                 except IndexError:
                     pass
@@ -288,8 +316,9 @@ class ReportsInteractor:
 
         return result
 
-    def get_quality_list(self):
+       def get_quality_list(self):
         """Return quality_list
         """
         result = list(self.extractor._db_products['quality'].unique())
         return result
+    

@@ -27,7 +27,7 @@ class DataExtractor(IDataExtractor):
         self._db_vouchers = data_base['_db_vouchers']
         self._db_sales = data_base['_db_sales']
         self._db_groups = data_base['_db_groups']
-
+        self._db_producers = data_base['_db_producers']
         file_name = 'database.txt'
 
     def get_data(self):

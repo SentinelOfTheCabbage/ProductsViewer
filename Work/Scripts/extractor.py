@@ -9,6 +9,7 @@ import pickle
 
 from Work.Scripts.conf import ROOT_DIR
 from Work.Scripts.interf_extractor import IDataExtractor
+from Work.Scripts.db_opener import Open
 
 
 class DataExtractor(IDataExtractor):
@@ -27,7 +28,7 @@ class DataExtractor(IDataExtractor):
         self._db_vouchers = data_base['_db_vouchers']
         self._db_sales = data_base['_db_sales']
         self._db_groups = data_base['_db_groups']
-
+        self._db_producers = data_base['_db_producers']
         file_name = 'database.txt'
 
     def get_data(self):
@@ -36,3 +37,4 @@ class DataExtractor(IDataExtractor):
 
         Автор: Перятин Виталий
         """
+        pass

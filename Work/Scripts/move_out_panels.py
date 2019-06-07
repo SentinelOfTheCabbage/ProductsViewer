@@ -14,8 +14,10 @@ from Work.Scripts.config import WIDTH_FILR_FRAME, COLOR_BG_FRAME_TABLE, \
     CURSOR_CHANGE_WIGHT, MIN_WIDTH_TABLE, MIN_WIDTH_FILR_FRAME, \
     COLOR_FG_FRAME_TABLE, COLOR_BG_LAST_CH, HEIGHT_INFO_FRAME, \
     CURSOR_CHANGE_HEIGHT, MIN_SIZE_TABLE, COLOR_BG_TITLE_LAST_CH, \
-    PADX_FILTR_TABLE
+    PADX_FILTR_TABLE, NAME_TITLES
 from Work.Scripts.interactors import ListMainTableInteractor
+from Work.Scripts.filters import FilterColumns as fil
+from Work.Scripts.filters import FilterRows as filrow
 
 INTERACTOR = ListMainTableInteractor(True)
 
@@ -56,25 +58,27 @@ class RowFilterPanel(Frame):
     pos_x = 0
     width = WIDTH_FILR_FRAME
     width_2 = width
-    _list_filtr = {"Наименование": None,
-                   "Цена": 0,
+    _list_filtr = {"Цена": 0,
                    "Производитель": None,
                    "Группа": None,
                    "Скидка": 40,
                    "Качество": None}
 
-    def __init__(self, master, **kw):
+    def __init__(self, master, m_table, **kw):
         super().__init__(master, {}, **kw)
+        self.m_table = m_table
         self.canvas = Canvas(self, bg=COLOR_BG_FRAME_TABLE, bd=0,
                              width=WIDTH_FILR_FRAME - 16)
         self.frame = Frame(self.canvas, bg=COLOR_BG_FRAME_TABLE)
 
-        self._list_filtr["Наименование"] = INTERACTOR.get_products_names()
         self._list_filtr["Цена"] = INTERACTOR.get_max_price()
         self._list_filtr["Производитель"] = INTERACTOR.get_producers()
+        self._list_filtr["Производитель"].insert(0, "Все")
         self._list_filtr["Группа"] = INTERACTOR.get_products_groups()
+        self._list_filtr["Группа"].insert(0, "Все")
         self._list_filtr["Скидка"] = INTERACTOR.get_max_discount()
         self._list_filtr["Качество"] = INTERACTOR.get_qualities()
+        self._list_filtr["Качество"].insert(0, "Все")
         
         # отслеживаем события для изменения ширины поля
         self.canvas.bind("<ButtonPress-1>", self.start_move)
@@ -125,32 +129,31 @@ class RowFilterPanel(Frame):
                                     bg=COLOR_BG_FRAME_TABLE)
                 scale.pack(side="top", padx=PADX_FILTR_TABLE+10)
             else:
-                box = Combobox(self.frame, width=15,
+                box = Combobox(self.frame, width=15, state="readonly",
                                values=self._list_filtr[key])
                 box.pack(side="top", padx=PADX_FILTR_TABLE+10, anchor="w")
+                box.current(0)
 
         btn_1 = Button(self.frame, text="Сохранить", width=15,
                        command=self.save)
-        btn_2 = Button(self.frame, text="Экспорт", width=15,
-                       command=self.export)
         btn_1.pack(side="top", padx=PADX_FILTR_TABLE+10, pady=10, anchor="w")
-        btn_2.pack(side="top", padx=PADX_FILTR_TABLE+10, anchor="w")
-
 
     def save(self, event=None):# pylint: disable=W0613
         """
         функция предназначенная для применения фильтрации
-
         Автор: Озирный Максим
         """
-        self.btn_1.focus_set()
-
-    def export(self, event=None):# pylint: disable=W0613
-        """
-        функция предназначенная для применения экспорта
-        Автор: Озирный Максим
-        """
-        self.btn_2.focus_set()
+        ch = list(self.frame.winfo_children())
+        g = 0
+        slov = {}
+        for i in range(len(ch)):
+            if type(ch[i]) == type(Combobox()):
+                slov.update({list(self._list_filtr.keys())[g]: ch[i].get()})
+                g += 1
+            if type(ch[i]) == type(ScaleFilter(self.canvas, self._list_filtr["Цена"])):
+                slov.update({list(self._list_filtr.keys())[g]: ch[i].slider.get()})
+                g += 1
+        filrow().filter(slov, self.m_table)
 
     @staticmethod
     def on_frame_configure(main_lab2):
@@ -242,14 +245,15 @@ class ColumnFilterPanel(Frame):
     поля отвечающего за фильтрацию столбцов
     Автор: Озирный Максим
     """
+    mass = []
     pos_x = 0
     width = WIDTH_FILR_FRAME
     width_2 = width
-    _list_table = ["Наименование", "Цена", "Производитель", "Группа", "Скидка",
-                   "Качество"]
+    _list_table = NAME_TITLES
 
-    def __init__(self, master, **kw):
+    def __init__(self, master, m_table, **kw):
         super().__init__(master, {}, **kw)
+        self.m_table = m_table
         self.canvas = Canvas(self, bg=COLOR_BG_FRAME_TABLE,
                              width=WIDTH_FILR_FRAME - 16)
         self.frame = Frame(self.canvas, bg=COLOR_BG_FRAME_TABLE)
@@ -293,8 +297,10 @@ class ColumnFilterPanel(Frame):
         # в цикле создаются и позиционируются подзаголовки и соответствующие
         # им объекты (Scale или Combobox) в зависимости от содержимого списка
         for ind in range(len(self._list_table)):
+            var = IntVar()
+            self.mass.append(var)
             check = Checkbutton(self.frame, bg=COLOR_BG_FRAME_TABLE, bd=0,
-                                fg=COLOR_FG_FRAME_TABLE,
+                                fg=COLOR_FG_FRAME_TABLE, variable=self.mass[ind],
                                 text="{}".format(self._list_table[ind]))
             check.pack(side="top", padx=PADX_FILTR_TABLE, anchor="w")
 
@@ -318,7 +324,14 @@ class ColumnFilterPanel(Frame):
 
         Автор: Озирный Максим
         """
-        self.btn.focus_set()
+        listik = []
+        for i in self.mass:
+            listik.append(i.get())
+        listik2 = []
+        for i in range(len(listik)):
+            if listik[i] == 0:
+                listik2.append(self._list_table[i])
+        fil().filter(listik2, self.m_table)
 
     def change_cursor(self, event=None):
         """

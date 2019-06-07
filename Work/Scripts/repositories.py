@@ -17,6 +17,7 @@ from Work.Scripts.commands import CommandDelete, CommandUpdate, \
     CommandInsert, CommandSelect
 from Work.Scripts.key_words import CompareOp
 from Work.Scripts.interf_extractor import IDataExtractor
+from Work.Scripts.config import NAME_TITLES
 
 
 class MainTableRepository:
@@ -37,52 +38,59 @@ class MainTableRepository:
         as: product_id,product_name,product_price,product_producer,product_group,dicsount, quality
         Return[0]==list of headers for table
         """
-        # result = [] * 1
-        # result.append(list(self._db_products.columns))
         main_table: pandas.DataFrame = self.extractor._db_products.copy()
-
-        def is_discount_works(discount_id: int):
-            now = time.mktime(datetime.datetime.now().timetuple())
-            date_begin = time.mktime(datetime.datetime.strptime(
-                self.extractor._db_discounts['date_begin'].iloc[discount_id],
-                "%d.%m.%Y").timetuple())
-            date_end = time.mktime(
-                datetime.datetime.strptime(
-                    self.extractor._db_discounts['date_end'].iloc[
-                        discount_id],
-                    "%d.%m.%Y").timetuple())
-            return date_begin <= now <= date_end
-
-        discount_list = self.extractor._db_discounts.id.copy()
-
-        for i in range(len(discount_list)):
-            if is_discount_works(discount_list.iloc[i]):
-                main_table.loc[main_table.discount_id == discount_list.iloc[
-                    i], 'discount_id'] = \
-                    self.extractor._db_discounts.amount.iloc[i]
-            else:
-                main_table.discount_id.copy().loc[
-                    main_table.discount_id == discount_list.iloc[i]] = 0
-
-        main_table.price *= round((1 - main_table.discount_id / 100.0), 2)
+        self.discount_list: pandas.DataFrame = self.extractor._db_discounts.copy()
+        self.discount_list: pandas.DataFrame = self.extractor._db_discounts.copy()
+        self.producer_list: pandas.DataFrame = self.extractor._db_producers.copy()
+        self.group_list: pandas.DataFrame = self.extractor._db_groups.copy()
+        main_table = pandas.merge(
+            main_table, self.discount_list, left_on='discount_id', right_on='discount_id')
+        main_table = pandas.merge(
+            main_table, self.group_list, left_on='group_id', right_on='group_id')
+        main_table = pandas.merge(
+            main_table, self.producer_list, left_on='producer_id', right_on='producer_id')
+        columns = ['id','name','price','producer_id','producer_name','group_id','group_name','discount_id','amount','date_begin','date_end','quality']
+        main_table=main_table[columns]
+        discounts_id = self.discount_list.discount_id.copy()
+        for i in range(len(discounts_id)):
+            if not self.is_discount_works(discounts_id.iloc[i]):
+                change_list = main_table.discount_id == discounts_id.iloc[i]
+                main_table.amount.loc[change_list] = 0
+                main_table.date_end.loc[change_list] = 'XX.XX.XXXX'
+        
         main_table = main_table.rename(columns={
-            'id': 'Id',
-            'name': 'Product name',
-            'price': 'Price',
-            'producer_name': 'Producer name',
-            'group_name': 'Category',
-            'discount_id': 'Discount',
-            'quality': 'Quality'
+            'name': NAME_TITLES[0],
+            'price': NAME_TITLES[1],
+            'producer_name': NAME_TITLES[2],
+            'group_name': NAME_TITLES[3],
+            'amount': NAME_TITLES[4],
+            'quality': NAME_TITLES[5]
         })
+        main_table['Скидка'] = main_table['Скидка'].astype(str)+'% ['+main_table['date_end']+']'
+        del main_table['date_begin']
+        del main_table['date_end']
+        main_table= main_table.sort_values('id')
         self.df = main_table
         self.select_df = main_table
         return main_table
+
+    def is_discount_works(self, discount_id: int):
+        now = time.mktime(datetime.datetime.now().timetuple())
+        date_begin = time.mktime(datetime.datetime.strptime(
+            self.discount_list['date_begin'].iloc[discount_id],
+            "%d.%m.%Y").timetuple())
+        date_end = time.mktime(
+            datetime.datetime.strptime(
+                self.discount_list['date_end'].iloc[
+                    discount_id],
+                "%d.%m.%Y").timetuple())
+        return date_begin <= now <= date_end
 
     def set_data(self, data: pd.DataFrame):
         self.df = data
 
     def get_products_groups(self):
-        return self.extractor._db_groups["name"].unique()
+        return self.extractor._db_groups["group_name"].unique()
 
     def get_qualities(self):
         """Return quality_list"""
@@ -90,7 +98,7 @@ class MainTableRepository:
 
     def get_producers(self):
         """Return performers"""
-        return self.extractor._db_products['producer_name'].unique()
+        return self.extractor._db_producers['producer_name'].unique()
 
     def get_products_names(self):
         """Return product names"""
@@ -178,6 +186,29 @@ class MainTableRepository:
 
     def get_db_copy(self):
         return copy.deepcopy(self.df)
+
+    def get_quality_list(self):
+        """Return quality_list
+        """
+        result = list(self.extractor._db_products['quality'].unique())
+        return result
+    def get_producers_list(self):
+        producers = self.extractor._db_producers.copy()
+        producer_list = list(producers['name'])
+        return producer_list
+
+    def get_group_list(self):
+        groups = self.extractor._db_groups.copy()
+        producer_list = list(groups['name'])
+        return producer_list
+
+    def get_discount_list(self):
+        discounts = self.extractor._db_discounts.copy()
+        date_list = list(discounts['date_end']) 
+        discount_list = list(discounts['amount'])
+        for i,j in enumerate(discount_list):
+            discount_list[i]=str(j)+'% ['+date_list[i]+']'
+        return discount_list
 
 
 class ReportsInteractor:

@@ -1,8 +1,11 @@
-import tkinter
+"""
+Author: Andrew Fedorov
+Модуль сохранения БД.
+"""
+import pickle
 from tkinter import Tk, filedialog, Frame
 import pandas as pd
 from Work.Scripts import conf
-from Work.Scripts.db_controller import MainTableController
 
 
 class SaveAs(Frame):
@@ -13,35 +16,6 @@ class SaveAs(Frame):
                                 ('pickle files', '.pickle')]
         options['initialfile'] = 'New'
         options['parent'] = self
-
-    def option(self):
-        """
-        Метод реализует выбор пользователем значения из списка
-        :return: выбранное значение
-        """
-        def okay():
-            name = variable.get()
-            if name == 'csv':
-                self.csv(MainTableController().get_data_frame())
-            elif name == 'xlsx':
-                self.xlsx(MainTableController().get_data_frame())
-            elif name == 'pickle':
-                self.pickle(MainTableController().get_data_frame())
-            master.destroy()
-
-        master = Tk()
-        message_label = tkinter.Label(master,
-                                      text="Выберите нужный формат сохранения")
-        message_label.grid(row=0, column=0, sticky='w')
-
-        variable = tkinter.StringVar()
-        variable.set('csv')
-
-        w_w = tkinter.OptionMenu(master, variable, "csv", "xlsx", "pickle")
-        w_w.grid(sticky='EW', row=1, column=0, padx=.5, pady=.5)
-
-        o_k = tkinter.Button(master, text="Ok", command=okay)
-        o_k.grid(row=3, column=0, padx=5, pady=5, sticky="e")
 
     def asksaveasfilename(self):
         """
@@ -69,14 +43,30 @@ class SaveAs(Frame):
         name = self.asksaveasfilename()
         table.to_csv(name + '.csv', sep=';', encoding='utf8', index=True)
 
-    def pickle(self, table: pd.DataFrame):
+    def pickle(self, table: pd.DataFrame, recent):
         """
         Author: Andrew Fedorov
-        :param table: таблица DataFrame
+        :param table: таблица DataFrame, recent: список изменений.
         :return: Сохраняет файл в формате pickle.
         """
-        name = self.asksaveasfilename()
-        table.to_pickle(name + '.pickle')
+        del(table["Категория"])
+        del(table["Производитель"])
+        del(table["Скидка"])
+        f = open(conf.ROOT_DIR + r'\Data\filename.txt', 'r')
+        path = f.read()
+        f.close()
+        table1 = pd.read_pickle(path)
+        table1["_db_products"] = table
+        try:
+            Save().update_temp(recent)
+            name = self.asksaveasfilename()
+            with open(name, "wb") as handle:
+                pickle.dump(table1, handle)
+            f = open(conf.ROOT_DIR + r'\Data\filename.txt', 'w')
+            f.write(name)
+            f.close()
+        except FileNotFoundError:
+            pass
 
     def xlsx(self, table: pd.DataFrame):
         """
@@ -105,7 +95,7 @@ class Save:
         :param table: таблица DataFrame
         :return: Сохраняет файл в формате csv .
         """
-        name = conf.ROOT_DIR + r"\Data\db.pickle"
+        name = conf.ROOT_DIR + r"\Data\db"
         table.to_csv(name + '.csv', sep=';', encoding='utf8', index=False)
 
     @staticmethod
@@ -115,30 +105,33 @@ class Save:
         :param table: таблица DataFrame
         :return: Сохраняет файл в формате csv с индексами.
         """
-        name = conf.ROOT_DIR + r"\Data\db.pickle"
-        table.to_csv(name + '.csv', sep=';', encoding='utf8', index=True)
+        name = conf.ROOT_DIR + r"\Outputs\pivot_table.csv"
+        table.to_csv(name, sep=';', encoding='utf8', index=True)
 
-    @staticmethod
-    def pickle(table: pd.DataFrame):
+    def pickle(self, table: pd.DataFrame, param, recent):
         """
         Author: Andrew Fedorov
         :param table: таблица DataFrame
         :return: Сохраняет файл в формате pickle.
         """
-        f_f = open(conf.ROOT_DIR + r'\Data\Temp\filename.txt', 'r')
-        te_xt = f_f.read()
-        f_f.close()
+        if param == 0:
+            self.update_temp(recent)
+            f_f = open(conf.ROOT_DIR + r'\Data\filename.txt', 'r')
+            te_xt = f_f.read()
+            f_f.close()
+        elif param == 1:
+            te_xt = conf.ROOT_DIR + r"\Outputs\pivot_table.pickle"
         name = r'' + te_xt
-        table.to_pickle(name + '.pickle')
+        table.to_pickle(name)
 
     @staticmethod
-    def xlsx(table: pd.DataFrame):
+    def xlsx(table: pd.DataFrame, na):
         """
         Author: Andrew Fedorov
         :param table: таблица DataFrame
         :return: Сохраняет файл в формате xlsx.
         """
-        name = conf.ROOT_DIR + r"\Data\db.pickle"
+        name = conf.ROOT_DIR + r"\Outputs" + na
         table.to_excel(name + '.xlsx', index=False)
 
     @staticmethod
@@ -148,10 +141,34 @@ class Save:
         :param table: таблица DataFrame
         :return: Сохраняет файл в формате xlsx с индексами.
         """
-        name = conf.ROOT_DIR + r"\Data\db.pickle"
+        name = conf.ROOT_DIR + r"\Outputs\pivot_table"
         table.to_excel(name + '.xlsx', index=True)
 
+    @staticmethod
+    def update_temp(recent):
+        frame: pd.DataFrame = pd.read_pickle(conf.ROOT_DIR + r"\Data\temp.pickle")
 
-if __name__ == '__main__':
-    f = open(conf.ROOT_DIR + r'\Data\Temp\filename.txt', 'r')
-    f = f.read()
+        for i in recent["del"]:
+            frame = frame.loc[frame.id != i]
+        s = 0
+        for i in ("name", "price", "qual", "producer", "group_name","discount"):
+            s += len(recent["ch"][i])
+        if s > 0:
+            for i in ("name", "price", "qual", "producer", "group_name","discount"):
+                for g in recent["ch"][i]:
+                    if i == "name":
+                        frame["Назв продукта"][frame.id == g[0]] = g[1]
+                    elif i == "price":
+                        frame["Цена"][frame.id == g[0]] = g[1]
+                    elif i == "qual":
+                        frame["Кат товара"][frame.id == g[0]] = g[1]
+                    elif i == "producer":
+                        frame["Производитель"][frame.id == g[0]] = g[1]
+                        frame["producer_id"][frame.id == g[0]] = g[2]
+                    elif i == "group_name":
+                        frame["Категория"][frame.id == g[0]] = g[1]
+                        frame["group_id"][frame.id == g[0]] = g[2]
+                    elif i == "discount":
+                        frame["Скидка"][frame.id == g[0]] = g[1]
+                        frame["discount_id"][frame.id == g[0]] = g[2]
+        pd.to_pickle(frame, conf.ROOT_DIR + r"\Data\temp.pickle")

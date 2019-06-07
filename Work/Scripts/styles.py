@@ -1,4 +1,7 @@
-"""docstring_peryatin
+"""
+Хранит константы для стилизации программы
+
+Автор: Перятин Виталий
 """
 
 TIMES_NEW_ROMAN_FONT = "Times New Roman"

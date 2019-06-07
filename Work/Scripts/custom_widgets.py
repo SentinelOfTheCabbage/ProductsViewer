@@ -2,11 +2,12 @@
 Предоставляет элементы с видоизмененным
 параметрами индивидуально для проекта
 
-Автор: Перятин Виталий
 Отключены следующие ошибки pylint:
     R0901 - Слишком много предкова
     W0614 - Ошибка использования self в некоторых методах класса
     E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
+
+Автор: Перятин Виталий
 """
 # pylint: disable=E0401
 # pylint: disable=W0614
@@ -262,6 +263,12 @@ class HorizontalScrolledFrame(PVFrame):
         interior.bind('<Configure>', _configure_interior)
 
         def _configure_canvas(event):
+            """
+             Конфигурирует canvas для прокрутки
+
+             Автор: Перятин Виталий
+            """
+
             if interior.winfo_reqheight() != canvas.winfo_height():
                 # update the inner frame's width to fill the canvas
                 canvas.itemconfigure(interior_id, width=canvas.winfo_height())

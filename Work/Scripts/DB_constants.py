@@ -1,17 +1,26 @@
-"""docstring_peryatin
+"""
+Содержит константы для работы с базой данных
+
+Автор: Перятиин Виталий
 """
 from enum import Enum
 
 
 class TableName(Enum):
-    """docstring_peryatin
+    """
+    Константы с названиями таблицы
+
+    Автор: Перятин Виталий
     """
     PRODUCTS = "Products"
     VOUCHERS = "Vouchers"
 
 
 class ProductsColumn(Enum):
-    """docstring_peryatin
+    """
+    Константы с названиями столбцов
+
+    Автор: Перятин Виталий
     """
     ID = "id"
     NAME = "name"
@@ -23,21 +32,28 @@ class ProductsColumn(Enum):
 
     @staticmethod
     def get_columns():
-        """docstring_peryatin
+        """
+        Получает список названий столбца
+        :return: список значений столбца
+
+        Автор: Перятин Виталий
         """
         return [
-            ProductsColumn.ID.value,
-            ProductsColumn.NAME.value,
-            ProductsColumn.PRICE.value,
-            ProductsColumn.PRODUCER_NAME.value,
-            ProductsColumn.GROUP_NAME.value,
-            ProductsColumn.DISCOUNT_NAME.value,
-            ProductsColumn.QUALITY.value
+            ProductsColumn.ID,
+            ProductsColumn.NAME,
+            ProductsColumn.PRICE,
+            ProductsColumn.PRODUCER_NAME,
+            ProductsColumn.GROUP_NAME,
+            ProductsColumn.DISCOUNT_NAME,
+            ProductsColumn.QUALITY
         ]
 
 
 class VouchersColumn(Enum):
-    """docstring_peryatin
+    """
+    Класс, содержащий, константы для работы с таблицей чеков
+
+    Автор: Перятин Виталий
     """
     ID = "id"
     DATE = "date"
@@ -46,11 +62,15 @@ class VouchersColumn(Enum):
 
     @staticmethod
     def get_columns():
-        """docstring_peryatin
+        """
+        Получает список названий столбцов
+        :return: список названий столбцов
+
+        Автор: Перятин Виталий
         """
         return [
-            VouchersColumn.ID.value,
-            VouchersColumn.DATE.value,
-            VouchersColumn.TIME.value,
-            VouchersColumn.TOTAL.value
+            VouchersColumn.ID,
+            VouchersColumn.DATE,
+            VouchersColumn.TIME,
+            VouchersColumn.TOTAL
         ]

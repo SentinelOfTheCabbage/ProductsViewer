@@ -24,7 +24,10 @@ from Work.Scripts.interf_extractor import IDataExtractor
 
 
 class MainTableRepository:
-    """Класс для импорта основной информации из базы данных
+    """
+    Класс для импорта основной информации из базы данных
+
+    Автор: Сулейманов Наиль
     """
     extractor: IDataExtractor
     d_f = pd.DataFrame()
@@ -38,16 +41,21 @@ class MainTableRepository:
         self.selector = None
 
     def get_data(self):
-        """Author: Suleymanov Nail
+        """
         Возвращает основную таблицу, получаемую функцией get_main_table
+
+        Автор: Сулейманов Наиль
         """
         return self.get_main_table()
 
     def get_main_table(self):
-        """Author: Suleymanov Nail
-        Function returns list of lists that contain all needed information for main table
-        as: product_id,product_name,product_price,product_producer,product_group,dicsount, quality
-        Return[0]==list of headers for table
+        """
+        Функция возвращает список списков, которые содержат всю необходимую информацию для основной таблицы
+        как: product_id, product_name, product_price, product_producer, product_group, dicsount, качество
+
+        :return: список заголовков таблицы
+
+        Автор: Сулейманов Наиль
         """
         main_table: pd.DataFrame = self.extractor._db_products.copy()
         main_table = pd.merge(
@@ -89,8 +97,10 @@ class MainTableRepository:
         return main_table
 
     def is_discount_works(self, discount_id: int):
-        """Author: Suleymanov Nail
+        """
         Функция проверяет актуальность скидки по id скидки.
+
+        Автор: Сулейманов Наиль
         """
         now = time.mktime(datetime.datetime.now().timetuple())
         date_begin = time.mktime(datetime.datetime.strptime(
@@ -104,13 +114,19 @@ class MainTableRepository:
         return date_begin <= now <= date_end
 
     def set_data(self, data: pd.DataFrame):
-        """docstring_peryatin
+        """
+        Устанавливает новую БД в виде DataFrame
+        :param data: новые данные для записи
+
+        Автор: Перятин Виталий
         """
         self.d_f = data
 
     def get_products_groups(self):
-        """Author: Suleymanov Nail
-        Функция возвращает групы товаров
+        """
+        Функция возвращает группы товаров
+
+        Автор: Сулейманов Наиль
         """
         return self.extractor._db_groups["group_name"].unique()
 
@@ -119,23 +135,49 @@ class MainTableRepository:
         return self.extractor._db_products['quality'].unique()
 
     def get_producers(self):
-        """Return performers"""
+        """
+        Возвращает список производителей
+        :return: список производителей
+
+        Автор: Перятин Виталий
+        """
         return self.extractor._db_producers['producer_id'].unique()
 
     def get_products_names(self):
-        """Return product names"""
+        """
+        Возвращает названия продуктов из БД
+        :return: названия продуктов из БД
+
+        Автор: Перятин Виталий
+        """
         return self.extractor._db_products['name'].unique()
 
     def get_max_price(self):
-        """Return product names"""
+        """
+        Возращает максимальную цену проуктов
+        :return: максимальная цена проуктов
+
+        Автор: Перятин Виталий
+        """
         return max(list(self.extractor._db_products['price']))
 
     def get_max_discount(self):
-        """Return product names"""
+        """
+        Возвращает макасимальную скидку продуктов
+        :return: макасимальная скидка продуктов
+
+        Автор: Перятин Виталий
+        """
         return max(list(self.extractor._db_discounts['amount']))
 
     def select(self, command_select: CommandSelect = None):
-        """docstring_peryatin
+        """
+        Выбирает данные из БД по переданным командам извне
+
+        :param command_select: команды для выборки данных из БД
+        :return: Отфильтрованная БД в виде DataFrame
+
+        Автор: Перятин Виталий
         """
         if not command_select is None:
             self.selector = command_select
@@ -150,7 +192,26 @@ class MainTableRepository:
     @staticmethod
     def _filter(d_f: pd.DataFrame, field, compare_op: str,
                 value, reverse=False):
+        """
+        Фильтрует записи таблицы. Проверяет удовлетвоярет ли строка
+        в DataFrame переданному значению
+        :param d_f: таблица для фильтрации
+        :param field: поле, которое проверяется при фильтрации
+        :param compare_op: операнд сравнения
+        :param value: значение, относительно которого фильтруются данные
+        :param reverse: True при необходимости перевернуть операцию сравнения
+        :return: отфильтрованная БД
+
+        Автор: Перятин Виталий
+        """
         def get_type_of(series: pd.Series):
+            """
+            Получает тип значений, которые хранятся в колонке
+            :param series: список значений столбца
+            :return: тип значений столбца
+
+            Автор: Перятин Виталий
+            """
             if series.array:
                 try:
                     float(series.array[0])
@@ -161,15 +222,19 @@ class MainTableRepository:
             return None
 
         def reverse_op(o_p):
-            """docstring_peryatin
+            """
+            Переворачивает операцию сравнения
+            :return: перевернутая операция сравнения
+
+            Автор: Перятин Виталий
             """
             return {
-                CompareOp.EQUAL.value: CompareOp.NOT_EQUAL.value,
-                CompareOp.NOT_EQUAL.value: CompareOp.EQUAL.value,
-                CompareOp.LESS.value: CompareOp.MORE_OR_EQUAL.value,
-                CompareOp.LESS_OR_EQUAL.value: CompareOp.MORE.value,
-                CompareOp.MORE.value: CompareOp.LESS_OR_EQUAL.value,
-                CompareOp.MORE_OR_EQUAL.value: CompareOp.LESS.value
+                CompareOp.EQUAL: CompareOp.NOT_EQUAL,
+                CompareOp.NOT_EQUAL: CompareOp.EQUAL,
+                CompareOp.LESS: CompareOp.MORE_OR_EQUAL,
+                CompareOp.LESS_OR_EQUAL: CompareOp.MORE,
+                CompareOp.MORE: CompareOp.LESS_OR_EQUAL,
+                CompareOp.MORE_OR_EQUAL: CompareOp.LESS
             }[o_p]
 
         data_type = get_type_of(d_f[field])
@@ -178,23 +243,31 @@ class MainTableRepository:
         if reverse:
             compare_op = reverse_op(compare_op)
         return {
-            CompareOp.EQUAL.value: field_val == value,
-            CompareOp.NOT_EQUAL.value: field_val != value,
-            CompareOp.LESS.value: field_val < value,
-            CompareOp.LESS_OR_EQUAL.value: field_val <= value,
-            CompareOp.MORE.value: field_val > value,
-            CompareOp.MORE_OR_EQUAL.value: field_val >= value
+            CompareOp.EQUAL: field_val == value,
+            CompareOp.NOT_EQUAL: field_val != value,
+            CompareOp.LESS: field_val < value,
+            CompareOp.LESS_OR_EQUAL: field_val <= value,
+            CompareOp.MORE: field_val > value,
+            CompareOp.MORE_OR_EQUAL: field_val >= value
         }[compare_op]
 
     def insert(self, command_insert: CommandInsert):
-        """docstring_peryatin
+        """
+        Получает строки для вставки в БД
+        :return: строки для вставки в БД
+
+        Автор: Перятин Виталий
         """
         row = command_insert.get_row()
         self.d_f = self.d_f.append(row, ignore_index=True)
         return row.values()
 
     def update(self, command_update: CommandUpdate):
-        """docstring_peryatin
+        """
+        Получает обновленные строки по переданной команеде
+        :return: обновленные строки по переданной команеде
+
+        Автор: Перятин Виталий
         """
         command_update.get_values()
         for col, o_p, val in command_update.items():
@@ -205,46 +278,75 @@ class MainTableRepository:
         return self.select(self.selector)
 
     def delete(self, command_delete: CommandDelete):
-        """docstring_peryatin
+        """
+        Получает таблицу с удалёными строками
+        :return: таблица с удалёными строками
+
+        Автор: Перятин Виталий
         """
         for col, o_p, val in command_delete.items():
             self.d_f = self.d_f[self._filter(self.d_f, col, o_p, val, True)]
         return self.select(self.selector)
 
     def get_vals_by_col(self, column: str):
-        """docstring_peryatin
+        """
+        Получает список значений по названию столбца
+        :param column: название столбца
+        :return: список значений по названию столбца
+
+        Автор: Перятин Виталий
         """
         vals = list(set(self.d_f[column].tolist()))
         vals.sort()
         return vals
 
     def get_db_copy(self):
-        """docstring_peryatin
+        """
+        Получает копию базы данных
+        :return: копия базы данных
+
+        Автор: Перятин Виталий
         """
         return copy.deepcopy(self.d_f)
 
     def get_quality_list(self):
-        """Return quality_list
+        """
+        Получает список категорий качества
+        :return: список категорий качества
+
+        Автор: Перятин Виталий
         """
         result = list(self.extractor._db_products['quality'].unique())
         return result
 
     def get_producers_list(self):
-        """docstring_peryatin
+        """
+        Получает список производителей
+        :return: список производителей
+
+        Автор: Перятин Виталий
         """
         producers = self.extractor._db_producers.copy()
         producer_list = list(producers['producer_name'])
         return producer_list
 
     def get_group_list(self):
-        """docstring_peryatin
+        """
+        Получает список групп
+        :return: список групп
+
+        Автор: Перятин Виталий
         """
         groups = self.extractor._db_groups.copy()
         producer_list = list(groups['group_name'])
         return producer_list
 
     def get_discount_list(self):
-        """docstring_peryatin
+        """
+        Получает список скидок
+        :return: список скидок
+
+        Автор: Перятин Виталий
         """
         discounts = self.extractor._db_discounts.copy()
         date_list = list(discounts['date_end'])
@@ -256,7 +358,9 @@ class MainTableRepository:
 
 class ReportsInteractor:
     """
-    docstring
+    Класс для работы с базой данных и преобразования типов
+
+    Автор: Сулейманов Наиль
     """
     extractor: IDataExtractor
 
@@ -264,8 +368,11 @@ class ReportsInteractor:
         self.extractor = extractor
 
     def get_prices_by_group_and_quality(self, groups: list, qualities: list):
-        """output: Dataframe that contain table with mean price
-        of every quality and group from input
+        """
+        :return: таблица, содержащая таблицу со средней ценой
+        каждого качества и группы от входа
+
+        Автор: Сулейманов Наиль
         """
         products_table = self.extractor._db_products
         groups_table = self.extractor._db_groups
@@ -292,14 +399,12 @@ class ReportsInteractor:
         return result
 
     def get_prices_by_group(self, product_group: str, products: list):
-        """Author: Suleymanov Nail
-        output: result
-        result=[
-            {'product[i].name': price[i] },
-            ...
-        ]
-        product[i] is in products and have product[i].group_name == product_group
+        """
+        Возвращает список словарей, где ключ - название столбца, а значение словаря - сзанчение столбца.
+        Список словарей - список цен по выбранной группе
+        :return: список цен по выбранной группе
 
+        Автор: Сулейманов Наиль
         """
         result = {}
         table = self.extractor._db_products
@@ -312,15 +417,19 @@ class ReportsInteractor:
         return result
 
     def get_products_groups(self):
-        """Author: Suleymanov Nail
+        """
         Функция возвращает Series со всеми группами продукции
+
+        Автор: Сулейманов Наиль
         """
         return self.extractor._db_groups["group_name"]
 
     def get_products_by_group(self, group: str):
-        """Author: Suleymanov Nail
+        """
         Функция возвращает список Series с продуктами,
         принадлежащими заданной группе товаров.
+
+        Автор: Сулейманов Наиль
         """
         db_products = self.extractor._db_products
         db_groups = self.extractor._db_groups
@@ -328,11 +437,11 @@ class ReportsInteractor:
         return db_products[pos]["name"]
 
     def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):
-        """Функция принимает на вход тип продукции, лист качеств и лист продуктов
+        """
+        Функция принимает на вход тип продукции, лист качеств и лист продуктов
         Возвращает лист листов, где каждая ячейка содержит стоимости всех продуктов данного качества
-        Т.е к примеру, если qualities = ['ГОСТ','ТУ']
-        То  result[0] сожержит стоимости продуктов из листа productsкачества 'ГОСТ',
-            result[1] ->'ТУ'
+
+        Автор: Сулейманов Наиль
         """
         temp_db = self.extractor._db_products.copy()
         groups = self.extractor._db_groups.copy()
@@ -349,14 +458,12 @@ class ReportsInteractor:
         return result
 
     def get_spreading(self, product_group: str, date: str):
-        """Output: result
-        Return information about amount of sold production of product_group and price
-        in DD.MM.YYYY date
-        Return =[
-            {'price': price of 1 object,
-             'amount': amount of this product},
-            ...
-        ]
+        """
+        Возвращает информацию о количестве проданной продукции группы товаров и цене
+        в формате ДД.ММ.ГГГГ
+        :return: список словарей по распылению исходя из переданных параметров
+
+        Автор: Сулейманов Наиль
         """
         vouchers = self.extractor._db_vouchers[
             self.extractor._db_vouchers.date == date]
@@ -386,7 +493,10 @@ class ReportsInteractor:
         return result
 
     def get_quality_list(self):
-        """Return quality_list
+        """
+        Получает список значений качества продукции
+
+        Автор: Сулейманов Наиль
         """
         result = list(self.extractor._db_products['quality'].unique())
         return result

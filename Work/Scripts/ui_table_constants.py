@@ -59,10 +59,10 @@ class ProductColumns(IColumnsName):
         Автор: Перятин Виталий
         """
         return {
-            ProductColumns.NAME.value: None,
-            ProductColumns.PRICE.value: None,
-            ProductColumns.PRODUCER_NAME.value: None,
-            ProductColumns.GROUP_NAME.value: None,
-            ProductColumns.DISCOUNT_NAME.value: None,
-            ProductColumns.QUALITY.value: None
+            ProductColumns.NAME: None,
+            ProductColumns.PRICE: None,
+            ProductColumns.PRODUCER_NAME: None,
+            ProductColumns.GROUP_NAME: None,
+            ProductColumns.DISCOUNT_NAME: None,
+            ProductColumns.QUALITY: None
         }

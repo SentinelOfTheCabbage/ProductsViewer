@@ -1,7 +1,12 @@
-"""docstring_peryatin
+"""
+Модуль дял трансформирования типов на стороне базы данных к типу,
+    который испоьзуется на стороне визуального интерфейса
+
 Отключены следующие ошибки pylint:
     E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
     R0201 - Ошибка использования self в некоторых методах класса
+
+Автор: Перятин Виталий
 """
 # pylint: disable=E0401
 # pylint: disable=R0201
@@ -12,15 +17,21 @@ from Work.Scripts.db_controller import MainTableController, \
 
 
 class ListMainTableInteractor(MainTableController):
-    """docstring_peryatin
+    """
+    Класс для трансформирования типов на стороне базы данных к типу,
+    который испоьзуется на стороне визуального интерфейса
+
+    Автор: Перятин Виталий
     """
     def __init__(self, save_curr_state=False):
-        """docstring_peryatin
-        """
         super().__init__(save_curr_state)
 
     def tolist(self, d_f: DataFrame):
-        """docstring_peryatin
+        """
+        Преобразует DataFrame в список списков
+        :return: список списков для отображения таблицы пользователю
+
+        Автор: Перятин Виталий
         """
         if (d_f is not None) and (isinstance(d_f, DataFrame)):
             full_list = d_f.values.tolist()
@@ -28,77 +39,120 @@ class ListMainTableInteractor(MainTableController):
             return full_list
         return None
 
-    def get_columns_by_table(self, table):
-        """docstring_peryatin
-        """
-        return self.tolist(super().get_columns_by_table(table))
-
     def select(self, column_choices: dict, expressions):
-        """docstring_peryatin
+        """
+        Фильтрует таблицу по переданным выражениям и
+        возвращает результат при фильтрации таблицы
+        :param column_choices: список столбцов
+        :param expressions: список выражений для фильтрации
+
+        Автор: Перятин Виталий
         """
         event = super().select(column_choices, expressions)
         event.data = self.tolist(event.data)
         return event
 
     def get_products_groups(self):
-        """docstring_peryatin
+        """
+        Получает список групп
+
+        Автор: Перятин Виталий
         """
         return list(super().get_products_groups())
 
     def get_qualities(self):
-        """Return quality_list"""
+        """
+        Получает список категорий качества
+
+        Автор: Перятин Виталий
+        """
         return list(super().get_qualities())
 
     def get_producers(self):
-        """Return performers"""
+        """
+        Получает список производителей
+
+        Автор: Перятин Виталий
+        """
         return list(super().get_producers())
 
     def get_products_names(self):
-        """Return product names"""
+        """
+        Получает сипсок названий продуктов
+
+        Автор: Перятин Виталий
+        """
         return list(super().get_products_names())
 
     def get_max_price(self):
-        """Return product names"""
+        """
+        Получает максимальную цену продуктов
+
+        Автор: Перятин Виталий
+        """
         return super().get_max_price()
 
     def get_max_discount(self):
-        """Return product names"""
+        """
+        Получает максимальную скидку
+
+        Автор: Перятин Виталий
+        """
         return super().get_max_discount()
 
     def update(self, set_frames: list, expressions: list):
-        """docstring_peryatin
+        """
+        Обновляет таблицу и получает результат операции
+
+        Автор: Перятин Виталий
         """
         event = super().update(set_frames, expressions)
         event.data = self.tolist(event.data)
         return event
 
     def delete(self, expressions):
-        """docstring_peryatin
+        """
+        Удаляет записи в таблице и возвращает результат удаления
+
+        Автор: Перятин Виталий
         """
         event = super().delete(expressions)
         event.data = self.tolist(event.data)
         return event
 
     def get_data(self):
-        """docstring_peryatin
+        """
+        Получает итоговую таблицу для отображени пользователю
+
+        Автор: Перятин Виталий
         """
         return self.tolist(super().get_data_frame())[:100]
 
 
 class ListReportsAdapter(ReportsController):
-    """docstring_peryatin
+    """
+    Адапер для преобразования данных из DataFrame в
+    инртерфейсы удобные для работы на стороне интерфейса
+
+    Автор: Перятни Виталий
     """
     def __init__(self):
-        """docstring_peryatin
-        """
         super().__init__()
+
     def tolist(self, series: Series):
-        """docstring_peryatin
+        """
+        Преобразует тип Series к списку
+
+        Автор: Перятин Виталий
         """
         if (series is not None) and (isinstance(series, Series)):
             return series.tolist()
         return None
+
     def get_products_groups(self):
-        """docstring_peryatin
+        """
+        Получает сипсок групп продуктов
+
+        Автор: Перятин Виталий
         """
         return self.tolist(super().get_products_groups())

@@ -1,7 +1,11 @@
-"""docstring_peryatin
+"""
+Модуль для управления базой даных
+
 Отключены следующие ошибки pylint:
     E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
     R1705 - Нет необходимости в elif/else после return
+
+Автор: Перятин Виталий
 """
 # pylint: disable=E0401
 # pylint: disable=R1705
@@ -22,7 +26,10 @@ EMPTY_VALS = "Не заполнены значения"
 
 
 class EditDbError(Enum):
-    """docstring_peryatin
+    """
+    Перечисления ошибок при изменении БД
+
+    Автор: Перятин Виталий
     """
     EMPTY_FIELDS = 1
     INCORRECT_DATA = 2
@@ -30,61 +37,90 @@ class EditDbError(Enum):
 
 
 class MainTableController:
-    """docstring_peryatin
+    """
+    Класс для управления основной таблицей,
+    лежащей в базе данных
+
+    Автор: Перятин Виталий
     """
 
     def __init__(self, save_curr_state=False):
-        """docstring_peryatin
-        """
         self.repository = MainTableRepository(DataExtractor())
-        self.selector = CommandSelect(TableNameUI.PRODUCTS.value)
+        self.selector = CommandSelect(TableNameUI.PRODUCTS)
         if save_curr_state:
             self._save_state()
 
     def get_data_frame(self):
-        """docstring_peryatin
+        """
+        Получает основную таблицу из базы данных
+        для отображения пользователю
+        :return: основная таблица из базы данных
+
+        Автор: Перятин Виталий
         """
         return self.repository.get_main_table()
 
-    def get_columns_by_table(self, table):
-        """docstring_peryatin
-        """
-        pass
-
     def get_products_groups(self):
-        """docstring_peryatin
+        """
+        Поллучает список групп продуктов
+
+        Автор: Перятин Виталий
         """
         return self.repository.get_products_groups()
 
     def get_qualities(self):
-        """Return quality_list"""
+        """
+        Получает список категорий качества
+
+        Автор: Перятин Виталий
+        """
         return self.repository.get_qualities()
 
     def get_producers(self):
-        """Return performers"""
+        """
+        Получает список производителей
+
+        Автор: Перятин Виталий
+        """
         return self.repository.get_producers()
 
     def get_products_names(self):
-        """Return product names"""
+        """
+        Получает список имён продуктов
+
+        Автор: Перятин Виталий
+        """
         return self.repository.get_products_names()
 
     def get_max_price(self):
-        """docstring_peryatin
+        """
+        Получает максимальную цену продукта
+
+        Автор: Перятин Виталий
         """
         return self.repository.get_max_price()
 
-    def get_max_discount(self):
-        """docstring_peryatin
+    def get_max_discouжnt(self):
+        """
+        Получает максимальную скидку
+
+        Автор: Перятин Виталий
         """
         return self.repository.get_max_discount()
 
     def select(self, column_choices: dict, expressions):
-        """docstring_peryatin
+        """
+        Фильтрует таблицу и возвращает результат фильтрации
+
+        Автор: Перятин Виталий
         """
         columns = []
 
         def get_text():
-            """docstring_peryatin
+            """
+            Получает текст для результата выборки данных
+
+            Автор: Перятин Виталий
             """
             col_text = 'По столбцам: ' + ', '.join(columns)
             exprs = []
@@ -108,13 +144,13 @@ class MainTableController:
                 break
 
         if not columns:
-            err = EditDbError.EMPTY_FIELDS.value
+            err = EditDbError.EMPTY_FIELDS
             return Event(err, EMPTY_COLS)
         elif not is_full_exprs:
-            err = EditDbError.EMPTY_FIELDS.value
+            err = EditDbError.EMPTY_FIELDS
             return Event(err, EMPTY_EXPRS)
         else:
-            self.selector = CommandSelect(TableNameUI.PRODUCTS.value)
+            self.selector = CommandSelect(TableNameUI.PRODUCTS)
             self.selector.set_columns(columns)
             self.selector.set_conditions(expressions)
             data = self.repository.select(self.selector)
@@ -122,11 +158,18 @@ class MainTableController:
             return Event(0, get_text(), data)
 
     def insert(self, col_to_values: dict):
-        """docstring_peryatin
+        """
+        Вставляет новые строки в базу данных и
+        врзвращает рузультат вставки
+
+        Автор: Перятин Виталий
         """
 
         def get_text(cut_row: list):
-            """docstring_peryatin
+            """
+            Получает текст для результата вставки
+
+            Автор: Перятин Виталий
             """
             return "В БД добавлена следующая строка... \n" + ", ".join(cut_row)
 
@@ -152,10 +195,16 @@ class MainTableController:
             return Event(EditDbError.EMPTY_FIELDS.value, EMPTY_VALS)
 
     def update(self, set_frames: list, expressions: list):
-        """docstring_peryatin
+        """
+        Обновялет строки и возвращает результат обновления
+
+        Автор: Перятин Виталий
         """
         def get_text():
-            """docstring_peryatin
+            """
+            Получает текст для результата обновления
+
+            Автор: Перятин Виталий
             """
             return "Обновлены строки"
 
@@ -171,9 +220,9 @@ class MainTableController:
                 break
 
         if (not is_full_vals) or (not values):
-            return Event(EditDbError.EMPTY_FIELDS.value, EMPTY_VALS)
+            return Event(EditDbError.EMPTY_FIELDS, EMPTY_VALS)
         elif not expressions:
-            return Event(EditDbError.EMPTY_FIELDS.value, EMPTY_EXPRS)
+            return Event(EditDbError.EMPTY_FIELDS, EMPTY_EXPRS)
         else:
             updater.update_values(values)
             updater.set_conditions(expressions)
@@ -182,10 +231,16 @@ class MainTableController:
             return Event(0, get_text(), data)
 
     def delete(self, expressions):
-        """docstring_peryatin
+        """
+        Удаляет строки и возвращает результат удаления
+
+        Автор: Перятин Виталий
         """
         def get_text():
-            """docstring_peryatin
+            """
+            Получает текст для результата обновления
+
+            Автор: Перятин Виталий
             """
             return "Удалены записи"
 
@@ -196,7 +251,7 @@ class MainTableController:
                 break
 
         if (expressions is None) or (not is_full_exprs) or (not expressions):
-            return Event(EditDbError.EMPTY_FIELDS.value, EMPTY_EXPRS)
+            return Event(EditDbError.EMPTY_FIELDS, EMPTY_EXPRS)
         else:
             deleter = CommandDelete()
             deleter.set_conditions(expressions)
@@ -205,75 +260,88 @@ class MainTableController:
             return Event(0, get_text(), data)
 
     def get_vals_by_col(self, column):
-        """docstring_peryatin
+        """
+        Получает значения по названию столбцу
+        :param column: название столбца
+
+        Автор: Перятин Виталий
         """
         return self.repository.get_vals_by_col(column)
 
-    def _save_state(self):
-        """docstring_peryatin
-        """
-
-    def next_state(self):
-        """docstring_peryatin
-        """
-        def get_text():
-            """docstring_peryatin
-            """
-            return "Шаг вперёд"
-
-        tuple_state = self.states.next()
-        if tuple_state is None:
-            return Event(EditDbError.NO_SELECTOR.value, "")
-        state, selector = tuple_state
-        self.repository.set_data(state)
-        return Event(0, get_text(), self.repository.select(selector))
-
 
 class ReportsController:
-    """docstring_peryatin
+    """
+    Класс для управления данными,
+    которые необходимы для отчётов
     """
 
     def __init__(self):
-        """docstring_peryatin
-        """
         self.reports_interactor = ReportsInteractor(DataExtractor())
 
     def get_products_groups(self):
-        """docstring_peryatin
+        """
+        Получает список групп
+
+        Автор: Перятин Виталий
         """
         return self.reports_interactor.get_products_groups()
 
     def get_quality_categories(self):
-        """docstring_peryatin
+        """
+        Получает список категорий качества
+
+        Автор: Перятин Виталий
         """
         return self.reports_interactor.get_quality_list()
 
     def get_prices_by_group_and_quality(self, groups: list, quality: list):
-        """docstring_peryatin
+        """
+        Получает список цен по группе и категории качества
+        :param groups: группы
+        :param quality: категории качества
+
+        Автор: Перятин Виталий
         """
         return self.reports_interactor.get_prices_by_group_and_quality(
             groups, quality)
 
     def get_products_by_group(self, group: str):
-        """docstring_peryatin
+        """
+        Получает списико продуктов по группе
+        :param group: группа
+
+        Автор: Перятин Виталий
         """
         return self.reports_interactor.get_products_by_group(group)
 
     def get_box_and_whisker_prices(self, product_group: str, qualities: list,
                                    products: list):
-        """docstring_peryatin
+        """
+        Получает разброс цен для диаграммы "Ящик с усами"
+
+        Автор: Перятин Виталий
         """
         return self.reports_interactor.get_box_and_whisker_prices(
             product_group, qualities, products)
 
     def get_prices_by_group(self, product_group: str, products: list):
-        """docstring_peryatin
+        """
+        Получает список цен продуктоа по группе
+        :param products: список продуктов
+        :param product_group: название группы
+
+        Автор: Перятин Виталий
         """
         return self.reports_interactor.get_prices_by_group(product_group,
                                                            products)
 
     def get_spreading(self, product_group: str, date: str):
-        """docstring_peryatin
+        """
+        Получает разброс цен по группе в определённый день
+        :param product_group: название группы
+        :param date: дата
+
+        Автор: Перятин Виталий
         """
         return self.reports_interactor.get_spreading(product_group,
                                                      date)

@@ -1,6 +1,11 @@
-"""docstring_peryatin
+"""
+Модуль для создания окон, предназначенных
+для редактирования БД
+
 Отключены следующие ошибки pylint:
     E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
+
+Автор: Перятин Виталий
 """
 # pylint: disable=E0401
 
@@ -21,14 +26,16 @@ HEIGHT = 500
 
 
 class DbEditorWindow:
-    """docstring_peryatin
+    """
+    Класс, создержащий основную информацию о конфигурации окна для
+    массового редактиорвания БД
+
+    Автор: Перятин Виталий
     """
     commands = ['Вывести', 'Вставить', 'Заменить', 'Удалить']
     tables = ['Продукты', 'Чеки']
 
     def __init__(self, master, listener: IEventListener = None, title=""):
-        """docstring_peryatin
-        """
         self.listener = listener
         self.master = master
         master['bg'] = MAIN_BACKGROUND
@@ -80,7 +87,11 @@ class DbEditorWindow:
         master.mainloop()
 
     def set_command_frame(self, command: str):
-        """docstring_peryatin
+        """
+        Устанавливает необходимое окно исходя из
+        переданного названия команды
+
+        Автор: Перятин Виталий
         """
         if command == "Вывести":
             self.content_frame = SelectFrame(self.master)
@@ -94,11 +105,18 @@ class DbEditorWindow:
         self.content_frame.grid(row=2, column=0, columnspan=3, sticky=NSEW)
 
     def choose_command(self, event):
-        """docstring_peryatin
+        """
+        Передаёт название команды для установки необходимого окна
+
+        Автор: Перятин Виталий
         """
         self.set_command_frame(self.edit_type_choice.get())
 
     def click_exec(self, event):
-        """docstring_peryatin
+        """
+        Исполняет основную операцию выбранной команды
+        (Вывести, Вставить, Заменить, Удалить)
+
+        Автор: Перятин Виталий
         """
         self.content_frame.click_exec(self.listener)

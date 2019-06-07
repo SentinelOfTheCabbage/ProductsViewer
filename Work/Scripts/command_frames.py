@@ -157,11 +157,11 @@ class ExpressionFrame(PVFrame):
 
         self.remove_listener = remove_listener
 
-        self.columns = [ProductColumns.NAME.value,
-                        ProductColumns.PRICE.value,
-                        ProductColumns.GROUP_NAME.value,
-                        ProductColumns.PRODUCER_NAME.value,
-                        ProductColumns.QUALITY.value]
+        self.columns = [ProductColumns.NAME,
+                        ProductColumns.PRICE,
+                        ProductColumns.GROUP_NAME,
+                        ProductColumns.PRODUCER_NAME,
+                        ProductColumns.QUALITY]
 
         self.field = StringVar(self)
         self.field_chooser = PVCombobox(self, width=20, height=20,
@@ -170,12 +170,12 @@ class ExpressionFrame(PVFrame):
         self.field_chooser['values'] = self.columns
         self.field_chooser.current(0)
         self.compare_ops = [
-            CompareOp.EQUAL.value,
-            CompareOp.NOT_EQUAL.value,
-            CompareOp.LESS.value,
-            CompareOp.LESS_OR_EQUAL.value,
-            CompareOp.MORE.value,
-            CompareOp.MORE_OR_EQUAL.value,
+            CompareOp.EQUAL,
+            CompareOp.NOT_EQUAL,
+            CompareOp.LESS,
+            CompareOp.LESS_OR_EQUAL,
+            CompareOp.MORE,
+            CompareOp.MORE_OR_EQUAL,
         ]
 
         self.compare_var = StringVar(self)
@@ -243,11 +243,11 @@ class ValueSetFrame(PVFrame):
         self['padx'] = 2
         self['pady'] = 2
 
-        columns = [ProductColumns.NAME.value,
-                   ProductColumns.PRICE.value,
-                   ProductColumns.GROUP_NAME.value,
-                   ProductColumns.PRODUCER_NAME.value,
-                   ProductColumns.QUALITY.value]
+        columns = [ProductColumns.NAME,
+                   ProductColumns.PRICE,
+                   ProductColumns.GROUP_NAME,
+                   ProductColumns.PRODUCER_NAME,
+                   ProductColumns.QUALITY]
 
         self.column_chooser = PVCombobox(self, width=20, height=20,
                                          state="readonly")
@@ -278,7 +278,11 @@ class ValueSetFrame(PVFrame):
         self.destroy()
 
     def get_col_to_value(self):
-        """docstring_peryatin
+        """
+        Получает значения столбцов выбранное в окне
+        настроек и ассоциирует из к значениям
+
+        Автор: Перятин Виталий
         """
         return {self.column_chooser.get(): self.value_entry.get()}
 

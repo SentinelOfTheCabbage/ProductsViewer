@@ -20,5 +20,8 @@ class IEventListener(ABC):
     """
     @abstractmethod
     def notify(self, event: Event):
-        """docstring_peryatin
+        """
+        Уведомляет о событиях над кнопкой
+
+        Автор: Перятин Виталий
         """

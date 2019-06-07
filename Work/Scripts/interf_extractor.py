@@ -1,4 +1,8 @@
-"""docstring_peryatin
+"""
+Модуль соддержащий абстракцию для извлечения
+таблиц из файла
+
+Автор: Перятин Виталий
 """
 # pylint: disable=R0903
 from abc import ABC

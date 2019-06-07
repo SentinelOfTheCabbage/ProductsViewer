@@ -1,4 +1,7 @@
-"""docstring_peryatin
+"""
+Модуль для создания экрана настроек для сводной таблицы
+
+Автор: Фёдоров Андрей
 """
 # pylint: disable=R0801,R0902,R0903
 
@@ -8,11 +11,14 @@ WINDOW_TITLE = "Настройка сводной таблицы"
 
 
 class SettingsPivot:
-    """docstring_peryatin
+    """
+    Класс для содания экрана насторек
+    для создания сводного отчета
+
+    Автор: Фёдоров Андрей
     """
 
     def __init__(self, main):
-        """Создаёт окно для настройки параметров отчёта по сводной таблице"""
         self.main = main
         window_width = 300
         window_height = 150
@@ -58,7 +64,10 @@ class SettingsPivot:
         self.button_apply.grid(row=4, column=1, sticky=EW)
 
     def create_pivot_report(self):
-        """docstring_peryatin
+        """
+        Создаёт сводный отчёт
+
+        Автор: Фёдоров Андрей
         """
         column = self.edit_text_column.get()
         index = self.edit_text_index.get()

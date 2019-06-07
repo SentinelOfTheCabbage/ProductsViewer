@@ -90,7 +90,12 @@ class MultiChoiceFrame(Frame, ChoiceFrameListener):
         self.fill_frame_by_list(values, is_scrolled)
 
     def fill_frame_by_list(self, values: list, is_scrolled: bool):
-        """docstring_peryatin
+        """
+        Заполняет окно переданными значениями кнопками множественного выбора
+        :param values: значения для подписи CheckButton
+        :param is_scrolled: возможность скролла для значений
+
+        Автор: Перятин Виталий
         """
         items = list(set(values))
         items.sort()

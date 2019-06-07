@@ -1,4 +1,7 @@
-"""docstring_peryatin
+"""
+Модуль открывает БД из файла pickle
+
+Автор: Фёдоров Андрей
 """
 from tkinter import filedialog, Frame
 import pandas as pd
@@ -18,6 +21,8 @@ class Open(Frame):
         """
         Метод позволяет выбрать путь для открытия файла в привычном окне
         :return: возвращает путь к файлу
+
+        Автор: Фёдоров Андрей
         """
         filename = filedialog.askopenfilename(**self.file_opt)
         f = open(conf.ROOT_DIR + r'\Data\Temp\filename.txt', 'w')
@@ -28,10 +33,11 @@ class Open(Frame):
     @staticmethod
     def read(path):
         """
-        Author: Andrew Fedorov
         Функция чтения таблицы
         :param path: путь к таблице
         :return: требуемая таблица в формате DataFrame
+
+        Автор: Фёдоров Андрей
         """
         products_table = None
         try:
@@ -44,6 +50,11 @@ class Open(Frame):
             return products_table
 
     def open(self, m_table):
+        """
+        Открывает БД из файла pickle
+
+        Автор: Фёдоров Андрей
+        """
         main_table_df: pd.DataFrame = self.read(self.askopenfilename())
         if main_table_df is not None:
             m_table.content(ListMainTableInteractor().tolist(main_table_df)

@@ -5,11 +5,7 @@
 """
 from tkinter import filedialog, Frame
 import pandas as pd
-
-from Work.Scripts.extractor import DataExtractor
-from Work.Scripts.interactors import ListMainTableInteractor
 from Work.Scripts import conf
-
 
 class Open(Frame):
     def __init__(self):
@@ -27,10 +23,11 @@ class Open(Frame):
         Автор: Фёдоров Андрей
         """
         filename = filedialog.askopenfilename(**self.file_opt)
-        f = open(conf.ROOT_DIR + r'\Data\Temp\filename.txt', 'w')
-        f.write(filename)
-        f.close()
-        return filename
+        if filename != "":
+            f = open(conf.ROOT_DIR + r'\Data\filename.txt', 'w')
+            f.write(filename)
+            f.close()
+            return filename
 
     @staticmethod
     def read(path):
@@ -57,7 +54,15 @@ class Open(Frame):
 
         Автор: Фёдоров Андрей
         """
-        main_table_df: pd.DataFrame = self.read(self.askopenfilename())
-        if main_table_df is not None:
-            m_table.content(ListMainTableInteractor().tolist(main_table_df)
-                            [:100])
+        # main_table_df: pd.DataFrame = self.read(self.askopenfilename())
+        # if main_table_df is not None:
+        #     main_table_df = main_table_df.rename(columns={
+        #         'id': 'id',
+        #         'name': NAME_TITLES[0],
+        #         'price': NAME_TITLES[1],
+        #         'producer_name': NAME_TITLES[2],
+        #         'group_name': NAME_TITLES[3],
+        #         'discount_id': NAME_TITLES[4],
+        #         'quality': NAME_TITLES[5]
+        #     })
+        #     m_table.before_content(ListMainTableInteractor().tolist(main_table_df))

@@ -6,6 +6,13 @@
 # pylint: disable=R0801,R0902,R0903
 
 from tkinter import Label, Entry, W, Button, EW
+from tkinter.ttk import Combobox
+import pandas as pd
+import numpy as np
+from Work.Scripts.config import NAME_TITLES
+from Work.Scripts.conf import ROOT_DIR
+from Work.Scripts.db_controller import MainTableController
+from Work.Scripts.db_saver import Save
 
 WINDOW_TITLE = "Настройка сводной таблицы"
 
@@ -34,10 +41,18 @@ class SettingsPivot:
         self.text_param = Label(main, text="Подсчитываемый параметр: ")
         self.text_format_export = Label(main, text="Формат для экспорта: ")
 
-        self.edit_text_column = Entry(main)
-        self.edit_text_index = Entry(main)
-        self.edit_text_param = Entry(main)
-        self.edit_text_format_export = Entry(main)
+        self.list1 = NAME_TITLES
+        self.list2 = ["Средняя стоимость", "Количество"]
+        self.list3 = ["csv", "xlsx", "pickle"]
+
+        self.edit_text_column = Combobox(main, state="readonly", values=self.list1)
+        self.edit_text_column.set(self.list1[0])
+        self.edit_text_index = Combobox(main, state="readonly", values=self.list1)
+        self.edit_text_index.set(self.list1[1])
+        self.edit_text_param = Combobox(main, state="readonly", values=self.list2)
+        self.edit_text_param.set(self.list2[1])
+        self.edit_text_format_export = Combobox(main, state="readonly", values=self.list3)
+        self.edit_text_format_export.set(self.list3[0])
 
         self.button_apply = Button(main, text="OK", command=self.create_pivot_report)
 
@@ -62,6 +77,7 @@ class SettingsPivot:
         self.edit_text_format_export.grid(row=3, column=1, sticky=EW)
 
         self.button_apply.grid(row=4, column=1, sticky=EW)
+        self.frame: pd.DataFrame
 
     def create_pivot_report(self):
         """
@@ -73,4 +89,16 @@ class SettingsPivot:
         index = self.edit_text_index.get()
         param = self.edit_text_param.get()
         export_format = self.edit_text_format_export.get()
+
+        self.frame: pd.DataFrame = pd.read_pickle(ROOT_DIR + r"\Data\temp.pickle")
+        if param == "Количество":
+            self.frame = self.frame.pivot_table(index=index, columns=column, values=index, aggfunc='count')
+        else:
+            self.frame = self.frame.pivot_table(index=index, columns=column, values="Цена", aggfunc=np.mean)
+        if export_format == "csv":
+            Save().csv_ind(self.frame)
+        elif export_format == "xlsx":
+            Save().xlsx_ind(self.frame)
+        elif export_format == "pickle":
+            Save().pickle(self.frame, 1)
         self.main.destroy()

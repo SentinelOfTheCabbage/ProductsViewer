@@ -1,3 +1,9 @@
+"""docstring_peryatin
+Отключены следующие ошибки pylint:
+    E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
+"""
+# pylint: disable=E0401
+
 from tkinter import StringVar, NSEW, E, EW
 
 from Work.Scripts.custom_widgets import PVStandardButton, PVFrame, \
@@ -15,17 +21,21 @@ HEIGHT = 500
 
 
 class DbEditorWindow:
+    """docstring_peryatin
+    """
     commands = ['Вывести', 'Вставить', 'Заменить', 'Удалить']
     tables = ['Продукты', 'Чеки']
 
-    def __init__(self, master, listener: IEventListener = None, title = ""):
+    def __init__(self, master, listener: IEventListener = None, title=""):
+        """docstring_peryatin
+        """
         self.listener = listener
         self.master = master
         master['bg'] = MAIN_BACKGROUND
         master.title(title)
-        x = WIDTH - master.winfo_reqwidth() / 2
-        y = (HEIGHT - master.winfo_reqheight()) / 2
-        master.wm_geometry("%dx%d+%d+%d" % (WIDTH, HEIGHT, x, y))
+        x_x = WIDTH - master.winfo_reqwidth() / 2
+        y_y = (HEIGHT - master.winfo_reqheight()) / 2
+        master.wm_geometry("%dx%d+%d+%d" % (WIDTH, HEIGHT, x_x, y_y))
 
         master.grid_columnconfigure(0, weight=1)
         master.grid_columnconfigure(1, weight=2)
@@ -70,6 +80,8 @@ class DbEditorWindow:
         master.mainloop()
 
     def set_command_frame(self, command: str):
+        """docstring_peryatin
+        """
         if command == "Вывести":
             self.content_frame = SelectFrame(self.master)
         elif command == "Вставить":
@@ -82,7 +94,11 @@ class DbEditorWindow:
         self.content_frame.grid(row=2, column=0, columnspan=3, sticky=NSEW)
 
     def choose_command(self, event):
+        """docstring_peryatin
+        """
         self.set_command_frame(self.edit_type_choice.get())
 
     def click_exec(self, event):
+        """docstring_peryatin
+        """
         self.content_frame.click_exec(self.listener)

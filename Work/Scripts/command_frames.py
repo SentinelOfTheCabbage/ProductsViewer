@@ -1,3 +1,15 @@
+"""
+Модуль создаёт графическое окно для
+множественного редактирования базы данных
+
+Автор: Перятин Виталий
+Отключены следующие ошибки pylint:
+    R0903 - Мало методов в классе
+    E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
+"""
+# pylint: disable=E0401
+# pylint: disable=R0903
+
 from abc import ABC, abstractmethod
 from tkinter import Frame, NSEW, W, StringVar, \
     BooleanVar, EW
@@ -6,31 +18,59 @@ from tkinter.ttk import Style
 
 from Work.Scripts.interactors import ListMainTableInteractor
 from Work.Scripts.key_words import CompareOp, Expression
-from Work.Scripts.UI_table_constants import ProductColumns
+from Work.Scripts.ui_table_constants import ProductColumns
 from Work.Scripts.custom_widgets import VerticalScrolledFrame, \
     SubtitleLabel, PVAddButton, PVCancelButton, PVFrame, PVLabel, \
     PVCheckbutton, PVCombobox, PVEntry
 from Work.Scripts.event_listener import IEventListener
 
-controller = ListMainTableInteractor()
+CONTROLLER = ListMainTableInteractor()
 ERROR_TITLE = "Внимание"
 
 
 class IRemoveListener(ABC):
+    """
+    Интерфейс-слушатель для реагирования
+    на события удаления записей
+
+    Автор: Перятин Виталий
+    """
 
     @abstractmethod
     def remove_expr(self, expr_frame):
-        pass
+        """
+        Реагирует на события удаления записей
+        :param expr_frame: фрейм, в котором необхдоимо слушать событие удаления
+
+        Автор: Перятин Виталий
+        """
 
 
 class ICommandCreator(ABC):
+    """
+    Интерфейс-слушатель для реагирования на события нажатий на кнопки
+
+    Автор: Перятин Виталий
+    """
 
     @abstractmethod
     def click_exec(self, event_listener: IEventListener):
-        pass
+        """
+        Реагирует на события нажатия кнопок
+        :param event_listener:
+
+        Автор: Перятин Виталий
+        """
 
 
 class ExpressionEditor(PVFrame):
+    """
+    Фрейм для редактирования выражений
+    изменения базы дданных
+
+    Автор: Перятин Виталий
+    """
+
     expr_frames = []
 
     def __init__(self, master, **kw):
@@ -49,17 +89,41 @@ class ExpressionEditor(PVFrame):
         self.clear_expressions()
 
     def click_add_expr(self, event):
+        """
+        Добавляет новые выражения дял редактирования базы данных
+
+        :param event: событие нжаатия кнопки
+
+        Автор: Перятин Виталий
+        """
         expression_frame = ExpressionFrame(self.where_frame.interior, self)
         expression_frame.pack(expand=True, fill='x')
         self.expr_frames.append(expression_frame)
 
     def remove_expr(self, expr_frame):
+        """
+        Удаляет выражение
+
+        :param expr_frame: родительский фрейм откуда нужно удалить выражение
+
+        Автор: Перятин Виталий
+        """
         self.expr_frames.remove(expr_frame)
 
     def clear_expressions(self):
+        """
+        Очищает все выражения, добавленные пользователем
+
+        Автор: Перятин Виталий
+        """
         self.expr_frames = []
 
     def get_expressions(self):
+        """
+        Получает все выражения, добавленны епользователем
+
+        Автор: Перятин Виталий
+        """
         expressions = []
         has_error = False
         for expr_frame in self.expr_frames:
@@ -70,11 +134,15 @@ class ExpressionEditor(PVFrame):
                 expressions.append(expr)
         if has_error:
             return None
-        else:
-            return expressions
+        return expressions
 
 
 class ExpressionFrame(PVFrame):
+    """
+    Фрейм для создания и отображения одного выражения
+
+    Автор: Перятин Виталий
+    """
 
     def __init__(self, master, remove_listener: ExpressionEditor):
         super().__init__(master)
@@ -130,23 +198,40 @@ class ExpressionFrame(PVFrame):
         btn_cancel.grid(row=0, column=3, sticky=NSEW)
 
     def click_cancel(self, event):
+        """
+        Отменяет редактирование выражения
+
+        :param event: событие нажатия
+
+        Автор: Перятин Виталий
+        """
         self.remove_listener.remove_expr(self)
         self.destroy()
 
     def get_expr(self):
+        """
+        Получает составленное пользователем выражение
+
+        Автор: Перятин Виталий
+        """
         if (self.field.get() not in self.columns) or \
                 (self.compare_var.get() not in self.compare_ops) or \
                 (not self.value_var.get()):
             self['bg'] = 'yellow'
             return None
-        else:
-            self['bg'] = '#FFF'
-            return Expression(self.field.get(),
-                              self.compare_var.get(),
-                              self.value_entry.get())
+        self['bg'] = '#FFF'
+        return Expression(self.field.get(),
+                          self.compare_var.get(),
+                          self.value_entry.get())
 
 
 class ValueSetFrame(PVFrame):
+    """
+    Фрейм для установки значений в выражение
+
+    Автор: Перятин Виталий
+    """
+
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
 
@@ -183,13 +268,27 @@ class ValueSetFrame(PVFrame):
         btn_cancel.grid(row=0, column=3, sticky=NSEW)
 
     def click_cancel(self, event):
+        """
+        Отмена действия
+
+        :param event: Событие нажатия кнопки
+
+        Автор: Перятин Виталий
+        """
         self.destroy()
 
     def get_col_to_value(self):
+        """docstring_peryatin
+        """
         return {self.column_chooser.get(): self.value_entry.get()}
 
 
 class SelectFrame(ExpressionEditor, ICommandCreator):
+    """
+    Фрейм для выбора столбцов
+
+    Автор: Перятин Виталий
+    """
 
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
@@ -218,7 +317,14 @@ class SelectFrame(ExpressionEditor, ICommandCreator):
         columns_frame.grid(row=1, column=0, sticky=NSEW)
 
     def click_exec(self, event_listener: IEventListener):
-        event = controller.select(self.check_vars, self.get_expressions())
+        """
+        Реагирует на внешние события
+
+        :param event_listener: слушатель событий
+
+        Автор: Перятин Виталий
+        """
+        event = CONTROLLER.select(self.check_vars, self.get_expressions())
         if event.error != 0:
             showwarning(ERROR_TITLE, event.text, parent=self)
         else:
@@ -226,6 +332,12 @@ class SelectFrame(ExpressionEditor, ICommandCreator):
 
 
 class InsertFrame(PVFrame, ICommandCreator):
+    """
+    Фрейм для вставки значений
+
+    Автор: Перятин Виталий
+    """
+
     values = {}
 
     def __init__(self, master, **kw):
@@ -256,7 +368,7 @@ class InsertFrame(PVFrame, ICommandCreator):
             style.configure("custom.TCombobox", fieldbackground="#000")
             value_entry = PVCombobox(col_and_val_frame, textvariable=value_var,
                                      style="custom.TCombobox")
-            value_entry['values'] = controller.get_vals_by_col(col_name)
+            value_entry['values'] = CONTROLLER.get_vals_by_col(col_name)
             col_label.grid(row=0, column=0, sticky=W, padx=(24, 0))
             value_entry.grid(row=0, column=1, sticky=EW, padx=(0, 24))
             self.values[col_label['text']] = value_entry
@@ -272,7 +384,14 @@ class InsertFrame(PVFrame, ICommandCreator):
         separator.grid(row=2, column=0, columnspan=4, sticky=EW)
 
     def click_exec(self, event_listener: IEventListener):
-        event = controller.insert(self.values)
+        """
+        Реагирует на внешние события
+
+        :param event_listener: слушатель событий
+
+        Автор: Перятин Виталий
+        """
+        event = CONTROLLER.insert(self.values)
         if event.error != 0:
             showwarning(ERROR_TITLE, event.text, parent=self)
         else:
@@ -280,6 +399,10 @@ class InsertFrame(PVFrame, ICommandCreator):
 
 
 class UpdateFrame(ExpressionEditor, ICommandCreator):
+    """
+    Фрейм для формирования выражений для обновления базы данных
+    """
+
     value_set_frames = []
 
     def __init__(self, master, **kw):
@@ -303,12 +426,29 @@ class UpdateFrame(ExpressionEditor, ICommandCreator):
         btn_add_value.grid(row=2, column=0, padx=(8, 18), sticky=NSEW)
 
     def click_add_value(self, event):
+        """
+        Добавляет значение в выражение
+        по обноввлению базы данных
+
+        :param event: событие нажатия кнопки
+
+        Автор: Перятин Виталий
+        """
         value_set_frame = ValueSetFrame(self.set_frame.interior)
         value_set_frame.pack(expand=True, fill='x')
         self.value_set_frames.append(value_set_frame)
 
     def click_exec(self, event_listener: IEventListener):
-        event = controller.update(self.value_set_frames,
+        """
+        Реагирует на нажатие кнопки, обновляет базу данных
+        в соответствии с созданными выражениями
+
+        :param event_listener: слушатель событий
+
+        Автор: Перятин Виталий
+        """
+
+        event = CONTROLLER.update(self.value_set_frames,
                                   self.get_expressions())
         if event.error != 0:
             showwarning(ERROR_TITLE, event.text, parent=self)
@@ -317,6 +457,12 @@ class UpdateFrame(ExpressionEditor, ICommandCreator):
 
 
 class DeleteFrame(ExpressionEditor, ICommandCreator):
+    """
+    Фрейм для создания выражений для
+    удаления записей в базе данных
+
+    Автор: Перятин Виталий
+    """
     expr_frames = []
 
     def __init__(self, master, **kw):
@@ -330,7 +476,15 @@ class DeleteFrame(ExpressionEditor, ICommandCreator):
         self.grid_rowconfigure(1, weight=1)
 
     def click_exec(self, event_listener: IEventListener):
-        event = controller.delete(self.get_expressions())
+        """
+        Реагирует на нажатие кнопки для удаления записей,
+        удаляет выбранные записи из базы данных
+
+        :param event_listener: слушатель событий
+
+        Автор: Перятин Виталий
+        """
+        event = CONTROLLER.delete(self.get_expressions())
         if event.error != 0:
             showwarning(ERROR_TITLE, event.text, parent=self)
         else:

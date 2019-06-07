@@ -1,3 +1,17 @@
+"""
+Предоставляет элементы с видоизмененным
+параметрами индивидуально для проекта
+
+Автор: Перятин Виталий
+Отключены следующие ошибки pylint:
+    R0901 - Слишком много предкова
+    W0614 - Ошибка использования self в некоторых методах класса
+    E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
+"""
+# pylint: disable=E0401
+# pylint: disable=W0614
+# pylint: disable=R0901
+
 from tkinter import *
 from tkinter.ttk import Combobox
 
@@ -5,6 +19,11 @@ from Work.Scripts.config import MAIN_BACKGROUND
 
 
 class PVStandardButton(Button):
+    """
+    Кастомизированная под приложение стандартная кнопка
+
+    Автор: Перятин Виталий
+    """
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
         self['bg'] = '#80DEEA'
@@ -15,6 +34,11 @@ class PVStandardButton(Button):
 
 
 class PVAddButton(Button):
+    """
+    Кастомизированная под приложение кнопка добавления
+
+    Автор: Перятин Виталий
+    """
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
         self['bg'] = '#80CBC4'
@@ -23,6 +47,11 @@ class PVAddButton(Button):
 
 
 class PVCancelButton(Button):
+    """
+    Кастомизированная под приложение кнопка отмены
+
+    Автор: Перятин Виталий
+    """
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
         self['bg'] = MAIN_BACKGROUND
@@ -33,6 +62,11 @@ class PVCancelButton(Button):
 
 
 class PVCombobox(Combobox):
+    """
+    Кастомизированное под приложение поле выбора
+
+    Автор: Перятин Виталий
+    """
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
         font = ("Times", 12)
@@ -41,18 +75,33 @@ class PVCombobox(Combobox):
 
 
 class PVEntry(Entry):
+    """
+    Кастомизированное под приложение поле ввода текста
+
+    Автор: Перятин Виталий
+    """
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
         self['font'] = ("Times", 12)
 
 
 class PVFrame(Frame):
+    """
+    Кастомизированный под приложение Frame
+
+    Автор: Перятин Виталий
+    """
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
         self['bg'] = MAIN_BACKGROUND
 
 
 class PVLabel(Label):
+    """
+    Кастомизированное под приложение текстовое поле
+
+    Автор: Перятин Виталий
+    """
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
         self['bg'] = MAIN_BACKGROUND
@@ -62,6 +111,11 @@ class PVLabel(Label):
 
 
 class PVCheckbutton(Checkbutton):
+    """
+    Кастомизированная под приложение кнопка выбора
+
+    Автор: Перятин Виталий
+    """
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
         self['bg'] = MAIN_BACKGROUND
@@ -71,6 +125,11 @@ class PVCheckbutton(Checkbutton):
 
 
 class SubtitleLabel(PVLabel):
+    """
+    Кастомизированный под приложение подзаголовок
+
+    Автор: Перятин Виталий
+    """
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
         self['pady'] = 10
@@ -78,10 +137,12 @@ class SubtitleLabel(PVLabel):
 
 
 class VerticalScrolledFrame(PVFrame):
-    """A pure Tkinter scrollable frame that actually works!
-    * Use the 'interior' attribute to place widgets inside the scrollable frame
-    * Construct and pack/place/grid normally
-    * This frame only allows vertical scrolling
+    """
+    Прокручиваемая рамка Tkinter
+    Используйте атрибут «interior» для размещения виджетов внутри прокручиваемого фрейма
+    Этот Frame реализует только вертикальную прокрутку
+
+    Автор: Перятин Виталий
     """
 
     def __init__(self, parent, *args, **kw):
@@ -120,6 +181,12 @@ class VerticalScrolledFrame(PVFrame):
         # track changes to the canvas and frame width and sync them,
         # also updating the scrollbar
         def _configure_interior(event):
+            """
+            Конфигурирует содержимое рамки
+            :param event: событие нажатия
+
+            Автор: Перятин Виталий
+            """
             # update the scrollbars to match the size of the inner frame
             size = (interior.winfo_reqwidth(), interior.winfo_reqheight())
             content.config(scrollregion="0 0 %s %s" % size)
@@ -130,31 +197,29 @@ class VerticalScrolledFrame(PVFrame):
         # track changes to the canvas and frame width and sync them,
         # also updating the scrollbar
         def _configure_interior_2(event):
-            # update the scrollbars to match the size of the inner frame
+            """
+            Повторная конфигурация содержимого рамки
+            :param event: событие нажатия
+
+            Автор: Перятин Виталий
+            """
             size = (
-            self.frame.winfo_reqwidth(), self.frame.winfo_reqheight())
+                self.frame.winfo_reqwidth(), self.frame.winfo_reqheight())
             self.canvas.config(scrollregion="0 0 %s %s" % size)
             if self.frame.winfo_reqwidth() != self.canvas.winfo_width():
-                # update the canvas's width to fit the inner frame
                 self.canvas.config(width=self.frame.winfo_reqwidth())
 
         interior.bind('<Configure>', _configure_interior)
         self.frame.bind('<Configure>', _configure_interior_2)
 
-        # пусть пока пробудет закоменченным, вдруг это надо
-        # def _configure_canvas(event):
-        #     if interior.winfo_reqwidth() != content.winfo_width():
-        #         # update the inner frame's width to fill the canvas
-        #         content.itemconfigure(interior_id, width=content.winfo_width())
-        #
-        # content.bind('<Configure>', _configure_canvas)
-
 
 class HorizontalScrolledFrame(PVFrame):
-    """A pure Tkinter scrollable frame that actually works!
-    * Use the 'interior' attribute to place widgets inside the scrollable frame
-    * Construct and pack/place/grid normally
-    * This frame only allows vertical scrolling
+    """
+    Прокручиваемая рамка Tkinter
+    Используйте атрибут «interior» для размещения виджетов внутри прокручиваемого фрейма
+    Этот Frame реализует только вертикальную прокрутку
+
+    Автор: Перятин Виталий
     """
 
     def __init__(self, parent, *args, **kw):
@@ -181,6 +246,12 @@ class HorizontalScrolledFrame(PVFrame):
         # track changes to the canvas and frame width and sync them,
         # also updating the scrollbar
         def _configure_interior(event):
+            """
+            Конфигурирует содержимое рамки
+            :param event: событие нажатия
+
+            Автор: Перятин Виталий
+            """
             # update the scrollbars to match the size of the inner frame
             size = (interior.winfo_reqwidth(), interior.winfo_reqheight())
             canvas.config(scrollregion="0 0 %s %s" % size)

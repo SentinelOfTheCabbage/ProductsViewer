@@ -1,3 +1,7 @@
+"""
+Author: Andrew Fedorov
+Модуль сохранения БД.
+"""
 import tkinter
 from tkinter import Tk, filedialog, Frame
 import pandas as pd
@@ -75,8 +79,14 @@ class SaveAs(Frame):
         :param table: таблица DataFrame
         :return: Сохраняет файл в формате pickle.
         """
-        name = self.asksaveasfilename()
-        table.to_pickle(name + '.pickle')
+        try:
+            name = self.asksaveasfilename()
+            table.to_pickle(name)
+            f = open(conf.ROOT_DIR + r'\Data\filename.txt', 'w')
+            f.write(name)
+            f.close()
+        except Exception:
+            pass
 
     def xlsx(self, table: pd.DataFrame):
         """
@@ -105,7 +115,7 @@ class Save:
         :param table: таблица DataFrame
         :return: Сохраняет файл в формате csv .
         """
-        name = conf.ROOT_DIR + r"\Data\db.pickle"
+        name = conf.ROOT_DIR + r"\Data\db"
         table.to_csv(name + '.csv', sep=';', encoding='utf8', index=False)
 
     @staticmethod
@@ -115,21 +125,24 @@ class Save:
         :param table: таблица DataFrame
         :return: Сохраняет файл в формате csv с индексами.
         """
-        name = conf.ROOT_DIR + r"\Data\db.pickle"
-        table.to_csv(name + '.csv', sep=';', encoding='utf8', index=True)
+        name = conf.ROOT_DIR + r"\Outputs\pivot_table.csv"
+        table.to_csv(name, sep=';', encoding='utf8', index=True)
 
     @staticmethod
-    def pickle(table: pd.DataFrame):
+    def pickle(table: pd.DataFrame, param):
         """
         Author: Andrew Fedorov
         :param table: таблица DataFrame
         :return: Сохраняет файл в формате pickle.
         """
-        f_f = open(conf.ROOT_DIR + r'\Data\Temp\filename.txt', 'r')
-        te_xt = f_f.read()
-        f_f.close()
+        if param == 0:
+            f_f = open(conf.ROOT_DIR + r'\Data\filename.txt', 'r')
+            te_xt = f_f.read()
+            f_f.close()
+        elif param == 1:
+            te_xt = conf.ROOT_DIR + r"\Outputs\pivot_table"
         name = r'' + te_xt
-        table.to_pickle(name + '.pickle')
+        table.to_pickle(name)
 
     @staticmethod
     def xlsx(table: pd.DataFrame):
@@ -138,7 +151,7 @@ class Save:
         :param table: таблица DataFrame
         :return: Сохраняет файл в формате xlsx.
         """
-        name = conf.ROOT_DIR + r"\Data\db.pickle"
+        name = conf.ROOT_DIR + r"\Data\db"
         table.to_excel(name + '.xlsx', index=False)
 
     @staticmethod
@@ -148,10 +161,6 @@ class Save:
         :param table: таблица DataFrame
         :return: Сохраняет файл в формате xlsx с индексами.
         """
-        name = conf.ROOT_DIR + r"\Data\db.pickle"
+        name = conf.ROOT_DIR + r"\Outputs\pivot_table"
         table.to_excel(name + '.xlsx', index=True)
 
-
-if __name__ == '__main__':
-    f = open(conf.ROOT_DIR + r'\Data\Temp\filename.txt', 'r')
-    f = f.read()

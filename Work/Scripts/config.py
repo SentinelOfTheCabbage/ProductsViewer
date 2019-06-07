@@ -41,4 +41,6 @@ DEFAULT_SEARCH_TEXT = "Найти"
 CURSOR_CHANGE_WIGHT = "sb_h_double_arrow"
 CURSOR_CHANGE_HEIGHT = "sb_v_double_arrow"
 
+NAME_TITLES = ["Назв продукта", "Цена", "Производитель",
+	"Категория", "Скидка", "Кат товара"]
 MAIN_BACKGROUND = "#f8f9fa"

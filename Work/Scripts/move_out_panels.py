@@ -3,19 +3,22 @@
 т.е. фильтрацию и последние изменения
 Автор: Озирный Максим
 """
+# pylint: disable=E0401
+# pylint: disable=R0901
 from tkinter import Frame, Scrollbar, Label, Canvas, Button, \
     Checkbutton, IntVar
 from tkinter.ttk import Combobox, Scale
 
 from Work.Scripts import config as conf
-from Work.Scripts.change_viewer import ChangeViewer
 from Work.Scripts.config import WIDTH_FILR_FRAME, COLOR_BG_FRAME_TABLE, \
     COLOR_BG_FRAME_FILTR, FONT_TITLE_FILTR, COLOR_FG_FRAME_FILTR, \
     CURSOR_CHANGE_WIGHT, MIN_WIDTH_TABLE, MIN_WIDTH_FILR_FRAME, \
     COLOR_FG_FRAME_TABLE, COLOR_BG_LAST_CH, HEIGHT_INFO_FRAME, \
     CURSOR_CHANGE_HEIGHT, MIN_SIZE_TABLE, COLOR_BG_TITLE_LAST_CH, \
-    PADX_FILTR_TABLE
+    PADX_FILTR_TABLE, NAME_TITLES
 from Work.Scripts.interactors import ListMainTableInteractor
+from Work.Scripts.filters import FilterColumns as fil
+# from Work.Scripts.filters import FilterRows as filrow
 
 INTERACTOR = ListMainTableInteractor(True)
 
@@ -56,26 +59,25 @@ class RowFilterPanel(Frame):
     pos_x = 0
     width = WIDTH_FILR_FRAME
     width_2 = width
-    _list_filtr = {"Наименование": None,
-                   "Цена": 0,
+    _list_filtr = {"Цена": 0,
                    "Производитель": None,
                    "Группа": None,
                    "Скидка": 40,
                    "Качество": None}
 
-    def __init__(self, master, **kw):
+    def __init__(self, master, m_table, **kw):
         super().__init__(master, {}, **kw)
+        self.m_table = m_table
         self.canvas = Canvas(self, bg=COLOR_BG_FRAME_TABLE, bd=0,
                              width=WIDTH_FILR_FRAME - 16)
         self.frame = Frame(self.canvas, bg=COLOR_BG_FRAME_TABLE)
 
-        self._list_filtr["Наименование"] = INTERACTOR.get_products_names()
         self._list_filtr["Цена"] = INTERACTOR.get_max_price()
         self._list_filtr["Производитель"] = INTERACTOR.get_producers()
         self._list_filtr["Группа"] = INTERACTOR.get_products_groups()
         self._list_filtr["Скидка"] = INTERACTOR.get_max_discount()
         self._list_filtr["Качество"] = INTERACTOR.get_qualities()
-        
+
         # отслеживаем события для изменения ширины поля
         self.canvas.bind("<ButtonPress-1>", self.start_move)
         self.canvas.bind("<ButtonRelease-1>", self.stop_move)
@@ -125,32 +127,30 @@ class RowFilterPanel(Frame):
                                     bg=COLOR_BG_FRAME_TABLE)
                 scale.pack(side="top", padx=PADX_FILTR_TABLE+10)
             else:
-                box = Combobox(self.frame, width=15,
+                box = Combobox(self.frame, width=15, state="readonly",
                                values=self._list_filtr[key])
                 box.pack(side="top", padx=PADX_FILTR_TABLE+10, anchor="w")
 
         btn_1 = Button(self.frame, text="Сохранить", width=15,
                        command=self.save)
-        btn_2 = Button(self.frame, text="Экспорт", width=15,
-                       command=self.export)
         btn_1.pack(side="top", padx=PADX_FILTR_TABLE+10, pady=10, anchor="w")
-        btn_2.pack(side="top", padx=PADX_FILTR_TABLE+10, anchor="w")
-
 
     def save(self, event=None):# pylint: disable=W0613
         """
         функция предназначенная для применения фильтрации
-
         Автор: Озирный Максим
         """
-        self.btn_1.focus_set()
-
-    def export(self, event=None):# pylint: disable=W0613
-        """
-        функция предназначенная для применения экспорта
-        Автор: Озирный Максим
-        """
-        self.btn_2.focus_set()
+        ch = list(self.frame.winfo_children())
+        g = 0
+        slov = {}
+        for i in range(len(ch)):
+            if type(ch[i]) == type(Combobox()):
+                slov.update({list(self._list_filtr.keys())[g]: ch[i].get()})
+                g += 1
+            if type(ch[i]) == type(ScaleFilter(self.canvas, self._list_filtr["Цена"])):
+                slov.update({list(self._list_filtr.keys())[g]: ch[i].slider.get()})
+                g += 1
+        # filrow().filter(slov, self.m_table)
 
     @staticmethod
     def on_frame_configure(main_lab2):
@@ -242,14 +242,15 @@ class ColumnFilterPanel(Frame):
     поля отвечающего за фильтрацию столбцов
     Автор: Озирный Максим
     """
+    mass = []
     pos_x = 0
     width = WIDTH_FILR_FRAME
     width_2 = width
-    _list_table = ["Наименование", "Цена", "Производитель", "Группа", "Скидка",
-                   "Качество"]
+    _list_table = NAME_TITLES
 
-    def __init__(self, master, **kw):
+    def __init__(self, master, m_table, **kw):
         super().__init__(master, {}, **kw)
+        self.m_table = m_table
         self.canvas = Canvas(self, bg=COLOR_BG_FRAME_TABLE,
                              width=WIDTH_FILR_FRAME - 16)
         self.frame = Frame(self.canvas, bg=COLOR_BG_FRAME_TABLE)
@@ -293,14 +294,16 @@ class ColumnFilterPanel(Frame):
         # в цикле создаются и позиционируются подзаголовки и соответствующие
         # им объекты (Scale или Combobox) в зависимости от содержимого списка
         for ind in range(len(self._list_table)):
+            var = IntVar()
+            self.mass.append(var)
             check = Checkbutton(self.frame, bg=COLOR_BG_FRAME_TABLE, bd=0,
-                                fg=COLOR_FG_FRAME_TABLE,
+                                fg=COLOR_FG_FRAME_TABLE, variable=self.mass[ind],
                                 text="{}".format(self._list_table[ind]))
             check.pack(side="top", padx=PADX_FILTR_TABLE, anchor="w")
 
         # Кнопка вызывающая функцию отвечающюю за  запуск фильтрации строк
         btn = Button(self.frame, text="Сохранить", width=15,
-                          command=self.click_save)
+                     command=self.click_save)
         btn.pack(side="top", padx=PADX_FILTR_TABLE+10, pady=10, anchor="w")
 
 
@@ -318,7 +321,15 @@ class ColumnFilterPanel(Frame):
 
         Автор: Озирный Максим
         """
-        self.btn.focus_set()
+        listik = []
+        for i in self.mass:
+            listik.append(i.get())
+        listik2 = []
+        len_list = len(listik)
+        for i in range(len_list):
+            if listik[i] == 1:
+                listik2.append(self._list_table[i])
+        fil().filter(listik2, self.m_table)
 
     def change_cursor(self, event=None):
         """
@@ -410,7 +421,7 @@ class ChangeHistoryPanel(Canvas):
         self.canvas = Canvas(self, bg=COLOR_BG_LAST_CH,
                              height=HEIGHT_INFO_FRAME)
         self.frame = Frame(self.canvas, bg=COLOR_BG_LAST_CH)
-        self.list_last_ch = ChangeViewer().get_history()
+        self.list_last_ch = [("black", "Дальнейшие изменения отсутствуют")]
 
         self.content()
 
@@ -427,6 +438,9 @@ class ChangeHistoryPanel(Canvas):
         Функция создающая и позиционирующая содержимое класса
         Автор: Озирный Максим
         """
+        self.canvas = Canvas(self, bg=COLOR_BG_LAST_CH,
+                             height=HEIGHT_INFO_FRAME)
+        self.frame = Frame(self.canvas, bg=COLOR_BG_LAST_CH)
         self.top_lab = Label(self, text="Последние изменения", anchor="w",
                              bg=COLOR_BG_TITLE_LAST_CH)
         # отслеживаем события для изменения высоты поля
@@ -451,11 +465,17 @@ class ChangeHistoryPanel(Canvas):
         self.canvas.pack(side="top", fill="both", expand=1)
         # в цикле создаются и позиционируются текстовые поля с текстом,
         # соответствующим содержимому списка
-        for ind in range(len(self.list_last_ch)):
-            message = Label(self.frame, bg=COLOR_BG_LAST_CH, padx=10, bd=2,
-                            fg="{}".format(self.list_last_ch[ind][0]),
-                            text="{}".format(self.list_last_ch[ind][1]))
-            message.pack(side="top", anchor="w")
+        ind = len(self.list_last_ch) - 1
+        message = Label(self.frame, bg=COLOR_BG_LAST_CH, padx=10, bd=2,
+                        fg="{}".format(self.list_last_ch[ind][0]),
+                        text="{}".format(self.list_last_ch[ind][1]))
+        message.pack(side="bottom", anchor="w")
+
+    def dop_content(self, lst, event=None):
+        message = Label(self.frame, bg=COLOR_BG_LAST_CH, padx=10, bd=2,
+                        fg="{}".format(lst[0]),
+                        text="{}".format(lst[1]))
+        message.pack(side="bottom", anchor="w")
 
     def change_cursor(self, event=None):
         """

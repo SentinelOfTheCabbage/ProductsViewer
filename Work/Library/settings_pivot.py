@@ -1,9 +1,16 @@
+"""docstring_peryatin
+"""
+# pylint: disable=R0801,R0902,R0903
+
 from tkinter import Label, Entry, W, Button, EW
 
 WINDOW_TITLE = "Настройка сводной таблицы"
 
 
 class SettingsPivot:
+    """docstring_peryatin
+    """
+
     def __init__(self, main):
         """Создаёт окно для настройки параметров отчёта по сводной таблице"""
         self.main = main
@@ -51,6 +58,8 @@ class SettingsPivot:
         self.button_apply.grid(row=4, column=1, sticky=EW)
 
     def create_pivot_report(self):
+        """docstring_peryatin
+        """
         column = self.edit_text_column.get()
         index = self.edit_text_index.get()
         param = self.edit_text_param.get()

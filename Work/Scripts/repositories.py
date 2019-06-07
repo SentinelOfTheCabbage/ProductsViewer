@@ -1,16 +1,20 @@
-# Метод функция для получения средних цен по выбранным категориям
-# продуктов и выбранному качеству
-
-# Метод/функция на вход получает список групп продуктов и список категорий качества.
-#   Исходя из входных данныx необходимо получить список средних цен
-#   по каждой категории качества каждой группы вида
-#   [[группа1-качество1, группа1-качество2], [группа2-качество1, группа2-качество2]]
+"""
+Данный модуль содержит классы:
+    class MainTableRepository - для контакта с БД
+    class ReportsInteractor - класс для создания отчётов
+Отключены следующие ошибки pylint:
+    W0212 - Ошибка доступа к защищённым данным
+    E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
+    W0702 - Ошибка отсутствия точного exception'а
+"""
+# pylint: disable=W0212
+# pylint: disable=E0401
+# pylint: disable=W0702
 import copy
 
 import datetime
 import time
 
-import pandas
 import pandas as pd
 
 from Work.Scripts.commands import CommandDelete, CommandUpdate, \
@@ -20,69 +24,90 @@ from Work.Scripts.interf_extractor import IDataExtractor
 
 
 class MainTableRepository:
+    """Класс для импорта основной информации из базы данных
+    """
     extractor: IDataExtractor
-    df = pd.DataFrame()
+    d_f = pd.DataFrame()
     select_df = pd.DataFrame()
 
     def __init__(self, extractor: IDataExtractor):
         self.extractor = extractor
+        self.discount_list: pd.DataFrame = self.extractor._db_discounts.copy()
+        self.producer_list: pd.DataFrame = self.extractor._db_producers.copy()
+        self.group_list: pd.DataFrame = self.extractor._db_groups.copy()
+        self.selector = None
 
     def get_data(self):
+        """Author: Suleymanov Nail
+        Возвращает основную таблицу, получаемую функцией get_main_table
+        """
         return self.get_main_table()
 
     def get_main_table(self):
-        """
-        Author: Suleymanov Nail
+        """Author: Suleymanov Nail
         Function returns list of lists that contain all needed information for main table
         as: product_id,product_name,product_price,product_producer,product_group,dicsount, quality
         Return[0]==list of headers for table
         """
-        # result = [] * 1
-        # result.append(list(self._db_products.columns))
-        main_table: pandas.DataFrame = self.extractor._db_products.copy()
+        main_table: pd.DataFrame = self.extractor._db_products.copy()
+        main_table = pd.merge(
+            main_table, self.discount_list, left_on='discount_id', right_on='discount_id')
+        main_table = pd.merge(
+            main_table, self.group_list, left_on='group_id', right_on='group_id')
+        main_table = pd.merge(
+            main_table, self.producer_list, left_on='producer_id', right_on='producer_id')
+        columns = ['id', 'name', 'price', 'producer_id', 'producer_name', 'group_id',
+                   'group_name', 'discount_id', 'amount', 'date_begin', 'date_end', 'quality']
+        main_table = main_table[columns]
+        discounts_id = self.discount_list.discount_id.copy()
+        for i in range(len(discounts_id)):
+            if not self.is_discount_works(discounts_id.iloc[i]):
+                change_list = main_table.discount_id == discounts_id.iloc[i]
+                main_table.amount.loc[change_list] = 0
+                main_table.date_end.loc[change_list] = 'XX.XX.XXXX'
 
-        def is_discount_works(discount_id: int):
-            now = time.mktime(datetime.datetime.now().timetuple())
-            date_begin = time.mktime(datetime.datetime.strptime(
-                self.extractor._db_discounts['date_begin'].iloc[discount_id],
-                "%d.%m.%Y").timetuple())
-            date_end = time.mktime(
-                datetime.datetime.strptime(
-                    self.extractor._db_discounts['date_end'].iloc[
-                        discount_id],
-                    "%d.%m.%Y").timetuple())
-            return date_begin <= now <= date_end
-
-        discount_list = self.extractor._db_discounts.id.copy()
-
-        for i in range(len(discount_list)):
-            if is_discount_works(discount_list.iloc[i]):
-                main_table.loc[main_table.discount_id == discount_list.iloc[
-                    i], 'discount_id'] = \
-                    self.extractor._db_discounts.amount.iloc[i]
-            else:
-                main_table.discount_id.copy().loc[
-                    main_table.discount_id == discount_list.iloc[i]] = 0
-
-        main_table.price *= round((1 - main_table.discount_id / 100.0), 2)
         main_table = main_table.rename(columns={
-            'id': 'Id',
-            'name': 'Product name',
-            'price': 'Price',
-            'producer_name': 'Producer name',
-            'group_name': 'Category',
-            'discount_id': 'Discount',
-            'quality': 'Quality'
+            'name': 'Назв продукта',
+            'price': 'Цена',
+            'producer_name': 'Производитель',
+            'group_name': 'Категория',
+            'amount': 'Скидка',
+            'quality': 'Кат стандарта'
         })
-        self.df = main_table
+        main_table['Скидка'] = main_table['Скидка'].astype(
+            str) + '% [' + main_table['date_end'] + ']'
+        del main_table['date_begin']
+        del main_table['date_end']
+        main_table = main_table.sort_values('id')
+        self.d_f = main_table
         self.select_df = main_table
         return main_table
 
+    def is_discount_works(self, discount_id: int):
+        """Author: Suleymanov Nail
+        Функция проверяет актуальность скидки по id скидки.
+        """
+        now = time.mktime(datetime.datetime.now().timetuple())
+        date_begin = time.mktime(datetime.datetime.strptime(
+            self.discount_list['date_begin'].iloc[discount_id],
+            "%d.%m.%Y").timetuple())
+        date_end = time.mktime(
+            datetime.datetime.strptime(
+                self.discount_list['date_end'].iloc[
+                    discount_id],
+                "%d.%m.%Y").timetuple())
+        return date_begin <= now <= date_end
+
     def set_data(self, data: pd.DataFrame):
-        self.df = data
+        """docstring_peryatin
+        """
+        self.d_f = data
 
     def get_products_groups(self):
-        return self.extractor._db_groups["name"].unique()
+        """Author: Suleymanov Nail
+        Функция возвращает групы товаров
+        """
+        return self.extractor._db_groups["group_name"].unique()
 
     def get_qualities(self):
         """Return quality_list"""
@@ -90,7 +115,7 @@ class MainTableRepository:
 
     def get_producers(self):
         """Return performers"""
-        return self.extractor._db_products['producer_name'].unique()
+        return self.extractor._db_producers['producer_name'].unique()
 
     def get_products_names(self):
         """Return product names"""
@@ -105,18 +130,20 @@ class MainTableRepository:
         return max(list(self.extractor._db_discounts['amount']))
 
     def select(self, command_select: CommandSelect = None):
-        if not (command_select is None):
+        """docstring_peryatin
+        """
+        if not command_select is None:
             self.selector = command_select
-        drop_list = [item for item in self.df.columns.values if item not in
+        drop_list = [item for item in self.d_f.columns.values if item not in
                      self.selector.get_columns()]
-        self.select_df = self.df.drop(drop_list, axis=1)
-        for col, op, val in self.selector.items():
+        self.select_df = self.d_f.drop(drop_list, axis=1)
+        for col, o_p, val in self.selector.items():
             self.select_df = self.select_df[self._filter(
-                self.df, col, op, val)]
+                self.d_f, col, o_p, val)]
         return self.select_df
 
     @staticmethod
-    def _filter(df: pd.DataFrame, field, compare_op: str,
+    def _filter(d_f: pd.DataFrame, field, compare_op: str,
                 value, reverse=False):
         def get_type_of(series: pd.Series):
             if series.array:
@@ -128,7 +155,9 @@ class MainTableRepository:
                     return str
             return None
 
-        def reverse_op(op):
+        def reverse_op(o_p):
+            """docstring_peryatin
+            """
             return {
                 CompareOp.EQUAL.value: CompareOp.NOT_EQUAL.value,
                 CompareOp.NOT_EQUAL.value: CompareOp.EQUAL.value,
@@ -136,11 +165,11 @@ class MainTableRepository:
                 CompareOp.LESS_OR_EQUAL.value: CompareOp.MORE.value,
                 CompareOp.MORE.value: CompareOp.LESS_OR_EQUAL.value,
                 CompareOp.MORE_OR_EQUAL.value: CompareOp.LESS.value
-            }[op]
+            }[o_p]
 
-        data_type = get_type_of(df[field])
+        data_type = get_type_of(d_f[field])
         value = data_type(value)
-        field_val = df[field].astype(data_type)
+        field_val = d_f[field].astype(data_type)
         if reverse:
             compare_op = reverse_op(compare_op)
         return {
@@ -153,31 +182,71 @@ class MainTableRepository:
         }[compare_op]
 
     def insert(self, command_insert: CommandInsert):
+        """docstring_peryatin
+        """
         row = command_insert.get_row()
-        self.df = self.df.append(row, ignore_index=True)
+        self.d_f = self.d_f.append(row, ignore_index=True)
         return row.values()
 
     def update(self, command_update: CommandUpdate):
+        """docstring_peryatin
+        """
         command_update.get_values()
-        for col, op, val in command_update.items():
+        for col, o_p, val in command_update.items():
             for field, set_val in command_update.get_values().items():
-                self.df.loc[self._filter(
-                    self.df, col, op, val
+                self.d_f.loc[self._filter(
+                    self.d_f, col, o_p, val
                 ), field] = set_val
         return self.select(self.selector)
 
     def delete(self, command_delete: CommandDelete):
-        for col, op, val in command_delete.items():
-            self.df = self.df[self._filter(self.df, col, op, val, True)]
+        """docstring_peryatin
+        """
+        for col, o_p, val in command_delete.items():
+            self.d_f = self.d_f[self._filter(self.d_f, col, o_p, val, True)]
         return self.select(self.selector)
 
     def get_vals_by_col(self, column: str):
-        vals = list(set(self.df[column].tolist()))
+        """docstring_peryatin
+        """
+        vals = list(set(self.d_f[column].tolist()))
         vals.sort()
         return vals
 
     def get_db_copy(self):
-        return copy.deepcopy(self.df)
+        """docstring_peryatin
+        """
+        return copy.deepcopy(self.d_f)
+
+    def get_quality_list(self):
+        """Return quality_list
+        """
+        result = list(self.extractor._db_products['quality'].unique())
+        return result
+
+    def get_producers_list(self):
+        """docstring_peryatin
+        """
+        producers = self.extractor._db_producers.copy()
+        producer_list = list(producers['name'])
+        return producer_list
+
+    def get_group_list(self):
+        """docstring_peryatin
+        """
+        groups = self.extractor._db_groups.copy()
+        producer_list = list(groups['name'])
+        return producer_list
+
+    def get_discount_list(self):
+        """docstring_peryatin
+        """
+        discounts = self.extractor._db_discounts.copy()
+        date_list = list(discounts['date_end'])
+        discount_list = list(discounts['amount'])
+        for i, j in enumerate(discount_list):
+            discount_list[i] = str(j) + '% [' + date_list[i] + ']'
+        return discount_list
 
 
 class ReportsInteractor:
@@ -198,18 +267,19 @@ class ReportsInteractor:
         # products_table[(products_table.group_name.isin(groups)) & (
         #     products_table.quality.isin(qualities))].groupby(
         #     ['group_name', 'quality'])['price'].mean()
-        for i in range(len(groups)):
+        for i, j in enumerate(groups):
             result.append([0] * len(qualities))
-            for j in range(len(qualities)):
+            for k, t_t in enumerate(qualities):
                 group_mean_prices = None
                 try:
-                    group_mean_prices = list(products_table[(products_table.group_name.isin([groups[i]])) & (
-                        products_table.quality.isin([qualities[j]]))].groupby(
-                            ['group_name', 'quality'])['price'].mean())
+                    group_mean_prices = list(products_table[(products_table.group_name.isin(
+                        [j])) & (products_table.quality.isin(
+                            [t_t]))].groupby(
+                                ['group_name', 'quality'])['price'].mean())
                 except IndexError:
                     pass
                 if group_mean_prices:
-                    result[i][j] = group_mean_prices[0]
+                    result[i][k] = group_mean_prices[0]
         return result
 
     def get_prices_by_group(self, product_group: str, products: list):
@@ -229,9 +299,16 @@ class ReportsInteractor:
         return result
 
     def get_products_groups(self):
-        return self.extractor._db_groups["name"]
+        """Author: Suleymanov Nail
+        Функция возвращает Series со всеми группами продукции
+        """
+        return self.extractor._db_groups["group_name"]
 
     def get_products_by_group(self, group: str):
+        """Author: Suleymanov Nail
+        Функция возвращает список Series с продуктами,
+        принадлежащими заданной группе товаров.
+        """
         db_products = self.extractor._db_products
         return db_products[db_products["group_name"] == group]["name"]
 
@@ -263,20 +340,24 @@ class ReportsInteractor:
             ...
         ]
         """
-        vouchers = self.extractor._db_vouchers[self.extractor._db_vouchers.date == date]
-        sales = self.extractor._db_sales[self.extractor._db_sales.check_id.isin(vouchers.id)]
+        vouchers = self.extractor._db_vouchers[
+            self.extractor._db_vouchers.date == date]
+        sales = self.extractor._db_sales[
+            self.extractor._db_sales.check_id.isin(vouchers.id)]
 
         intermediate_result = sales.groupby(['products_id'])['amount'].sum()
 
         # оставить только элементы подходящего типа продукции
         for i in intermediate_result.keys().tolist():
-            if list(self.extractor._db_products[self.extractor._db_products.id == i].group_name)[0] != product_group:
+            if list(self.extractor._db_products[
+                    self.extractor._db_products.id == i].group_name)[0] != product_group:
                 intermediate_result = intermediate_result.drop(i)
             else:
                 # intermediate_result[i] *= int(
                 #     self._db_products[self._db_products.id == i].price)
                 intermediate_result = intermediate_result.rename({
-                    i: list(self.extractor._db_products[self.extractor._db_products.id == i]['price'])[0]
+                    i: list(self.extractor._db_products[
+                        self.extractor._db_products.id == i]['price'])[0]
                 })
         price_list = intermediate_result.keys().tolist()
         amount_list = intermediate_result.values.tolist()

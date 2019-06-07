@@ -1,7 +1,13 @@
+"""
+Author: Andrew Fedorov
+Модуль открытия БД.
+"""
+
 from tkinter import filedialog, Frame
 import pandas as pd
 from Work.Scripts.interactors import ListMainTableInteractor
 from Work.Scripts import conf
+from Work.Scripts.config import NAME_TITLES
 
 
 class Open(Frame):
@@ -14,14 +20,16 @@ class Open(Frame):
 
     def askopenfilename(self):
         """
+        Author: Andrew Fedorov
         Метод позволяет выбрать путь для открытия файла в привычном окне
         :return: возвращает путь к файлу
         """
         filename = filedialog.askopenfilename(**self.file_opt)
-        f = open(conf.ROOT_DIR + r'\Data\Temp\filename.txt', 'w')
-        f.write(filename)
-        f.close()
-        return filename
+        if filename != "":
+            f = open(conf.ROOT_DIR + r'\Data\filename.txt', 'w')
+            f.write(filename)
+            f.close()
+            return filename
 
     @staticmethod
     def read(path):
@@ -44,5 +52,14 @@ class Open(Frame):
     def open(self, m_table):
         main_table_df: pd.DataFrame = self.read(self.askopenfilename())
         if main_table_df is not None:
-            m_table.content(ListMainTableInteractor().tolist(main_table_df)
-                            [:100])
+            main_table_df = main_table_df.rename(columns={
+                'id': 'Id',
+                'name': NAME_TITLES[0],
+                'price': NAME_TITLES[1],
+                'producer_name': NAME_TITLES[2],
+                'group_name': NAME_TITLES[3],
+                'discount_id': NAME_TITLES[4],
+                'quality': NAME_TITLES[5]
+            })
+            del main_table_df['Id']
+            m_table.before_content(ListMainTableInteractor().tolist(main_table_df)[:100])

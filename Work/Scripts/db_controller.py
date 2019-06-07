@@ -50,6 +50,16 @@ class MainTableController:
         if save_curr_state:
             self._save_state()
 
+    def _save_state(self):
+        """
+        Сохраняет состояние таблицы
+
+        Автор: Перятин Виталий
+        """
+
+    def get_max_discount(self):
+        pass
+
     def get_data_frame(self):
         """
         Получает основную таблицу из базы данных

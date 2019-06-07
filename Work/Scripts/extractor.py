@@ -34,18 +34,6 @@ class DataExtractor(IDataExtractor):
         self._db_groups = data_base['_db_groups']
         self._db_producers = data_base['_db_producers']
 
-    def __init__(self, file: str):
-        os.chdir(ROOT_DIR + r'\Data')
-        with open(file, "rb") as open_data_base:
-            data_base = pickle.load(open_data_base)
-
-        self._db_products = data_base['_db_products']
-        self._db_discounts = data_base['_db_discounts']
-        self._db_vouchers = data_base['_db_vouchers']
-        self._db_sales = data_base['_db_sales']
-        self._db_groups = data_base['_db_groups']
-        self._db_producers = data_base['_db_producers']
-
     def get_data(self):
         """
         Получает данные из БД

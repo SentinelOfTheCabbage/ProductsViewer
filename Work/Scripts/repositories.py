@@ -60,11 +60,16 @@ class MainTableRepository:
                    'group_name', 'discount_id', 'amount', 'date_begin', 'date_end', 'quality']
         main_table = main_table[columns]
         discounts_id = self.discount_list.discount_id.copy()
+        change_list = []
         for i in range(len(discounts_id)):
             if not self.is_discount_works(discounts_id.iloc[i]):
-                change_list = main_table.discount_id == discounts_id.iloc[i]
-                main_table.amount.loc[change_list] = 0
-                main_table.date_end.loc[change_list] = 'XX.XX.XXXX'
+                df_bool_table = main_table.discount_id == discounts_id.iloc[i]
+                delta_table = [i for i,j in enumerate(df_bool_table) if j == True]
+                change_list = change_list + delta_table
+        change_list = list(set(change_list))
+        # main_table.amount.replace(to_replace = change_list, value = 0)
+        # main_table.date_end = main_table.date_end.replace(change_list,'Бессрочно')
+                
 
         main_table = main_table.rename(columns={
             'name': 'Назв продукта',
@@ -115,7 +120,7 @@ class MainTableRepository:
 
     def get_producers(self):
         """Return performers"""
-        return self.extractor._db_producers['producer_name'].unique()
+        return self.extractor._db_producers['producer_id'].unique()
 
     def get_products_names(self):
         """Return product names"""
@@ -228,14 +233,14 @@ class MainTableRepository:
         """docstring_peryatin
         """
         producers = self.extractor._db_producers.copy()
-        producer_list = list(producers['name'])
+        producer_list = list(producers['producer_name'])
         return producer_list
 
     def get_group_list(self):
         """docstring_peryatin
         """
         groups = self.extractor._db_groups.copy()
-        producer_list = list(groups['name'])
+        producer_list = list(groups['group_name'])
         return producer_list
 
     def get_discount_list(self):
@@ -263,10 +268,14 @@ class ReportsInteractor:
         of every quality and group from input
         """
         products_table = self.extractor._db_products
+        groups_table = self.extractor._db_groups
+        products_table = pd.merge(products_table, groups_table,
+            left_on='group_id', right_on='group_id')
         result = []
         # products_table[(products_table.group_name.isin(groups)) & (
         #     products_table.quality.isin(qualities))].groupby(
         #     ['group_name', 'quality'])['price'].mean()
+
         for i, j in enumerate(groups):
             result.append([0] * len(qualities))
             for k, t_t in enumerate(qualities):
@@ -294,6 +303,10 @@ class ReportsInteractor:
         """
         result = {}
         table = self.extractor._db_products
+        groups_table = self.extractor._db_groups
+        table = pd.merge(table, groups_table,
+            left_on='group_id', right_on='group_id')
+        
         result = table[(table.group_name == product_group)
                        & (table.name.isin(products))].copy()[['name', 'price']]
         return result
@@ -302,7 +315,7 @@ class ReportsInteractor:
         """Author: Suleymanov Nail
         Функция возвращает Series со всеми группами продукции
         """
-        return self.extractor._db_groups["name"]
+        return self.extractor._db_groups["group_name"]
 
     def get_products_by_group(self, group: str):
         """Author: Suleymanov Nail
@@ -310,7 +323,9 @@ class ReportsInteractor:
         принадлежащими заданной группе товаров.
         """
         db_products = self.extractor._db_products
-        return db_products[db_products["group_name"] == group]["name"]
+        db_groups = self.extractor._db_groups
+        pos = db_products['group_id'] == db_groups.loc[db_groups.group_name == group].iloc[0].group_id
+        return db_products[pos]["name"]
 
     def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):
         """Функция принимает на вход тип продукции, лист качеств и лист продуктов
@@ -320,6 +335,9 @@ class ReportsInteractor:
             result[1] ->'ТУ'
         """
         temp_db = self.extractor._db_products.copy()
+        groups = self.extractor._db_groups.copy()
+        temp_db = pd.merge(temp_db, groups,
+            left_on='group_id', right_on='group_id')
         temp_db = temp_db.loc[temp_db.group_name == product_group]
         result = []
 
@@ -353,15 +371,13 @@ class ReportsInteractor:
                     self.extractor._db_products.id == i].group_name)[0] != product_group:
                 intermediate_result = intermediate_result.drop(i)
             else:
-                # intermediate_result[i] *= int(
-                #     self._db_products[self._db_products.id == i].price)
                 intermediate_result = intermediate_result.rename({
                     i: list(self.extractor._db_products[
                         self.extractor._db_products.id == i]['price'])[0]
                 })
         price_list = intermediate_result.keys().tolist()
         amount_list = intermediate_result.values.tolist()
-
+        
         result = []
         for i, current_amount in enumerate(amount_list):
             result.append({'price': price_list[i]})

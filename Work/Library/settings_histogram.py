@@ -58,8 +58,7 @@ class SettingsHistogram(SettingsWindow):
         super().__init__(self.main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
 
     def click_default(self, event):
-        """docstring_peryatin
-        """
+
         super().click_default(event)
         self.update_products()
 

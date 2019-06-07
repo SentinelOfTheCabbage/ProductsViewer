@@ -44,12 +44,18 @@ class SettingsHistogram(SettingsWindow):
         self.main.mainloop()
 
     def rb_listener(self):
-        """docstring_peryatin
+        """
+        Обновляет базу данных продуктов
+
+        Автор: Перятин Виталий
         """
         self.update_products()
 
     def update_products(self):
-        """docstring_peryatin
+        """
+        Обновляет базу данных продуктов
+
+        Автор: Перятин Виталий
         """
         self.frame_2: MultiChoiceFrame = MultiChoiceFrame(self.main, self.controller
                                                           .get_products_by_group(

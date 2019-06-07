@@ -5,6 +5,8 @@
 """
 from tkinter import filedialog, Frame
 import pandas as pd
+
+from Work.Scripts.extractor import DataExtractor
 from Work.Scripts.interactors import ListMainTableInteractor
 from Work.Scripts import conf
 

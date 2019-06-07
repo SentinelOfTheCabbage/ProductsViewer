@@ -48,7 +48,10 @@ class SettingsBoxAndWhisker(SettingsWindow):
         self.main.mainloop()
 
     def rb_listener(self):
-        """docstring_peryatin
+        """
+        Инициализирует frame с множественным выбором
+
+        Автор: Перятин Виталий
         """
         self.frame_2: MultiChoiceFrame = MultiChoiceFrame(self.main, self.controller
                                                           .get_products_by_group(
@@ -75,7 +78,10 @@ class SettingsBoxAndWhisker(SettingsWindow):
                 .show()
 
     def update_products(self):
-        """docstring_peryatin
+        """
+        Обновляет базу данных продуктов
+
+        Автор: Перятин Виталий
         """
         self.frame_2: MultiChoiceFrame = MultiChoiceFrame(self.main, self.controller
                                                           .get_products_by_group(
@@ -84,7 +90,11 @@ class SettingsBoxAndWhisker(SettingsWindow):
         super().__init__(self.main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
 
     def click_default(self, event):
-        """docstring_peryatin
+        """
+        Обработка нажатия по умолчанию:
+        обновляет базу данных продуктов
+
+        Автор: Перятин Виталий
         """
         super().click_default(event)
         self.update_products()

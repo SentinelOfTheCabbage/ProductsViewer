@@ -1,3 +1,5 @@
+"""Docstring
+"""
 import tkinter
 from tkinter import Tk, filedialog, Frame
 import pandas as pd
@@ -5,7 +7,10 @@ from Work.Scripts import conf
 from Work.Scripts.db_controller import MainTableController
 # import pickle
 
+
 class SaveAs(Frame):
+    """Docstring
+    """
     def __init__(self):
         Frame.__init__(self)
         self.file_opt = options = {}
@@ -98,6 +103,7 @@ class SaveAs(Frame):
 
 
 class Save:
+
     @staticmethod
     def csv(table: pd.DataFrame):
         """
@@ -133,8 +139,6 @@ class Save:
         with open(name,'rb') as fp:
             L = pickle.load(fp)
         L['_db_products'] = table
-        
-        
         """
         table.to_pickle(name)
 

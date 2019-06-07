@@ -3,7 +3,14 @@
 параметрами индивидуально для проекта
 
 Автор: Перятин Виталий
+Отключены следующие ошибки pylint:
+    R0901 - Слишком много предкова
+    W0614 - Ошибка использования self в некоторых методах класса
+    E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
 """
+# pylint: disable=E0401
+# pylint: disable=W0614
+# pylint: disable=R0901
 
 from tkinter import *
 from tkinter.ttk import Combobox
@@ -197,7 +204,7 @@ class VerticalScrolledFrame(PVFrame):
             Автор: Перятин Виталий
             """
             size = (
-            self.frame.winfo_reqwidth(), self.frame.winfo_reqheight())
+                self.frame.winfo_reqwidth(), self.frame.winfo_reqheight())
             self.canvas.config(scrollregion="0 0 %s %s" % size)
             if self.frame.winfo_reqwidth() != self.canvas.winfo_width():
                 self.canvas.config(width=self.frame.winfo_reqwidth())

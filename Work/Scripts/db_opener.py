@@ -1,3 +1,5 @@
+"""docstring_peryatin
+"""
 from tkinter import filedialog, Frame
 import pandas as pd
 from Work.Scripts.interactors import ListMainTableInteractor

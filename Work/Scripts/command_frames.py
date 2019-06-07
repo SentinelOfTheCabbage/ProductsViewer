@@ -3,7 +3,12 @@
 множественного редактирования базы данных
 
 Автор: Перятин Виталий
+Отключены следующие ошибки pylint:
+    R0903 - Мало методов в классе
+    E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
 """
+# pylint: disable=E0401
+# pylint: disable=R0903
 
 from abc import ABC, abstractmethod
 from tkinter import Frame, NSEW, W, StringVar, \
@@ -13,13 +18,13 @@ from tkinter.ttk import Style
 
 from Work.Scripts.interactors import ListMainTableInteractor
 from Work.Scripts.key_words import CompareOp, Expression
-from Work.Scripts.UI_table_constants import ProductColumns
+from Work.Scripts.ui_table_constants import ProductColumns
 from Work.Scripts.custom_widgets import VerticalScrolledFrame, \
     SubtitleLabel, PVAddButton, PVCancelButton, PVFrame, PVLabel, \
     PVCheckbutton, PVCombobox, PVEntry
 from Work.Scripts.event_listener import IEventListener
 
-controller = ListMainTableInteractor()
+CONTROLLER = ListMainTableInteractor()
 ERROR_TITLE = "Внимание"
 
 
@@ -129,8 +134,7 @@ class ExpressionEditor(PVFrame):
                 expressions.append(expr)
         if has_error:
             return None
-        else:
-            return expressions
+        return expressions
 
 
 class ExpressionFrame(PVFrame):
@@ -215,11 +219,10 @@ class ExpressionFrame(PVFrame):
                 (not self.value_var.get()):
             self['bg'] = 'yellow'
             return None
-        else:
-            self['bg'] = '#FFF'
-            return Expression(self.field.get(),
-                              self.compare_var.get(),
-                              self.value_entry.get())
+        self['bg'] = '#FFF'
+        return Expression(self.field.get(),
+                          self.compare_var.get(),
+                          self.value_entry.get())
 
 
 class ValueSetFrame(PVFrame):
@@ -275,6 +278,8 @@ class ValueSetFrame(PVFrame):
         self.destroy()
 
     def get_col_to_value(self):
+        """docstring_peryatin
+        """
         return {self.column_chooser.get(): self.value_entry.get()}
 
 
@@ -319,7 +324,7 @@ class SelectFrame(ExpressionEditor, ICommandCreator):
 
         Автор: Перятин Виталий
         """
-        event = controller.select(self.check_vars, self.get_expressions())
+        event = CONTROLLER.select(self.check_vars, self.get_expressions())
         if event.error != 0:
             showwarning(ERROR_TITLE, event.text, parent=self)
         else:
@@ -363,7 +368,7 @@ class InsertFrame(PVFrame, ICommandCreator):
             style.configure("custom.TCombobox", fieldbackground="#000")
             value_entry = PVCombobox(col_and_val_frame, textvariable=value_var,
                                      style="custom.TCombobox")
-            value_entry['values'] = controller.get_vals_by_col(col_name)
+            value_entry['values'] = CONTROLLER.get_vals_by_col(col_name)
             col_label.grid(row=0, column=0, sticky=W, padx=(24, 0))
             value_entry.grid(row=0, column=1, sticky=EW, padx=(0, 24))
             self.values[col_label['text']] = value_entry
@@ -386,7 +391,7 @@ class InsertFrame(PVFrame, ICommandCreator):
 
         Автор: Перятин Виталий
         """
-        event = controller.insert(self.values)
+        event = CONTROLLER.insert(self.values)
         if event.error != 0:
             showwarning(ERROR_TITLE, event.text, parent=self)
         else:
@@ -443,7 +448,7 @@ class UpdateFrame(ExpressionEditor, ICommandCreator):
         Автор: Перятин Виталий
         """
 
-        event = controller.update(self.value_set_frames,
+        event = CONTROLLER.update(self.value_set_frames,
                                   self.get_expressions())
         if event.error != 0:
             showwarning(ERROR_TITLE, event.text, parent=self)
@@ -479,7 +484,7 @@ class DeleteFrame(ExpressionEditor, ICommandCreator):
 
         Автор: Перятин Виталий
         """
-        event = controller.delete(self.get_expressions())
+        event = CONTROLLER.delete(self.get_expressions())
         if event.error != 0:
             showwarning(ERROR_TITLE, event.text, parent=self)
         else:

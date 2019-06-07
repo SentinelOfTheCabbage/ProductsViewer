@@ -3,7 +3,7 @@
 
 Автор: Перятин Виталий
 """
-
+# pylint: disable=E0401
 from abc import ABC, abstractmethod
 from tkinter import Menu
 
@@ -200,7 +200,7 @@ class MainMenuFactory(ABC):
                 COMMAND_KEY: self.listener.open_db
             },
             {
-                LABEL_KEY: "Сохраниить",
+                LABEL_KEY: "Сохранить",
                 COMMAND_KEY: self.listener.save
             },
             {

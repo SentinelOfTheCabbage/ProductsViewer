@@ -2,12 +2,15 @@
 Модуль содержащий все команды для редактирования базы данных
 
 Автор: Перятин Виталий
+Отключены следующие ошибки pylint:
+    E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
 """
+# pylint: disable=E0401
 
 from abc import ABC, abstractmethod
 
 from Work.Scripts.key_words import Expression
-from Work.Scripts.UI_table_constants import \
+from Work.Scripts.ui_table_constants import \
     ProductColumns, TableNameUI
 
 
@@ -43,7 +46,7 @@ class ICommand(ABC):
 
         Автор: Перятин Виталий
         """
-        pass
+
 
 
 class ConditionProvider:

@@ -1,6 +1,13 @@
+"""docstring_peryatin
+Отключены следующие ошибки pylint:
+    E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
+    R1705 - Нет необходимости в elif/else после return
+"""
+# pylint: disable=E0401
+# pylint: disable=R1705
 from enum import Enum
 
-from Work.Scripts.UI_table_constants import \
+from Work.Scripts.ui_table_constants import \
     ProductColumns, TableNameUI
 from Work.Scripts.extractor import DataExtractor
 from Work.Scripts.repositories import ReportsInteractor, \
@@ -15,26 +22,38 @@ EMPTY_VALS = "Не заполнены значения"
 
 
 class EditDbError(Enum):
+    """docstring_peryatin
+    """
     EMPTY_FIELDS = 1
     INCORRECT_DATA = 2
     NO_SELECTOR = 3
 
 
 class MainTableController:
+    """docstring_peryatin
+    """
 
     def __init__(self, save_curr_state=False):
+        """docstring_peryatin
+        """
         self.repository = MainTableRepository(DataExtractor())
         self.selector = CommandSelect(TableNameUI.PRODUCTS.value)
         if save_curr_state:
             self._save_state()
 
     def get_data_frame(self):
+        """docstring_peryatin
+        """
         return self.repository.get_main_table()
 
     def get_columns_by_table(self, table):
+        """docstring_peryatin
+        """
         pass
 
     def get_products_groups(self):
+        """docstring_peryatin
+        """
         return self.repository.get_products_groups()
 
     def get_qualities(self):
@@ -50,20 +69,28 @@ class MainTableController:
         return self.repository.get_products_names()
 
     def get_max_price(self):
+        """docstring_peryatin
+        """
         return self.repository.get_max_price()
 
     def get_max_discount(self):
+        """docstring_peryatin
+        """
         return self.repository.get_max_discount()
 
     def select(self, column_choices: dict, expressions):
+        """docstring_peryatin
+        """
         columns = []
 
         def get_text():
+            """docstring_peryatin
+            """
             col_text = 'По столбцам: ' + ', '.join(columns)
             exprs = []
             for expr in expressions:
-                field, op, val = expr.get_expression()
-                exprs.append(str(field) + str(op) + str(val))
+                field, o_p, val = expr.get_expression()
+                exprs.append(str(field) + str(o_p) + str(val))
             if exprs:
                 expr_text = '\nПо условиям: ' + '; '.join(exprs)
             else:
@@ -95,8 +122,12 @@ class MainTableController:
             return Event(0, get_text(), data)
 
     def insert(self, col_to_values: dict):
+        """docstring_peryatin
+        """
 
         def get_text(cut_row: list):
+            """docstring_peryatin
+            """
             return "В БД добавлена следующая строка... \n" + ", ".join(cut_row)
 
         is_full_row = True
@@ -121,8 +152,11 @@ class MainTableController:
             return Event(EditDbError.EMPTY_FIELDS.value, EMPTY_VALS)
 
     def update(self, set_frames: list, expressions: list):
-
+        """docstring_peryatin
+        """
         def get_text():
+            """docstring_peryatin
+            """
             return "Обновлены строки"
 
         values = {}
@@ -148,8 +182,11 @@ class MainTableController:
             return Event(0, get_text(), data)
 
     def delete(self, expressions):
-
+        """docstring_peryatin
+        """
         def get_text():
+            """docstring_peryatin
+            """
             return "Удалены записи"
 
         is_full_exprs = True
@@ -168,51 +205,75 @@ class MainTableController:
             return Event(0, get_text(), data)
 
     def get_vals_by_col(self, column):
+        """docstring_peryatin
+        """
         return self.repository.get_vals_by_col(column)
 
     def _save_state(self):
-        pass
+        """docstring_peryatin
+        """
 
     def next_state(self):
+        """docstring_peryatin
+        """
         def get_text():
+            """docstring_peryatin
+            """
             return "Шаг вперёд"
 
         tuple_state = self.states.next()
         if tuple_state is None:
             return Event(EditDbError.NO_SELECTOR.value, "")
-        else:
-            state, selector = tuple_state
-            self.repository.set_data(state)
-            return Event(0, get_text(), self.repository.select(selector))
+        state, selector = tuple_state
+        self.repository.set_data(state)
+        return Event(0, get_text(), self.repository.select(selector))
 
 
 class ReportsController:
+    """docstring_peryatin
+    """
 
     def __init__(self):
+        """docstring_peryatin
+        """
         self.reports_interactor = ReportsInteractor(DataExtractor())
 
     def get_products_groups(self):
+        """docstring_peryatin
+        """
         return self.reports_interactor.get_products_groups()
 
     def get_quality_categories(self):
+        """docstring_peryatin
+        """
         return self.reports_interactor.get_quality_list()
 
     def get_prices_by_group_and_quality(self, groups: list, quality: list):
+        """docstring_peryatin
+        """
         return self.reports_interactor.get_prices_by_group_and_quality(
             groups, quality)
 
     def get_products_by_group(self, group: str):
+        """docstring_peryatin
+        """
         return self.reports_interactor.get_products_by_group(group)
 
     def get_box_and_whisker_prices(self, product_group: str, qualities: list,
                                    products: list):
+        """docstring_peryatin
+        """
         return self.reports_interactor.get_box_and_whisker_prices(
             product_group, qualities, products)
 
     def get_prices_by_group(self, product_group: str, products: list):
+        """docstring_peryatin
+        """
         return self.reports_interactor.get_prices_by_group(product_group,
                                                            products)
 
     def get_spreading(self, product_group: str, date: str):
+        """docstring_peryatin
+        """
         return self.reports_interactor.get_spreading(product_group,
                                                      date)

@@ -3,7 +3,7 @@
 
 Автор: Перятин Виталий
 """
-
+# pylint: disable=E1101
 from enum import Enum
 
 

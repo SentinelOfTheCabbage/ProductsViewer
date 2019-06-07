@@ -2,7 +2,12 @@
 Модуль для извлечения данных из БД
 
 Автор: Перятин Виталий
+Отключены следующие ошибки pylint:
+    E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
+    R0903 - Ошибка количества методов в классе
 """
+# pylint: disable=E0401
+# pylint: disable=R0903
 
 import os
 import pickle
@@ -28,8 +33,6 @@ class DataExtractor(IDataExtractor):
         self._db_sales = data_base['_db_sales']
         self._db_groups = data_base['_db_groups']
         self._db_producers = data_base['_db_producers']
-        file_name = 'database.txt'
-
     def get_data(self):
         """
         Получает данные из БД

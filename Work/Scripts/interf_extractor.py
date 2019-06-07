@@ -1,3 +1,6 @@
+"""docstring_peryatin
+"""
+# pylint: disable=R0903
 from abc import ABC
 
 

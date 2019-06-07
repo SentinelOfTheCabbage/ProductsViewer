@@ -1,12 +1,18 @@
+"""docstring_peryatin
+"""
 from enum import Enum
 
 
 class TableName(Enum):
+    """docstring_peryatin
+    """
     PRODUCTS = "Products"
     VOUCHERS = "Vouchers"
 
 
 class ProductsColumn(Enum):
+    """docstring_peryatin
+    """
     ID = "id"
     NAME = "name"
     PRICE = "price"
@@ -17,6 +23,8 @@ class ProductsColumn(Enum):
 
     @staticmethod
     def get_columns():
+        """docstring_peryatin
+        """
         return [
             ProductsColumn.ID.value,
             ProductsColumn.NAME.value,
@@ -29,6 +37,8 @@ class ProductsColumn(Enum):
 
 
 class VouchersColumn(Enum):
+    """docstring_peryatin
+    """
     ID = "id"
     DATE = "date"
     TIME = "time"
@@ -36,6 +46,8 @@ class VouchersColumn(Enum):
 
     @staticmethod
     def get_columns():
+        """docstring_peryatin
+        """
         return [
             VouchersColumn.ID.value,
             VouchersColumn.DATE.value,

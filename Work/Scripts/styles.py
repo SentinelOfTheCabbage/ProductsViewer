@@ -1,5 +1,4 @@
-"""
-
+"""docstring_peryatin
 """
 
 TIMES_NEW_ROMAN_FONT = "Times New Roman"

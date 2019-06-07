@@ -1,6 +1,6 @@
 """Реализация UI с использованием библиотеки tkinter.  """
 
-# pylint: disable=W0612,W0613,R0801
+# pylint: disable=W0612,W0613,R0801,E0401
 from abc import ABC, abstractmethod
 from tkinter import Frame, NSEW, Label, RIGHT, Button, E
 

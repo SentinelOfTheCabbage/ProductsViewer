@@ -1,6 +1,9 @@
 """
 Предоставляет классы, которые генерируют шаблонные фреймы для экрана настроек
+Отключены следующие ошибки pylint:
+    E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
 """
+# pylint: disable=E0401
 import datetime
 from abc import ABC, abstractmethod
 from tkinter import Frame, Checkbutton, BooleanVar, StringVar, Radiobutton, W, \
@@ -87,6 +90,8 @@ class MultiChoiceFrame(Frame, ChoiceFrameListener):
         self.fill_frame_by_list(values, is_scrolled)
 
     def fill_frame_by_list(self, values: list, is_scrolled: bool):
+        """docstring_peryatin
+        """
         items = list(set(values))
         items.sort()
         self.values = items

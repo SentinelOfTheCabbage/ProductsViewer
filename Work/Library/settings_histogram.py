@@ -1,8 +1,9 @@
-# pylint: disable=R0801
 """
 Создаёт окно конфигурации для отображения графического отчёта
 'Категоризированная гистограмма'
 """
+# pylint: disable=R0801
+# pylint: disable=E0401
 
 from Work.Scripts.colors import ERROR_INFO_COLOR, SUCCESS_INFO_COLOR
 from Work.Library.histogram import Histogram
@@ -35,6 +36,7 @@ class SettingsHistogram(SettingsWindow):
                                                           True, listener=self)
         super().__init__(main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
         self.left_choice_is_done = True
+        self.right_choice_is_done = None
         self.set_left_title(SUBTITLE_LEFT)
         self.set_right_title(SUBTITLE_RIGHT)
 
@@ -42,22 +44,30 @@ class SettingsHistogram(SettingsWindow):
         self.main.mainloop()
 
     def rb_listener(self):
+        """docstring_peryatin
+        """
         self.update_products()
 
     def update_products(self):
+        """docstring_peryatin
+        """
         self.frame_2: MultiChoiceFrame = MultiChoiceFrame(self.main, self.controller
-                                                          .get_products_by_group(self.frame_1.get_data()),
+                                                          .get_products_by_group(
+                                                              self.frame_1.get_data()),
                                                           True, listener=self)
         super().__init__(self.main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
 
     def click_default(self, event):
+        """docstring_peryatin
+        """
         super().click_default(event)
         self.update_products()
 
     def click_reports(self, event):
         """Создаёт графический отчёт по выбранным данным"""
         if self.left_choice_is_done and self.right_choice_is_done:
-            product_prices = self.controller.get_prices_by_group(self.frame_1.get_data(), self.frame_2.get_data())
+            product_prices = self.controller.get_prices_by_group(
+                self.frame_1.get_data(), self.frame_2.get_data())
             self.main.destroy()
             Histogram(WINDOW_TITLE) \
                 .set_prices(list(product_prices['price'])) \

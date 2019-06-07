@@ -1,9 +1,8 @@
-# pylint: disable=R0801
 """
 Создаёт окно конфигурации для отображения графического отчёта
 'Категоризированная диаграмма рассеивания'
 """
-
+# pylint: disable=E0401,R0801
 from Work.Library.scatter_chart import ScatterChart
 from Work.Library.choice_frames import \
     SingleChoiceFrame, CalendarFrame
@@ -27,12 +26,12 @@ class SettingsScatterChart(SettingsWindow):
     def __init__(self, main):
         """Создаёт окно конфигурации графика"""
         self.frame_1: SingleChoiceFrame = SingleChoiceFrame(main, self.controller
-                                         .get_products_groups())
+                                                            .get_products_groups())
 
         self.frame_2: CalendarFrame = CalendarFrame(main)
         super().__init__(main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
         self.left_choice_is_done = True
-
+        self.right_choice_is_done = None
         self.set_left_title(SUBTITLE_LEFT)
         self.set_right_title(SUBTITLE_RIGHT)
 

@@ -3,6 +3,7 @@
 Создаёт окно конфигурации для отображения графического отчёта
 'Кластеризованная столбчатая диаграмма'
 """
+# pylint: disable=E0401
 
 from Work.Scripts.colors import ERROR_INFO_COLOR, SUCCESS_INFO_COLOR
 from Work.Scripts.clustered_chart import ClusteredChart
@@ -27,6 +28,8 @@ class SettingsBarChart(SettingsWindow):
 
     def __init__(self, main):
         """Создаёт окно конфигурации графика"""
+        self.left_choice_is_done = None
+        self.right_choice_is_done = None
 
         frame_1 = MultiChoiceFrame(main, self.controller
                                    .get_products_groups(),

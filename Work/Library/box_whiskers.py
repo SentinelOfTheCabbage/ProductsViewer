@@ -1,7 +1,10 @@
 """
 Модуль предоставляет возможность для работы с диаграммой типа
 "Диаграмма Бокса-Векселя".
+Отключены следующие ошибки pylint:
+    E0401 - Ошибка экспорта (данный модуль не знает о переназначении папок)
 """
+# pylint: disable=E0401
 import matplotlib.pyplot as plt
 
 from Work.Scripts.colors import DEFAULT_WHISKER_COLOR, \

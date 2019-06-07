@@ -3,6 +3,8 @@
 Создаёт окно конфигурации для отображения графического отчёта
 'Категоризированная диаграмма Бокса-Вискера'
 """
+# pylint: disable=E0401
+
 
 from Work.Scripts.colors import ERROR_INFO_COLOR, SUCCESS_INFO_COLOR
 from Work.Library.box_whiskers import Diagram
@@ -30,13 +32,15 @@ class SettingsBoxAndWhisker(SettingsWindow):
     def __init__(self, main):
         """Создаёт окно конфигурации графика"""
         groups = self.controller.get_products_groups()
-        self.frame_1: SingleChoiceFrame = SingleChoiceFrame(main, groups, self.rb_listener)
+        self.frame_1: SingleChoiceFrame = SingleChoiceFrame(
+            main, groups, self.rb_listener)
 
         self.frame_2: MultiChoiceFrame = MultiChoiceFrame(main, self.controller
                                                           .get_products_by_group(groups[0]),
                                                           True, listener=self)
         super().__init__(main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
         self.left_choice_is_done = True
+        self.right_choice_is_done = None
         self.set_left_title(SUBTITLE_LEFT)
         self.set_right_title(SUBTITLE_RIGHT)
 
@@ -44,8 +48,11 @@ class SettingsBoxAndWhisker(SettingsWindow):
         self.main.mainloop()
 
     def rb_listener(self):
+        """docstring_peryatin
+        """
         self.frame_2: MultiChoiceFrame = MultiChoiceFrame(self.main, self.controller
-                                                          .get_products_by_group(self.frame_1.get_data()),
+                                                          .get_products_by_group(
+                                                              self.frame_1.get_data()),
                                                           True, listener=self)
         super().__init__(self.main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
 
@@ -68,12 +75,17 @@ class SettingsBoxAndWhisker(SettingsWindow):
                 .show()
 
     def update_products(self):
+        """docstring_peryatin
+        """
         self.frame_2: MultiChoiceFrame = MultiChoiceFrame(self.main, self.controller
-                                                          .get_products_by_group(self.frame_1.get_data()),
+                                                          .get_products_by_group(
+                                                              self.frame_1.get_data()),
                                                           True, listener=self)
         super().__init__(self.main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
 
     def click_default(self, event):
+        """docstring_peryatin
+        """
         super().click_default(event)
         self.update_products()
 

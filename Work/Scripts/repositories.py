@@ -32,7 +32,7 @@ class MainTableRepository:
 
     def __init__(self, extractor: IDataExtractor):
         self.extractor = extractor
-        self.discount_list: pd.DataFrame = self.extractor._db_discounts.copy()
+        self.discount_list: pzd.DataFrame = self.extractor._db_discounts.copy()
         self.producer_list: pd.DataFrame = self.extractor._db_producers.copy()
         self.group_list: pd.DataFrame = self.extractor._db_groups.copy()
         self.selector = None
@@ -64,12 +64,12 @@ class MainTableRepository:
         for i in range(len(discounts_id)):
             if not self.is_discount_works(discounts_id.iloc[i]):
                 df_bool_table = main_table.discount_id == discounts_id.iloc[i]
-                delta_table = [i for i,j in enumerate(df_bool_table) if j == True]
+                delta_table = [i for i, j in enumerate(
+                    df_bool_table) if j is True]
                 change_list = change_list + delta_table
         change_list = list(set(change_list))
         # main_table.amount.replace(to_replace = change_list, value = 0)
         # main_table.date_end = main_table.date_end.replace(change_list,'Бессрочно')
-                
 
         main_table = main_table.rename(columns={
             'name': 'Назв продукта',
@@ -164,12 +164,12 @@ class MainTableRepository:
             """docstring_peryatin
             """
             return {
-                CompareOp.EQUAL.value: CompareOp.NOT_EQUAL.value,
-                CompareOp.NOT_EQUAL.value: CompareOp.EQUAL.value,
-                CompareOp.LESS.value: CompareOp.MORE_OR_EQUAL.value,
-                CompareOp.LESS_OR_EQUAL.value: CompareOp.MORE.value,
-                CompareOp.MORE.value: CompareOp.LESS_OR_EQUAL.value,
-                CompareOp.MORE_OR_EQUAL.value: CompareOp.LESS.value
+                CompareOp.EQUAL: CompareOp.NOT_EQUAL,
+                CompareOp.NOT_EQUAL: CompareOp.EQUAL,
+                CompareOp.LESS: CompareOp.MORE_OR_EQUAL,
+                CompareOp.LESS_OR_EQUAL: CompareOp.MORE,
+                CompareOp.MORE: CompareOp.LESS_OR_EQUAL,
+                CompareOp.MORE_OR_EQUAL: CompareOp.LESS
             }[o_p]
 
         data_type = get_type_of(d_f[field])
@@ -178,12 +178,12 @@ class MainTableRepository:
         if reverse:
             compare_op = reverse_op(compare_op)
         return {
-            CompareOp.EQUAL.value: field_val == value,
-            CompareOp.NOT_EQUAL.value: field_val != value,
-            CompareOp.LESS.value: field_val < value,
-            CompareOp.LESS_OR_EQUAL.value: field_val <= value,
-            CompareOp.MORE.value: field_val > value,
-            CompareOp.MORE_OR_EQUAL.value: field_val >= value
+            CompareOp.EQUAL: field_val == value,
+            CompareOp.NOT_EQUAL: field_val != value,
+            CompareOp.LESS: field_val < value,
+            CompareOp.LESS_OR_EQUAL: field_val <= value,
+            CompareOp.MORE: field_val > value,
+            CompareOp.MORE_OR_EQUAL: field_val >= value
         }[compare_op]
 
     def insert(self, command_insert: CommandInsert):
@@ -239,6 +239,7 @@ class MainTableRepository:
     def get_group_list(self):
         """docstring_peryatin
         """
+
         groups = self.extractor._db_groups.copy()
         producer_list = list(groups['group_name'])
         return producer_list
@@ -270,7 +271,7 @@ class ReportsInteractor:
         products_table = self.extractor._db_products
         groups_table = self.extractor._db_groups
         products_table = pd.merge(products_table, groups_table,
-            left_on='group_id', right_on='group_id')
+                                  left_on='group_id', right_on='group_id')
         result = []
         # products_table[(products_table.group_name.isin(groups)) & (
         #     products_table.quality.isin(qualities))].groupby(
@@ -305,8 +306,8 @@ class ReportsInteractor:
         table = self.extractor._db_products
         groups_table = self.extractor._db_groups
         table = pd.merge(table, groups_table,
-            left_on='group_id', right_on='group_id')
-        
+                         left_on='group_id', right_on='group_id')
+
         result = table[(table.group_name == product_group)
                        & (table.name.isin(products))].copy()[['name', 'price']]
         return result
@@ -324,7 +325,8 @@ class ReportsInteractor:
         """
         db_products = self.extractor._db_products
         db_groups = self.extractor._db_groups
-        pos = db_products['group_id'] == db_groups.loc[db_groups.group_name == group].iloc[0].group_id
+        pos = db_products['group_id'] == db_groups.loc[
+            db_groups.group_name == group].iloc[0].group_id
         return db_products[pos]["name"]
 
     def get_box_and_whisker_prices(self, product_group: str, qualities: list, products: list):
@@ -337,7 +339,7 @@ class ReportsInteractor:
         temp_db = self.extractor._db_products.copy()
         groups = self.extractor._db_groups.copy()
         temp_db = pd.merge(temp_db, groups,
-            left_on='group_id', right_on='group_id')
+                           left_on='group_id', right_on='group_id')
         temp_db = temp_db.loc[temp_db.group_name == product_group]
         result = []
 
@@ -362,27 +364,27 @@ class ReportsInteractor:
             self.extractor._db_vouchers.date == date]
         sales = self.extractor._db_sales[
             self.extractor._db_sales.check_id.isin(vouchers.id)]
-
+        products = pd.merge(self.extractor._db_products, self.extractor._db_groups,
+                            left_on='group_id', right_on='group_id')
         intermediate_result = sales.groupby(['products_id'])['amount'].sum()
 
         # оставить только элементы подходящего типа продукции
         for i in intermediate_result.keys().tolist():
-            if list(self.extractor._db_products[
-                    self.extractor._db_products.id == i].group_name)[0] != product_group:
+            if list(products[
+                    products.id == i].group_name)[0] != product_group:
                 intermediate_result = intermediate_result.drop(i)
             else:
                 intermediate_result = intermediate_result.rename({
-                    i: list(self.extractor._db_products[
-                        self.extractor._db_products.id == i]['price'])[0]
+                    i: list(products[
+                        products.id == i]['price'])[0]
                 })
         price_list = intermediate_result.keys().tolist()
         amount_list = intermediate_result.values.tolist()
-        
+
         result = []
         for i, current_amount in enumerate(amount_list):
             result.append({'price': price_list[i]})
             result[i]['amount'] = current_amount
-
         return result
 
     def get_quality_list(self):

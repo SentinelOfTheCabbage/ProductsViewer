@@ -40,7 +40,6 @@ class SettingsBoxAndWhisker(SettingsWindow):
                                                           True, listener=self)
         super().__init__(main, WINDOW_TITLE_GRAPH, self.frame_1, self.frame_2)
         self.left_choice_is_done = True
-        self.right_choice_is_done = None
         self.set_left_title(SUBTITLE_LEFT)
         self.set_right_title(SUBTITLE_RIGHT)
 
